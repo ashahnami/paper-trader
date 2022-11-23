@@ -23,8 +23,8 @@ def register_user():
     if((User.query.filter_by(email=email).first() is not None) and (User.query.filter_by(username=username).first() is not None)):
         return jsonify({"error": "User already exists"})
     
-    passwordHash = bcrypt.generate_password_hash(password)
-    new_user = User(email=email, username=username, first_name=first_name, last_name=last_name, password=passwordHash)
+    password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+    new_user = User(email=email, username=username, first_name=first_name, last_name=last_name, password=password_hash)
     db.session.add(new_user)
     db.session.commit()
     
