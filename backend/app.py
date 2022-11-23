@@ -12,7 +12,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
     
-@app.route("/register")
+@app.route("/register", methods=["POST"])
 def register_user():
     email = request.json["email"]
     username = request.json["username"]
@@ -27,6 +27,11 @@ def register_user():
     new_user = User(email=email, username=username, first_name=first_name, last_name=last_name, password=passwordHash)
     db.session.add(new_user)
     db.session.commit()
+    
+    return jsonify({
+        "id": new_user.id,
+        "username": new_user.username
+    })
     
 @app.route("/login", methods=["POST"])
 def login_user():

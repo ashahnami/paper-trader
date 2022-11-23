@@ -10,4 +10,4 @@ class User(db.Model):
     username = db.Column(db.String(150), unique=True)
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(32))
-    password = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.Text, nullable=False)
