@@ -6,10 +6,10 @@ const RegisterPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        axios.post('http://localhost:5000/register', {
+        await axios.post('http://localhost:5000/register', {
             username: username,
             password: password
         })
@@ -24,7 +24,6 @@ const RegisterPage = () => {
 
   return (
     <div>
-        <h2>Register</h2>
         <form onSubmit={handleSubmit}>
 
             <label>
