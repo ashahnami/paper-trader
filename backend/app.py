@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify
-from flask_jwt import JWT, current_identity
+from flask import Flask, request, jsonify, session
 from flask_bcrypt import Bcrypt
+from flask_session import Session
 from models import db, User
 from config import AppConfig
 
@@ -8,10 +8,24 @@ app = Flask(__name__)
 app.config.from_object(AppConfig)
 
 bcrypt = Bcrypt(app)
+server_session = Session(app)
 db.init_app(app)
 
 with app.app_context():
     db.create_all()
+    
+@app.route("/@me")
+def get_user():
+    user_id = session.get("user_id")
+    
+    if not user_id:
+        return jsonify({"error": "Unauthorised"})
+    
+    user = User.query.filter_by(id=user_id).first()
+    return jsonify({
+        "id": user.id,
+        "username": user.username
+    })
     
 @app.route("/register", methods=["POST"])
 def register_user():
@@ -43,6 +57,8 @@ def login_user():
     
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "Incorrect details. Please try again."})
+    
+    session["user_id"] = user.id
     
     return jsonify({
         "id": user.id,
