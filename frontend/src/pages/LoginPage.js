@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios';
+import httpClient from "../httpClient";
 
 const LoginPage = () => {
 
@@ -9,13 +9,13 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post('http://localhost:5000/login', {
+    await httpClient.post('http://localhost:5000/login', {
       username: username,
       password: password
     })
     .then(function(response){
       console.log(response);
-      // handle token
+      window.location.href="/";
     })
     .catch(function(error){
       console.log(error);
