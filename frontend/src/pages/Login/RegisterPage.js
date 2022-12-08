@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import httpClient from "../httpClient";
+import React, { useState } from 'react';
+import httpClient from "../../httpClient";
+import '../../assets/login.css';
 
 const RegisterPage = () => {
 
@@ -24,7 +25,10 @@ const RegisterPage = () => {
     };
 
   return (
-    <div>
+    <div class="container">
+
+        <h3>SIGN UP</h3>
+
         <form onSubmit={handleSubmit}>
 
             <label>

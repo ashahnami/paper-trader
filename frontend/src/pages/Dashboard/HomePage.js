@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import httpClient from "../httpClient";
+import httpClient from "../../httpClient";
 
 const HomePage = () => {
 

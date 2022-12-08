@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #8A817C;
+    font-family: 'Open Sans';
+}
+
+.container {
+    width: 50%;
+    margin: auto;
+    padding: 10px;
+    background-color: #F4F3EE;
+    border-radius: 4px;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    border: 1px solid #BCB8B1;
+    font-size: 16px;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+input[type=submit] {
+    background-color: #E0AFA0;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 20px;
+}
