@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import httpClient from "../../httpClient";
 
+import Navbar from "../../components/Navbar/index.js";
+
 const HomePage = () => {
 
   const [user, setUser] = useState({})
@@ -36,22 +38,18 @@ const HomePage = () => {
   }, [])
 
   return (
-    <div>
+    <>
+      <Navbar currentUser={user} logout={logoutUser} />
+      
       {user.id != null ? (
-        <div>
+        <>
           <p>Logged in</p>
           <p>ID: {user.id}</p>
           <p>Username: {user.username}</p>
-          <button onClick={logoutUser}>Logout</button>
-        </div>
-      ) : (
-        <div>
-          <p>Not logged in</p>
-          <a href="/login"><button>Login</button></a>
-          <a href="/register"><button>Register</button></a>
-        </div>
-      )}
-    </div>
+        </>
+      ) : null}
+
+    </>
   )
 }
 
