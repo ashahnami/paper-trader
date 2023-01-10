@@ -1,1 +1,1 @@
-# paper-trading-application
+# Paper Trading Web App
