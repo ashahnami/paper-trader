@@ -1,7 +1,7 @@
 .stockChartContainer {
   height: calc(50vh - 40px);
   width: calc(50vw - 100px);
-  background-color: black;
+  background-color: white;
 }
 
 #tradingview_3d9ff {

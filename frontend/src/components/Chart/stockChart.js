@@ -3,8 +3,10 @@ import './chartStyles.css';
 
 let tvScriptLoadingPromise;
 
-export default function StockChart() {
+export default function StockChart(stock) {
   const onLoadScriptRef = useRef();
+
+  const tradingViewLink = "https://www.tradingview.com/symbols/NASDAQ-" + stock.ticker + "/"
 
   useEffect(
     () => {
@@ -30,7 +32,7 @@ export default function StockChart() {
         if (document.getElementById('tradingview_3d9ff') && 'TradingView' in window) {
           new window.TradingView.widget({
             autosize: true,
-            symbol: "NASDAQ:AAPL",
+            symbol: "NASDAQ:" + stock.ticker,
             interval: "D",
             timezone: "Etc/UTC",
             theme: "light",
@@ -52,7 +54,7 @@ export default function StockChart() {
     <div className='stockChartContainer'>
       <div id='tradingview_3d9ff' />
       <div className="tradingview-widget-copyright">
-        <a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span className="blue-text">AAPL stock chart</span></a> by TradingView
+        <a href={tradingViewLink} rel="noopener" target="_blank"><span className="blue-text">{stock.ticker} stock chart</span></a> by TradingView
       </div>
     </div>
   );
