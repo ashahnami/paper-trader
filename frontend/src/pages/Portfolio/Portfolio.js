@@ -3,9 +3,9 @@ import httpClient from "../../httpClient";
 
 import Navbar from "../../components/Navbar/index.js";
 
-const HomePage = () => {
+const Portfolio = () => {
 
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
 
   const logoutUser = async () => {
 
@@ -53,4 +53,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default Portfolio; 
