@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './styles.css';
 
 const StockDetails = (ticker) => {
 
@@ -23,7 +24,7 @@ const StockDetails = (ticker) => {
     }, [])
 
     return (
-        <div>
+        <div className="details_container">
             <p>Symbol: {details["01. symbol"]}</p>
             <p>Price: {details["05. price"]}</p>
             <p>Open: {details["02. open"]}</p>

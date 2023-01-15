@@ -1,0 +1,12 @@
+.details_container {
+  flex-direction: column;
+  background-color: #f4f3ee;
+  border-radius: 3px;
+  width: 300px;
+  padding: 0.5rem;
+}
+
+p {
+  display: flex;
+  padding: 0px 30px 30px 30px;
+}
