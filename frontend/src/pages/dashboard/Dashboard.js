@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import httpClient from "../../httpClient";
 
-import Navbar from "../../components/Navbar/index.js";
+import Navbar from "../../common/navbar/index.js";
 
 const Portfolio = () => {
 

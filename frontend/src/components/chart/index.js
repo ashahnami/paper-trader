@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import './chartStyles.css';
+import './style.css';
 
 let tvScriptLoadingPromise;
 
@@ -47,7 +47,7 @@ export default function StockChart(stock) {
         }
       }
     },
-    []
+    [stock.ticker]
   );
 
   return (
