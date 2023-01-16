@@ -3,10 +3,11 @@ import './style.css';
 
 let tvScriptLoadingPromise;
 
-export default function StockChart(stock) {
+export default function StockChart(props) {
   const onLoadScriptRef = useRef();
+  const ticker = props.ticker;
 
-  const tradingViewLink = "https://www.tradingview.com/symbols/NASDAQ-" + stock.ticker + "/"
+  const tradingViewLink = "https://www.tradingview.com/symbols/NASDAQ-" + ticker + "/"
 
   useEffect(
     () => {
@@ -32,7 +33,7 @@ export default function StockChart(stock) {
         if (document.getElementById('tradingview_3d9ff') && 'TradingView' in window) {
           new window.TradingView.widget({
             autosize: true,
-            symbol: "NASDAQ:" + stock.ticker,
+            symbol: "NASDAQ:" + ticker,
             interval: "D",
             timezone: "Etc/UTC",
             theme: "light",
@@ -47,14 +48,14 @@ export default function StockChart(stock) {
         }
       }
     },
-    [stock.ticker]
+    [ticker]
   );
 
   return (
     <div className='stockChartContainer'>
       <div id='tradingview_3d9ff' />
       <div className="tradingview-widget-copyright">
-        <a href={tradingViewLink} rel="noopener" target="_blank"><span className="blue-text">{stock.ticker} stock chart</span></a> by TradingView
+        <a href={tradingViewLink} rel="noopener" target="_blank"><span className="blue-text">{ticker} stock chart</span></a> by TradingView
       </div>
     </div>
   );

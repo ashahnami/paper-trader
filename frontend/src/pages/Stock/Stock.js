@@ -2,19 +2,20 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import StockChart from '../../components/chart/index.js';
-import StockDetails from '../../components/stock/index.js';
+import StockDetails from '../../components/stock/details.js';
 
 const Stock = () => {
 
     const routeParams = useParams();
+    const ticker = routeParams.ticker;
 
     return (
         <>
             <p>
-                Ticker: {routeParams.ticker}
+                Ticker: {ticker}
             </p>
-            <StockChart ticker={routeParams.ticker} />
-            <StockDetails ticker={routeParams.ticker} />
+            <StockChart ticker={ticker} />
+            <StockDetails ticker={ticker} />
         </>
     )
 }
