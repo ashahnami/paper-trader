@@ -2,7 +2,9 @@ import React from 'react';
 
 const StockHeader= () => {
   return (
-    <div>Header</div>
+    <div>
+      <h2>AAPL</h2>
+    </div>
   )
 }
 

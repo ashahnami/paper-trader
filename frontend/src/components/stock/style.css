@@ -1,14 +1,10 @@
-p {
-  display: flex;
-  padding: 0px 30px 30px 30px;
-}
-
 input[type=text] {
     width: 100%;
-    border: 1px solid #BCB8B1;
-    font-size: 16px;
-    padding: 5px;
-    margin: 10px 0;
+    border: 0.5px solid #BCB8B1;
+    font-size: 20px;
+    padding: 10px;
+    margin-top: 0px;
+    margin-bottom: 15px;
 }
 
 input[type=submit] {
@@ -18,4 +14,30 @@ input[type=submit] {
     cursor: pointer;
     width: 100%;
     font-size: 20px;
+}
+
+form > label {
+  font-size: 18px;
+}
+
+.details-grid {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  align-items: center;
+}
+
+.details-grid > * {
+  text-align: center;
+  padding: 30px 15px;
+}
+
+h4 {
+  font-size: 18px; 
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 24px;
 }

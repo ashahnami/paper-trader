@@ -25,16 +25,32 @@ const StockDetails = (props) => {
     }, [])
 
     return (
-        <>
-            <p>Symbol: {details["01. symbol"]}</p>
-            <p>Price: {details["05. price"]}</p>
-            <p>Open: {details["02. open"]}</p>
-            <p>High: {details["03. high"]}</p>
-            <p>Low: {details["04. low"]}</p>
-            <p>Volume: {details["06. volume"]}</p>
-            <p>Previous close: {details["08. previous close"]}</p>
-            <p>Change percent: {details["10. change percent"]}</p>
-        </>
+        <div className="details-grid">
+            <div className="open">
+                <h4>Open</h4>
+                <h3>{parseFloat(details["02. open"]).toFixed(2)}</h3>
+            </div>
+            <div className="high">
+                <h4>High</h4>
+                <h3>{parseFloat(details["03. high"]).toFixed(2)}</h3>
+            </div>
+            <div className="low">
+                <h4>Low</h4> 
+                <h3>{parseFloat(details["04. low"]).toFixed(2)}</h3>
+            </div>
+            <div className="volume">
+                <h4>Volume</h4>
+                <h3>{parseInt(details["06. volume"]).toLocaleString()}</h3>
+            </div>
+            <div className="previousclose">
+                <h4>Previous close</h4>
+                <h3>{parseFloat(details["08. previous close"]).toFixed(2)}</h3>
+            </div>
+            <div className="changepercent">
+                <h4>Change percent</h4>
+                <h3>{parseFloat(details["10. change percent"]).toFixed(2)}%</h3>
+            </div>
+        </div>
     )
 }
 

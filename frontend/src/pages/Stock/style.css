@@ -1,14 +1,14 @@
 .grid-container {
     display: grid;
     gap: 0.5rem;
-    width: min(95%, 80rem);
+    width: min(95%, 100rem);
     height: min(80%, 50rem);
     margin: auto;
     grid-template-columns: 1fr 2.5fr 1fr;
     grid-template-areas: 
         "stock-header stock-header stock-header"
         "stock-details stock-chart stock-buy"
-        "stock-details      .      stock-buy";
+        "stock-details stock-chart stock-buy";
     grid-template-rows: 1fr 10fr 3fr;
 }
 
