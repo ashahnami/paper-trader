@@ -1,0 +1,36 @@
+.grid-container {
+    display: grid;
+    gap: 0.5rem;
+    width: min(95%, 80rem);
+    height: min(80%, 50rem);
+    margin: auto;
+    grid-template-columns: 1fr 2.5fr 1fr;
+    grid-template-areas: 
+        "stock-header stock-header stock-header"
+        "stock-details stock-chart stock-buy"
+        "stock-details      .      stock-buy";
+    grid-template-rows: 1fr 10fr 3fr;
+}
+
+.grid-item {
+    background-color: #bcb8b1;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.stock-header {
+    grid-area: stock-header;
+}
+
+.stock-chart {
+    grid-area: stock-chart;
+    background-color: white;
+}
+
+.stock-details {
+    grid-area: stock-details;
+}
+
+.stock-buy {
+    grid-area: stock-buy;
+}

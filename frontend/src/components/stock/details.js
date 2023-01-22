@@ -25,7 +25,7 @@ const StockDetails = (props) => {
     }, [])
 
     return (
-        <div className="details_container">
+        <>
             <p>Symbol: {details["01. symbol"]}</p>
             <p>Price: {details["05. price"]}</p>
             <p>Open: {details["02. open"]}</p>
@@ -34,7 +34,7 @@ const StockDetails = (props) => {
             <p>Volume: {details["06. volume"]}</p>
             <p>Previous close: {details["08. previous close"]}</p>
             <p>Change percent: {details["10. change percent"]}</p>
-        </div>
+        </>
     )
 }
 

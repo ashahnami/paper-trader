@@ -1,12 +1,21 @@
-.details_container {
-  flex-direction: column;
-  background-color: #f4f3ee;
-  border-radius: 3px;
-  width: 300px;
-  padding: 0.5rem;
-}
-
 p {
   display: flex;
   padding: 0px 30px 30px 30px;
+}
+
+input[type=text] {
+    width: 100%;
+    border: 1px solid #BCB8B1;
+    font-size: 16px;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+input[type=submit] {
+    background-color: #E0AFA0;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-size: 20px;
 }
