@@ -1,15 +1,15 @@
 .grid-container {
     display: grid;
     gap: 0.5rem;
-    width: min(95%, 100rem);
+    width: min(80%, 80rem);
     height: min(80%, 50rem);
     margin: auto;
-    grid-template-columns: 1fr 2.5fr 1fr;
+    grid-template-columns: repeat(4, 1fr); 
     grid-template-areas: 
-        "stock-header stock-header stock-header"
-        "stock-details stock-chart stock-buy"
-        "stock-details stock-chart stock-buy";
-    grid-template-rows: 1fr 10fr 3fr;
+        "header header header header"
+        "chart chart chart buy"
+        "chart chart chart details";
+    grid-template-rows:  100px, 200px, 200px;
 }
 
 .grid-item {
@@ -19,18 +19,19 @@
 }
 
 .stock-header {
-    grid-area: stock-header;
+    grid-area: header;
 }
 
 .stock-chart {
-    grid-area: stock-chart;
+    grid-area: chart;
     background-color: white;
 }
 
 .stock-details {
-    grid-area: stock-details;
+    grid-area: details;
+    width: 100%;
 }
 
 .stock-buy {
-    grid-area: stock-buy;
+    grid-area: buy;
 }

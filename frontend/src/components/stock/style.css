@@ -1,6 +1,6 @@
 input[type=text] {
     width: 100%;
-    border: 0.5px solid #BCB8B1;
+    border: 0.5px solid grey;
     font-size: 20px;
     padding: 10px;
     margin-top: 0px;
@@ -10,10 +10,15 @@ input[type=text] {
 input[type=submit] {
     background-color: #E0AFA0;
     color: white;
-    border: none;
     cursor: pointer;
     width: 100%;
     font-size: 20px;
+    padding: 10px 0;
+    border-radius: 3px;
+}
+
+form {
+  padding: 20px;
 }
 
 form > label {
@@ -21,16 +26,19 @@ form > label {
 }
 
 .details-grid {
-  display: grid;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   height: 100%;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(4, 1fr);
   align-items: center;
+  padding: 20px;
 }
 
 .details-grid > * {
   text-align: center;
-  padding: 30px 15px;
+  flex: 1 0 34%;
 }
 
 h4 {
@@ -40,4 +48,8 @@ h4 {
 
 h3 {
   font-size: 24px;
+}
+
+h2 {
+  font-size: 36px;
 }
