@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import httpClient from '../../httpClient';
 import './style.css';
 
 const StockBuy = (props) => {
 
     const [order, setOrder] = useState({
-        ticker: "",
+        ticker: "MSFT",
         price: "",
         quantity: ""
     });
@@ -16,7 +17,7 @@ const StockBuy = (props) => {
         await httpClient.post('http://localhost:5000/buy', {
             ticker: order.ticker,
             price: order.price,
-            quantity: order.quantity
+            quantity: order.quantity 
         })
         .then(function(response){
             console.log(response);
@@ -34,7 +35,7 @@ const StockBuy = (props) => {
                 <input
                     type="text"
                     onChange={(e) => setOrder(previousState => {
-                        return { ...previousState, ticker: e.target.ticker}
+                        return { ...previousState, ticker: e.target.value}
                     })}
                 />
             </label>
@@ -42,9 +43,9 @@ const StockBuy = (props) => {
             <label>
                 LIMIT PRICE:
                 <input
-                type="text"
+                    type="text"
                     onChange={(e) => setOrder(previousState => {
-                        return { ...previousState, price: e.target.price}
+                        return { ...previousState, price: e.target.value}
                     })}
                 />
             </label>

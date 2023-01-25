@@ -53,7 +53,7 @@ const Stock = () => {
         <div className="grid-container">
             <div className="grid-item stock-header"><StockHeader /></div>
             <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
-            <div className="grid-item stock-details"><StockDetails ticker={ticker} /></div>
+            {/* <div className="grid-item stock-details"><StockDetails ticker={ticker} /></div> */}
             <div className="grid-item stock-buy"><StockBuy ticker={ticker} /></div>
         </div>
     </>

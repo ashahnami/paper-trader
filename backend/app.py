@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, session
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_session import Session
 from models import db, User, Transaction
@@ -7,7 +7,7 @@ from config import AppConfig
 
 app = Flask(__name__)
 app.config.from_object(AppConfig)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r'/*': {"origins": 'http://localhost:3000/*'}})
 
 bcrypt = Bcrypt(app)
 Session(app)
@@ -75,9 +75,9 @@ def logout_user():
 @app.route("/buy", methods=["POST"])
 def buy_stock():
     ticker = request.json["ticker"]
-    stock_name = request.json["stock_name"]
-    price = request.json["price"]
-    quantity = request.json["quantity"]
+    # stock_name = request.json["stock_name"]
+    price = float(request.json["price"])
+    quantity = float(request.json["quantity"])
     
     user_id = session.get("user_id")
     user = User.query.filter_by(id=user_id).first()
@@ -86,11 +86,11 @@ def buy_stock():
         return jsonify({"error": "Unauthorised"})
     
     balance = user.balance
-    if balance <  (price*quantity):
+    if balance <  (price * quantity):
         return jsonify({"Error": "Insufficient balance"})
 
     # add transaction
-    new_transaction = Transaction(stockSymbol=ticker, stockName=stock_name, price=price, shares=quantity, user_id=user_id)
+    new_transaction = Transaction(stockSymbol=ticker, stockName="test", price=price, shares=quantity, user_id=user_id)
     db.session.add(new_transaction)
     db.session.commit()
 
@@ -99,6 +99,7 @@ def buy_stock():
     db.session.commit()
     
     return "200"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
