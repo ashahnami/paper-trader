@@ -5,6 +5,7 @@ import '../../assets/login.css';
 const RegisterPage = () => {
 
     const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = async (e) => {
@@ -12,6 +13,7 @@ const RegisterPage = () => {
 
         await httpClient.post('http://localhost:5000/register', {
             username: username,
+            email: email,
             password: password
         })
         .then(function(response){
@@ -25,7 +27,7 @@ const RegisterPage = () => {
     };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="registerForm" onSubmit={handleSubmit}>
 
         <h3>Sign up</h3>
         <label>
@@ -34,6 +36,15 @@ const RegisterPage = () => {
                 type="text"
                 placeholder="Username"
                 onChange={(e) => setUsername(e.target.value)}
+            />
+        </label>
+
+        <label>
+            Email
+            <input 
+                type="text"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
             />
         </label>
 

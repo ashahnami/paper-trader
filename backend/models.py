@@ -7,7 +7,8 @@ class User(db.Model):
     __tablename__ = "Users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
-    password = db.Column(db.Text, nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(150), nullable=False)
     balance = db.Column(db.Float, default=10000.00, nullable=False)
 
     transactions = db.relationship("Transaction", back_populates="users")
