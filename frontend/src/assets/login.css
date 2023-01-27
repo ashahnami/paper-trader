@@ -2,34 +2,71 @@
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans';
 }
 
 body {
     background-color: #8A817C;
-    font-family: 'Open Sans';
 }
 
-.container {
-    width: 50%;
-    margin: auto;
-    padding: 10px;
-    background-color: #F4F3EE;
-    border-radius: 4px;
+form {
+    background-color: #f4f3ee;
+    height: 410px;
+    width: 400px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 40%;
+    left: 50%;
+    border-radius: 8px;
+    padding: 50px, 35px;
+    box-shadow: 0 0 40px rgba(5,5,5,0.03); 
+    background-color: rgba(255,255,255,0.5);
 }
 
-input[type=text], input[type=password] {
-    width: 100%;
-    border: 1px solid #BCB8B1;
-    font-size: 16px;
-    padding: 5px;
-    margin: 10px 0;
-}
-
-input[type=submit] {
-    background-color: #E0AFA0;
-    color: white;
+form * {
     border: none;
+    outline: none;
+    letter-spacing: 0.5px;
+    color: black;
+}
+
+form h3 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+}
+
+label {
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+}
+
+form input[type=text], form input[type=password] {
+    display: block;
+    height: 50px;
+    width: 100%;
+    border-radius: 4px;
+    padding: 0 10px;
+    margin-top: 6px;
+    font-size: 16px;
+    border: none;
+}
+
+input::placeholder{
+    color: #d3d3d3; 
+    font-size: 16px;
+}
+
+button {
+    margin-top: 50px;
+    background-color: #E0AFA0;
     cursor: pointer;
     width: 100%;
-    font-size: 20px;
+    border-radius: 4px;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
 }
