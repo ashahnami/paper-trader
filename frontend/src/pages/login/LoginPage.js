@@ -27,7 +27,7 @@ const LoginPage = () => {
   };
 
   return (
-      <form onSubmit={handleSubmit}>
+      <form className="loginForm" onSubmit={handleSubmit}>
 
         <h3>Log in</h3>
         <label>

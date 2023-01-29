@@ -28,10 +28,10 @@ const StockBuy = (props) => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="buyForm" onSubmit={handleSubmit}>
 
             <label>
-                STOCK:
+                STOCK
                 <input
                     type="text"
                     onChange={(e) => setOrder(previousState => {
@@ -41,7 +41,7 @@ const StockBuy = (props) => {
             </label>
 
             <label>
-                LIMIT PRICE:
+                LIMIT PRICE
                 <input
                     type="text"
                     onChange={(e) => setOrder(previousState => {
@@ -51,7 +51,7 @@ const StockBuy = (props) => {
             </label>
 
             <label>
-                QUANTITY:
+                QUANTITY
                 <input
                     type="text"
                     onChange={(e) => setOrder(previousState => {

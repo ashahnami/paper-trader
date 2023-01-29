@@ -9,7 +9,7 @@
         "header header header header"
         "chart chart chart buy"
         "chart chart chart details";
-    grid-template-rows:  100px, 200px, 200px;
+    grid-template-rows:  100px 370px 300px;
 }
 
 .grid-item {

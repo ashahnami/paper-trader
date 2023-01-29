@@ -43,9 +43,8 @@ const Portfolio = () => {
       
       {user.id != null ? (
         <>
-          <p>Logged in</p>
-          <p>ID: {user.id}</p>
-          <p>Username: {user.username}</p>
+          <h3>Hello {user.username}!</h3>
+          <h4>Id: {user.id}</h4>
         </>
       ) : null}
 
