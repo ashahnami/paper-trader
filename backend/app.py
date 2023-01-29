@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_session import Session
 from models import db, User, Transaction
 from config import AppConfig
+import json
 
 app = Flask(__name__)
 app.config.from_object(AppConfig)
@@ -104,6 +105,27 @@ def buy_stock():
     
     return "200"
 
+@app.route("/transactions", methods=["GET"])
+def get_transactions():
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return jsonify({"error": "Unauthorised"})
+    
+    transactions = []
+
+    purchases = Transaction.query.filter_by(user_id=user_id).all()
+
+    for purchase in purchases:
+        transactions.append({
+            "stockSymbol": purchase.stockSymbol,
+            "stockName": purchase.stockName,
+            "price": purchase.price,
+            "shares": purchase.shares
+        })
+        
+    return transactions
 
 if __name__ == "__main__":
     app.run(debug=True)
