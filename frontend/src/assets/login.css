@@ -13,7 +13,7 @@ body {
 
 form {
     background-color: #f4f3ee;
-    height: 410px;
+    height: 430px;
     width: 400px;
     position: absolute;
     transform: translate(-50%, -50%);
@@ -26,7 +26,7 @@ form {
 }
 
 .registerForm {
-    height: 530px;
+    height: 540px;
 }
 
 form * {
@@ -73,4 +73,16 @@ button {
     padding: 15px 0;
     font-size: 18px;
     font-weight: 600;
+}
+
+p {
+    text-align: center;
+    color: #707070;
+    margin-top: 2px;
+    font-size: 14px;
+}
+
+.link {
+    color: blue;
+    text-decoration: none;
 }

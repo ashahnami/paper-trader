@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import httpClient from "../../httpClient";
 import '../../assets/login.css';
 
@@ -58,6 +60,8 @@ const RegisterPage = () => {
         </label>
 
         <button type="submit">Sign up</button>
+
+        <p>Already have an account? <Link to="/login" className="link">Sign in</Link></p>
 
     </form>
   )
