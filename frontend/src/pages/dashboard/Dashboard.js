@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import httpClient from "../../httpClient";
 
-import Navbar from "../../common/navbar/index.js";
+import httpClient from "../../httpClient";
+import Navbar from "../../common/navbar/index";
+import Transactions from "../../components/portfolio/transactions";
 
 const Portfolio = () => {
 
@@ -22,19 +23,18 @@ const Portfolio = () => {
     });
   }
 
+  const fetchUser = async () => {
+    await httpClient.get("http://localhost:5000/@me")
+    .then(function(response){
+      setUser(response.data);
+    })
+    .catch(function(error){
+      console.log('Error', error.message);
+    })
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
-      await httpClient.get("http://localhost:5000/@me")
-      .then(function(response){
-        setUser(response.data)
-      })
-      .catch(function(error){
-        console.log('Error', error.message)
-      })
-    }
-
-    fetchData();
-
+    fetchUser();
   }, [])
 
   return (
@@ -47,6 +47,8 @@ const Portfolio = () => {
           <h4>Id: {user.id}</h4>
         </>
       ) : null}
+
+      <Transactions />
 
     </>
   )
