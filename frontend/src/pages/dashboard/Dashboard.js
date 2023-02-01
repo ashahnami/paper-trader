@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import httpClient from "../../httpClient";
 import Navbar from "../../common/navbar/index";
 import Transactions from "../../components/portfolio/transactions";
+import PortfolioChart from "../../components/portfolio/portfolioChart";
+import "./style.css";
 
 const Portfolio = () => {
 
@@ -13,7 +15,7 @@ const Portfolio = () => {
     await httpClient.post("http://localhost:5000/logout")
     .then(function(response){
       console.log(response);
-      window.location.href="/";
+      window.location.href="/login";
     })
     .catch(function(error){
       if(error.response){
@@ -47,6 +49,10 @@ const Portfolio = () => {
           <h4>Id: {user.id}</h4>
         </>
       ) : null}
+
+      <div className="portfolioChartContainer">
+        <PortfolioChart />
+      </div>
 
       <Transactions />
 
