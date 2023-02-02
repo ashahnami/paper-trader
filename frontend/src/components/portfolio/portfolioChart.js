@@ -51,9 +51,7 @@ const PortfolioChart = () => {
 
 
   return (
-    // <div>
-        <Line data={data} options={config} />
-    // </div>
+    <Line data={data} options={config} />
   )
 }
 

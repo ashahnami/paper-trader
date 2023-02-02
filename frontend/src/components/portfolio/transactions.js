@@ -24,28 +24,26 @@ const Transactions = () => {
     }, [])
 
   return (
-    <div>
-        <table className="transactionsTable">
-            <thead>
+    <table className="transactionsTable">
+        <thead>
             <tr>
                 <th key="label1">Ticker</th>
                 <th key="label2">Name</th>
                 <th key="label3">Price</th>
                 <th key="label4">Shares</th>
             </tr>
-            </thead>
+        </thead>
         <tbody>
-        {transactions.map((t, index) => { return (
-            <tr key={index}>
-                <td>{t.stockSymbol}</td>
-                <td>{t.stockName}</td>
-                <td>{t.price}</td>
-                <td>{t.shares}</td>
-            </tr>
-        )})}
+            {transactions.map((t, index) => { return (
+                <tr key={index}>
+                    <td>{t.stockSymbol}</td>
+                    <td>{t.stockName}</td>
+                    <td>{t.price}</td>
+                    <td>{t.shares}</td>
+                </tr>
+            )})}
         </tbody>
-        </table>
-    </div>
+    </table>
   )
 }
 

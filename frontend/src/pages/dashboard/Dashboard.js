@@ -42,19 +42,11 @@ const Portfolio = () => {
   return (
     <>
       <Navbar currentUser={user} logout={logoutUser} />
-      
-      {user.id != null ? (
-        <>
-          <h3>Hello {user.username}!</h3>
-          <h4>Id: {user.id}</h4>
-        </>
-      ) : null}
-
-      <div className="portfolioChartContainer">
-        <PortfolioChart />
+      <div className="portfolio-grid-container">
+        <div className="portfolioDetails"></div>
+        <div className="portfolioChart"><PortfolioChart /></div>
+        <div className="portfolioTransactions"><Transactions /></div>
       </div>
-
-      <Transactions />
 
     </>
   )

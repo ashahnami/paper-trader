@@ -1,3 +1,27 @@
-.portfolioChartContainer {
-    width: 700px;
+.portfolio-grid-container {
+    display: grid;
+    gap: 0.5rem;
+    width: min(80%, 80rem);
+    height: min(80%, 50rem);
+    margin: auto;
+    grid-template-columns: 1fr 3fr 1fr; 
+    grid-template-areas: 
+        ". portfolioChart portfolioChart"
+        "portfolioTransactions portfolioTransactions portfolioTransactions";
+    grid-template-rows: 400px 150px;
+ }
+
+.portfolio-grid-container > * {
+    background-color: #bcb8b1;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.portfolioChart {
+    grid-area: portfolioChart;
+}
+
+.portfolioTransactions {
+    grid-area: portfolioTransactions;
+    padding: 5px;
 }
