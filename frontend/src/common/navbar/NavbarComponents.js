@@ -6,9 +6,10 @@ export const Nav = styled.nav`
   height: 60px;
   display: flex;
   justify-content: flex-end;
-  padding: 2rem 0.2em;
+  padding: 0.2rem;
   z-index: 10;
   margin-bottom: 10px;
+  align-items: center;
 `;
 
 export const NavLink = styled(Link)`
