@@ -1,3 +1,7 @@
+.order-type-select {
+  outline: none;
+}
+
 .buyForm {
   padding: 10px;
 }
