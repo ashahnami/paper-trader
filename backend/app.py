@@ -37,10 +37,10 @@ def register_user():
     password = request.json["password"]
     
     if User.query.filter_by(username=username).first() is not None:
-        return jsonify({"error": "User already exists"})
+        return jsonify({"error": "User already exists"}), 409
 
     if User.query.filter_by(email=email).first() is not None:
-        return jsonify({"error": "User already exists"})
+        return jsonify({"error": "User already exists"}), 409
     
     password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
     new_user = User(username=username, email=email, password=password_hash)

@@ -32,6 +32,7 @@ const Portfolio = () => {
     })
     .catch(function(error){
       console.log('Error', error.message);
+      window.location.href="/login";
     })
   }
 

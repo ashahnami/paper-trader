@@ -34,7 +34,7 @@ const Transactions = () => {
             </tr>
         </thead>
         <tbody>
-            {transactions.map((t, index) => { return (
+            {transactions.slice(0, 3).map((t, index) => { return (
                 <tr key={index}>
                     <td>{t.stockSymbol}</td>
                     <td>{t.stockName}</td>

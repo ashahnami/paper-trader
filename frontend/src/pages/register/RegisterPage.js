@@ -6,6 +6,8 @@ import '../../assets/login.css';
 
 const RegisterPage = () => {
 
+    const [errorMessage, setErrorMessage] = useState("");
+
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -23,7 +25,9 @@ const RegisterPage = () => {
             window.location.href="/login";
         })
         .catch(function(error){
-            console.log(error);
+            if(error.response.status === 409){
+                setErrorMessage("Username/email already exists");
+            }
         });
 
     };
@@ -38,6 +42,7 @@ const RegisterPage = () => {
                 type="text"
                 placeholder="Username"
                 onChange={(e) => setUsername(e.target.value)}
+                required
             />
         </label>
 
@@ -47,6 +52,7 @@ const RegisterPage = () => {
                 type="text"
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
+                required
             />
         </label>
 
@@ -56,12 +62,15 @@ const RegisterPage = () => {
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
+                required
             />
         </label>
 
+        {errorMessage !== "" ? <p className="errorMessage">{errorMessage}</p> : <div />}
+
         <button type="submit">Sign up</button>
 
-        <p>Already have an account? <Link to="/login" className="link">Sign in</Link></p>
+        <p className="pLink">Already have an account? <Link to="/login" className="link">Sign in</Link></p>
 
     </form>
   )

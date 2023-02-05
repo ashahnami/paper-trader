@@ -6,6 +6,8 @@ import '../../assets/login.css';
 
 const LoginPage = () => {
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,7 +23,9 @@ const LoginPage = () => {
       window.location.href="/";
     })
     .catch(function(error){
-      console.log(error);
+      if(error.response.status === 401){
+        setErrorMessage("Incorrect username or password");
+      }
     });
 
   };
@@ -36,6 +40,7 @@ const LoginPage = () => {
                 type="text"
                 placeholder="Username"
                 onChange={(e) => setUsername(e.target.value)}
+                required
             />
         </label>
 
@@ -45,12 +50,15 @@ const LoginPage = () => {
                 type="password"
                 placeholder="Password"
                 onChange={(e) => setPassword(e.target.value)}
+                required
             />
         </label>
 
+        {errorMessage !== "" ? <p className="errorMessage">{errorMessage}</p> : <div />}
+
         <button type="submit">Log In</button>
       
-        <p>Don't have an account? <Link to="/register" className="link">Sign up</Link></p>
+        <p className="pLink">Don't have an account? <Link to="/register" className="link">Sign up</Link></p>
 
       </form>
   )
