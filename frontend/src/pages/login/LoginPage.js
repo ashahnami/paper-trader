@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import httpClient from "../../httpClient";
 import '../../assets/login.css';
 
+import { useDispatch } from 'react-redux'
+import { login } from '../../features/auth/authSlice'
+
 const LoginPage = () => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -19,8 +25,8 @@ const LoginPage = () => {
       password: password
     })
     .then(function(response){
-      console.log(response);
-      window.location.href="/";
+      dispatch(login(response.data.id));
+      navigate('/');
     })
     .catch(function(error){
       if(error.response.status === 401){

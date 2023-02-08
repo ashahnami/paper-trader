@@ -1,4 +1,5 @@
 import React from 'react';
+import httpClient from "../../httpClient";
 
 import {
   Nav,
@@ -10,16 +11,41 @@ import {
 import SearchBar from '../search/SearchBar';
 import Tickers from '../search/Tickers.json';
 
-const Navbar = ({currentUser, logout}) => {
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { logout } from '../../features/auth/authSlice'
+
+const Navbar = () => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const user_id = useSelector((state) => state.auth.userId)
+
+  const logoutUser = async () => {
+
+    await httpClient.post("http://localhost:5000/logout")
+      .then(function(response){
+        console.log(response);
+        dispatch(logout());
+        navigate("/login");
+      })
+      .catch(function(error){
+        if(error.response){
+          console.log(error.response.data)
+        }
+        console.log(error);
+      });
+  }
+
     return (
       <>
-        {currentUser.id != null ? (
+        {user_id != null ? (
           <>
             <Nav>
               <NavLink to='/'>Portfolio</NavLink>
               <SearchBar placeholder="Search..." data={Tickers} />
               <NavBtn>
-                <NavBtnLink to='/' onClick={logout}>Log out</NavBtnLink>
+                <NavBtnLink to='/' onClick={logoutUser}>Log out</NavBtnLink>
               </NavBtn> 
             </Nav>
           </>

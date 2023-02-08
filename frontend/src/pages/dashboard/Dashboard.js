@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import httpClient from "../../httpClient";
 import Navbar from "../../common/navbar/index";
@@ -8,31 +8,13 @@ import "./style.css";
 
 const Portfolio = () => {
 
-  const [user, setUser] = useState({});
-
-  const logoutUser = async () => {
-
-    await httpClient.post("http://localhost:5000/logout")
-    .then(function(response){
-      console.log(response);
-      window.location.href="/login";
-    })
-    .catch(function(error){
-      if(error.response){
-        console.log(error.response.data)
-      }
-      console.log(error);
-    });
-  }
-
   const fetchUser = async () => {
     await httpClient.get("http://localhost:5000/@me")
     .then(function(response){
-      setUser(response.data);
+      console.log(response.data);
     })
     .catch(function(error){
       console.log('Error', error.message);
-      window.location.href="/login";
     })
   }
 
@@ -42,7 +24,7 @@ const Portfolio = () => {
 
   return (
     <>
-      <Navbar currentUser={user} logout={logoutUser} />
+      <Navbar />
       <div className="portfolio-grid-container">
         <div className="portfolioDetails"></div>
         <div className="portfolioChart"><PortfolioChart /></div>
