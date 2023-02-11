@@ -1,27 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import httpClient from "../../httpClient";
 import Navbar from "../../common/navbar/index";
 import Transactions from "../../components/portfolio/transactions";
 import PortfolioChart from "../../components/portfolio/portfolioChart";
 import "./style.css";
+import { useGetCurrentUserQuery } from '../../api/userApi';
 
 const Portfolio = () => {
 
-  const fetchUser = async () => {
-    await httpClient.get("http://localhost:5000/@me")
-    .then(function(response){
-      console.log(response.data);
-    })
-    .catch(function(error){
-      console.log('Error', error.message);
-    })
-  }
-
-  useEffect(() => {
-    fetchUser();
-  }, [])
-
+  useGetCurrentUserQuery();
+  
   return (
     <>
       <Navbar />
