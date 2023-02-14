@@ -3,6 +3,11 @@ import datetime
 
 db = SQLAlchemy()
 
+stock_portfolio = db.Table("stock_portfolio",
+    db.Column("stock_id", db.Integer, db.ForeignKey("Stocks.id")),
+    db.Column("portfolio_id", db.Integer, db.ForeignKey("Portfolios.id"))
+)
+
 class User(db.Model):
     __tablename__ = "Users"
     id = db.Column(db.Integer, primary_key=True)
@@ -10,17 +15,38 @@ class User(db.Model):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     balance = db.Column(db.Float, default=10000.00, nullable=False)
-
-    transactions = db.relationship("Transaction", back_populates="users")
+    transactions = db.relationship("Transaction", backref="user")
 
 class Transaction(db.Model):
     __tablename__ = "Transactions"
     id = db.Column(db.Integer, primary_key=True)
-    stockSymbol = db.Column(db.String(128), index=True, nullable=False)
-    stockName = db.Column(db.String(128), index=True)
+    stockId = db.Column(db.Integer, db.ForeignKey("Stocks.id"), nullable=False)
     price = db.Column(db.Float, nullable=False)
     shares = db.Column(db.Integer, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), index=True, nullable=False)
 
-    users = db.relationship("User", back_populates="transactions")
+class Stock(db.Model):
+    __tablename__ = "Stocks"
+    id = db.Column(db.Integer, primary_key=True)
+    exchange_id = db.Column(db.Integer, db.ForeignKey("Exchanges.id"), nullable=True)
+    ticker = db.Column(db.String(128), index=True, nullable=False)
+    name = db.Column(db.String(128), index=True, nullable=False)
+    market = db.Column(db.String(128), nullable=False)
+    portfolios = db.relationship("Portfolio", secondary=stock_portfolio, backref="stocks")
+
+class Exchange(db.Model):
+    __tablename__ = "Exchanges"
+    id = db.Column(db.Integer, primary_key=True)
+    abbrev = db.Column(db.String(32), nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    city = db.Column(db.String(128), nullable=True)
+    country = db.Column(db.String(128), nullable=True)
+    stocks = db.relationship("Stock", backref="exchange")
+
+class Portfolio(db.Model):
+    __tablename__ = "Portfolios"
+    id = db.Column(db.Integer, primary_key=True)
+    quantity = db.Column(db.Integer, nullable=False)
+    averagePrice = db.Column(db.Float, nullable=False)
+    stockId = db.Column(db.Integer, index=True, nullable=False)
