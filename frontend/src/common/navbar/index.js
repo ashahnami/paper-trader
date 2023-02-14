@@ -14,6 +14,7 @@ import Tickers from '../search/Tickers.json';
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../../features/auth/authSlice'
+import { userApi } from '../../api/userApi'
 
 const Navbar = () => {
 
@@ -27,6 +28,7 @@ const Navbar = () => {
       .then(function(response){
         console.log(response);
         dispatch(logout());
+        dispatch(userApi.util.resetApiState())
         navigate("/login");
       })
       .catch(function(error){
