@@ -2,9 +2,8 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_session import Session
-from models import db, User, Transaction
+from models import db, User, Transaction, Stock
 from config import AppConfig
-import json
 
 app = Flask(__name__)
 app.config.from_object(AppConfig)
@@ -77,6 +76,20 @@ def login_user():
 def logout_user():
     session.pop("user_id", None)
     return "200"
+
+@app.route("/stock/<ticker>", methods=["GET"])
+def get_stock_info(ticker):
+    stock = Stock.query.filter_by(ticker=ticker).first()
+    
+    if not stock:
+        return jsonify({"error": "Stock not found"}), 404
+    
+    return jsonify({
+        "ticker": ticker,
+        "name": stock.name,
+        "market": stock.market,
+    })
+    
 
 @app.route("/buy", methods=["POST"])
 def buy_stock():
