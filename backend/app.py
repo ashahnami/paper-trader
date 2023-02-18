@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_session import Session
-from models import db, User, Transaction, Stock
+from models import db, User, Transaction, Stock, PortfolioItem
 from config import AppConfig
 
 app = Flask(__name__)
@@ -94,7 +94,6 @@ def get_stock_info(ticker):
 @app.route("/buy", methods=["POST"])
 def buy_stock():
     ticker = request.json["ticker"]
-    # stock_name = request.json["stock_name"]
     price = float(request.json["price"])
     quantity = float(request.json["quantity"])
     
@@ -107,16 +106,27 @@ def buy_stock():
     balance = user.balance
     if balance <  (price * quantity):
         return jsonify({"Error": "Insufficient balance"})
+    
+    # find stock
+    stock = Stock.query.filter_by(ticker=ticker).first()
 
     # add transaction
-    new_transaction = Transaction(stockSymbol=ticker, stockName="test", price=price, shares=quantity, user_id=user_id)
+    new_transaction = Transaction(stock_id=stock.id, price=price, shares=quantity, user_id=user_id)
     db.session.add(new_transaction)
-    db.session.commit()
 
     # update balance
     user.balance = balance-(price*quantity)
-    db.session.commit()
+
+    # update portfolio 
+    portfolioItem = PortfolioItem.query.filter_by(stockId=stock.id).first()
+    if(portfolioItem):
+        portfolioItem.averagePrice = (portfolioItem.averagePrice*portfolioItem.quantity + price*quantity) / (portfolioItem.quantity+quantity)
+        portfolioItem.quantity += quantity
+    else:
+        newPortfolioItem = PortfolioItem(quantity=quantity, averagePrice=price, stockId=stock.id, user_id=user_id)
+        db.session.add(newPortfolioItem)
     
+    db.session.commit()
     return "200"
 
 @app.route("/transactions", methods=["GET"])
