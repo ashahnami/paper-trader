@@ -12,7 +12,7 @@ const StockBuy = () => {
     let { ticker } = useParams();
 
     const [order, setOrder] = useState({
-        ticker: "AMZN",
+        ticker: "",
         price: "",
         quantity: ""
     });

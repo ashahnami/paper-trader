@@ -142,9 +142,10 @@ def get_transactions():
     purchases = Transaction.query.filter_by(user_id=user_id).all()
 
     for purchase in purchases:
+        stock = Stock.query.filter_by(id=purchase.stock_id).first()
         transactions.append({
-            "stockSymbol": purchase.stockSymbol,
-            "stockName": purchase.stockName,
+            "stockSymbol": stock.ticker,
+            "stockName": stock.name,
             "price": purchase.price,
             "shares": purchase.shares
         })
