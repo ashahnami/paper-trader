@@ -6,6 +6,11 @@ import './style.css';
 const Transactions = () => {
 
     const [transactions, setTransactions] = useState([{}]);
+    const [visible, setVisible] = useState(3);
+
+    const showMoreTransactions = () => {
+        setVisible((prevState) => prevState+3);
+    }
 
     const fetchTransactions = async () => {
         await httpClient.get("http://localhost:5000/transactions")
@@ -24,26 +29,32 @@ const Transactions = () => {
     }, [])
 
   return (
-    <table className="transactionsTable">
-        <thead>
-            <tr>
-                <th key="label1">Ticker</th>
-                <th key="label2">Name</th>
-                <th key="label3">Price</th>
-                <th key="label4">Shares</th>
-            </tr>
-        </thead>
-        <tbody>
-            {transactions.slice(0, 3).map((t, index) => { return (
-                <tr key={index}>
-                    <td>{t.stockSymbol}</td>
-                    <td>{t.stockName}</td>
-                    <td>{t.price}</td>
-                    <td>{t.shares}</td>
+    <>
+        <table className="transactionsTable">
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Shares</th>
                 </tr>
-            )})}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {transactions.slice(0, visible).map((transaction) => (
+                <tr>
+                    <td>{transaction.stockSymbol}</td>
+                    <td>{transaction.stockName}</td>
+                    <td>{transaction.price}</td>
+                    <td>{transaction.shares}</td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+        {visible < transactions.length ? 
+            <button onClick={showMoreTransactions} className="showMoreTransactions">Load more</button>
+         : null}
+    </>
+
   )
 }
 

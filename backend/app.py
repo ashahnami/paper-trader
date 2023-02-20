@@ -139,7 +139,7 @@ def get_transactions():
     
     transactions = []
 
-    purchases = Transaction.query.filter_by(user_id=user_id).all()
+    purchases = Transaction.query.filter_by(user_id=user_id).order_by(Transaction.id.desc()).limit(9).all()
 
     for purchase in purchases:
         stock = Stock.query.filter_by(id=purchase.stock_id).first()

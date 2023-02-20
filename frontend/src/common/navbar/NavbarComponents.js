@@ -21,6 +21,7 @@ export const NavLink = styled(Link)`
   padding: 0 1rem;
   height: 100%;
   cursor: pointer;
+  font-weight: 600;
 
   &.active {
     color: #f4f3ee;
@@ -44,6 +45,7 @@ export const NavBtnLink = styled(Link)`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
+  font-weight: 600;
 
   &:hover {
     transition: all 0.1s ease-in-out;
