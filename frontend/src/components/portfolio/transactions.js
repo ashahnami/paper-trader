@@ -40,8 +40,8 @@ const Transactions = () => {
                 </tr>
             </thead>
             <tbody>
-            {transactions.slice(0, visible).map((transaction) => (
-                <tr>
+            {transactions.slice(0, visible).map((transaction, index) => (
+                <tr key={index}>
                     <td>{transaction.stockSymbol}</td>
                     <td>{transaction.stockName}</td>
                     <td>{transaction.price}</td>

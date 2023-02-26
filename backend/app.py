@@ -152,6 +152,27 @@ def get_transactions():
         
     return transactions
 
+@app.route("/positions", methods=["GET"])
+def get_positions():
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    
+    if user is None:
+        return jsonify({"error": "Unauthorised"})
+    
+    positions = []
+    positionRows = PortfolioItem.query.filter_by(user_id=user_id)
+    
+    for p in positionRows:
+        stock = Stock.query.filter_by(id=p.stockId).first()
+        positions.append({
+            "stockSymbol": stock.ticker,
+            "shares": p.quantity,
+            "averagePrice": p.averagePrice
+        })
+
+    return positions
+
 if __name__ == "__main__":
     app.run(debug=True)
     
