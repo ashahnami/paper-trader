@@ -45,11 +45,11 @@ function SearchBar({ placeholder, data }) {
           )}
         </div>
       </div>
-      {filteredData.length != 0 && (
+      {filteredData.length !== 0 && (
         <div className="dataResult">
-          {filteredData.slice(0, 2).map((value, key) => {
+          {filteredData.slice(0, 2).map((value, i) => {
             return (
-              <Link to={`/stock/${value.ticker}`} className="dataItem">
+              <Link to={`/stock/${value.ticker}`} className="dataItem" key={i}>
                 <p>{value.ticker}</p>
                 <p>{value.name}</p>
               </Link>

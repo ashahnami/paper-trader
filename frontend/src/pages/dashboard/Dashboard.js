@@ -16,7 +16,7 @@ const Portfolio = () => {
         <div className="portfolioHeader"><PortfolioHeader /></div>
         <div className="portfolioChart"><PortfolioChart /></div>
         <div className="portfolioTransactions"><Transactions /></div>
-        <div><PortfolioPositions /></div>
+        <div className="portfolioPositions"><PortfolioPositions /></div>
       </div>
 
     </>

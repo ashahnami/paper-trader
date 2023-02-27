@@ -1,13 +1,12 @@
-.transactionsTable {
+.transactionsTable, .positionsTable {
     width: 100%;
     text-align: left;
-    border: solid 1px black;
     border-collapse: collapse;
 }
 
-.transactionsTable th, .transactionsTable td {
+.transactionsTable th, .transactionsTable td,
+.positionsTable th, .positionsTable td {
     padding: 5px;
-    border: solid 1px black;
 }
 
 .portfolio-chart {

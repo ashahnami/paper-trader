@@ -7,8 +7,9 @@
     grid-template-columns: 1fr 3fr 1fr; 
     grid-template-areas: 
         ". portfolioChart portfolioChart"
-        "portfolioTransactions portfolioTransactions portfolioTransactions";
-    grid-template-rows: 400px 1fr;
+        "portfolioTransactions portfolioTransactions portfolioTransactions"
+        "portfolioPositions portfolioPositions portfolioPositions";
+    grid-template-rows: 400px 0.5fr 0.5fr;
  }
 
 .portfolio-grid-container > * {
@@ -24,4 +25,8 @@
 .portfolioTransactions {
     grid-area: portfolioTransactions;
     padding: 5px;
+}
+
+.portfolioPositions {
+    grid-area: portfolioPositions;
 }

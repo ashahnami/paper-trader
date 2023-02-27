@@ -10,7 +10,10 @@ export const userApi = createApi({
         getCurrentUser: builder.query({
             query: () => "@me",
         }),
+        getPositions: builder.query({
+            query: () => "positions",
+        })
     }),
 })
 
-export const { useGetCurrentUserQuery } = userApi
+export const { useGetCurrentUserQuery, useGetPositionsQuery } = userApi
