@@ -6,6 +6,7 @@ import RegisterPage from './pages/register/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
 import Stock from './pages/stock/Stock';
 import PrivateRoutes from './utils/PrivateRoutes';
+import './assets/base.css'
 
 function App() {
   return (
