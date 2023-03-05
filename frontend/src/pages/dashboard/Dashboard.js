@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
 import Navbar from "../../common/navbar/index";
-import Transactions from "../../components/portfolio/transactions";
-import PortfolioChart from "../../components/portfolio/portfolioChart";
-import PortfolioHeader from "../../components/portfolio/portfolioHeader";
-import PortfolioPositions from "../../components/portfolio/portfolioPositions";
 import {useGetPositionsQuery} from '../../api/userApi'
 import "../../assets/portfolio.css"
 
 const Portfolio = () => {
 
-  const {data: positions, isFetching} = useGetPositionsQuery()
+    const {data: positions, isFetching} = useGetPositionsQuery()
     const [changes, setChanges] = useState([]);
     const [currValues, setCurrValues] = useState([])
     const [isFinished, setIsFinished] = useState(false);
@@ -49,14 +45,6 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio">
-
-      {/* <div className="portfolio-grid-container"> */}
-        {/* <div className="portfolioHeader"><PortfolioHeader /></div> */}
-        {/* <div className="portfolioChart"><PortfolioChart /></div> */}
-        {/* <div className="portfolioTransactions"><Transactions /></div> */}
-        {/* <div className="portfolioPositions"><PortfolioPositions /></div> */}
-      {/* </div> */}
-
       <div className="portfolio-container">
         <Navbar />
 

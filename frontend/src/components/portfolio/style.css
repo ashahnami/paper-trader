@@ -1,14 +1,3 @@
-.transactionsTable, .positionsTable {
-    width: 100%;
-    text-align: left;
-    border-collapse: collapse;
-}
-
-.transactionsTable th, .transactionsTable td,
-.positionsTable th, .positionsTable td {
-    padding: 5px;
-}
-
 .portfolio-chart {
     width: 100%;
     height: 100%;

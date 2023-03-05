@@ -129,20 +129,23 @@ def buy_stock():
     db.session.commit()
     return "200"
 
-@app.route("/transactions", methods=["GET"])
-def get_transactions():
+@app.route("/transactions/<ticker>", methods=["GET"])
+def get_transactions(ticker):
     user_id = session.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
 
+    user = User.query.filter_by(id=user_id).first()
     if user is None:
         return jsonify({"error": "Unauthorised"})
+
+    stock = Stock.query.filter_by(ticker=ticker).first()
+    if stock is None:
+        return jsonify({"error": "Stock not found"})
     
     transactions = []
 
-    purchases = Transaction.query.filter_by(user_id=user_id).order_by(Transaction.id.desc()).limit(9).all()
+    purchases = Transaction.query.filter_by(user_id=user_id, stock_id=stock.id).order_by(Transaction.id.desc()).limit(9).all()
 
     for purchase in purchases:
-        stock = Stock.query.filter_by(id=purchase.stock_id).first()
         transactions.append({
             "stockSymbol": stock.ticker,
             "stockName": stock.name,
