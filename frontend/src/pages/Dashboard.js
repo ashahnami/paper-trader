@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 
-import Navbar from "../../common/navbar/index";
-import {useGetPositionsQuery} from '../../api/userApi'
-import "../../assets/portfolio.css"
+import Navbar from "../common/navbar/index";
+import {useGetPositionsQuery} from '../api/userApi'
+import "../assets/portfolio.css"
 
 const Portfolio = () => {
 

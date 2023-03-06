@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import httpClient from "../../httpClient";
-import '../../assets/login.css';
+import httpClient from "../httpClient";
+import '../assets/login.css';
 
 import { useDispatch } from 'react-redux'
-import { login } from '../../features/auth/authSlice'
+import { login } from '../features/auth/authSlice'
 
 const LoginPage = () => {
 
@@ -37,36 +37,35 @@ const LoginPage = () => {
   };
 
   return (
-      <form className="loginForm" onSubmit={handleSubmit}>
+    <div className="login">
+      <form onSubmit={handleSubmit}>
 
         <h3>Log in</h3>
-        <label>
-            Username
+        <label>Username
             <input 
-                type="text"
-                placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
-                required
+              type="text"
+              placeholder="Username"
+              onChange={(e) => setUsername(e.target.value)}
+              required
             />
         </label>
 
-        <label>
-            Password
+        <label>Password
             <input 
-                type="password"
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
         </label>
 
-        {errorMessage !== "" ? <p className="errorMessage">{errorMessage}</p> : <div />}
+        {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
 
         <button type="submit">Log In</button>
       
         <p className="pLink">Don't have an account? <Link to="/register" className="link">Sign up</Link></p>
-
       </form>
+    </div>
   )
 };
 
