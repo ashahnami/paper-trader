@@ -1,62 +1,59 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import SearchIcon from "@material-ui/icons/Search";
-import CloseIcon from "@material-ui/icons/Close";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
-import "./style.css";
+import "../../assets/search.css";
 
-function SearchBar({ placeholder, data }) {
-  const [filteredData, setFilteredData] = useState([]);
-  const [wordEntered, setWordEntered] = useState("");
+const SearchBar = () => {
+  const [input, setInput] = useState("")
+  const [results, setResults] = useState([])
+  const [timer, setTimer] = useState(null)
+  const navigate = useNavigate()
 
-  const handleFilter = (event) => {
-    const searchWord = event.target.value;
-    setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
-      return value.ticker.toLowerCase().includes(searchWord.toLowerCase());
-    });
+  const fetchData = (value) => {
+    axios.get(`https://finnhub.io/api/v1/search?q=${value}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    .then(function(response){
+      const json = response.data.result;
+      const r = json.filter((x) => {
+        return  (
+          !x.displaySymbol.toLowerCase().includes('.')
+        )
+      })
+      setResults(r)
+    })
+  } 
 
-    if (searchWord === "") {
-      setFilteredData([]);
-    } else {
-      setFilteredData(newFilter);
-    }
-  };
-
-  const clearInput = () => {
-    setFilteredData([]);
-    setWordEntered("");
-  };
+  const handleChange = (value) => {
+    setInput(value)
+    clearTimeout(timer)
+    const newTimer = setTimeout(() => {
+      fetchData(value);
+    }, 500)
+    setTimer(newTimer)
+  }
 
   return (
     <div className="search">
-      <div className="searchInputs">
-        <input
-          type="text"
-          placeholder={placeholder}
-          value={wordEntered}
-          onChange={handleFilter}
-        />
-        <div className="searchIcon">
-          {filteredData.length === 0 ? (
-            <SearchIcon />
-          ) : (
-            <CloseIcon id="clearBtn" onClick={clearInput} />
-          )}
-        </div>
+      <input 
+        type="text" 
+        onChange={(e) => handleChange(e.target.value)} 
+        placeholder="Search" />
+      <div className="results">
+        {results.slice(0, 5).map((stock, i) => {
+          return (
+            <div 
+              className="result"
+              key={i}
+              onClick={(e) => {
+                navigate(`/stock/${stock.displaySymbol}`)
+              }}
+              >
+                <h4>{stock.displaySymbol}</h4>
+                <h6>{stock.description}</h6>
+              </div>
+          );
+        })}
       </div>
-      {filteredData.length !== 0 && (
-        <div className="dataResult">
-          {filteredData.slice(0, 2).map((value, i) => {
-            return (
-              <Link to={`/stock/${value.ticker}`} className="dataItem" key={i}>
-                <p>{value.ticker}</p>
-                <p>{value.name}</p>
-              </Link>
-            );
-          })}
-        </div>
-      )}
     </div>
   );
 }

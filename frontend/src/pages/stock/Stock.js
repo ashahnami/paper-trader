@@ -84,7 +84,7 @@ const Stock = () => {
 
   return (
     <div className="stock">
-      <Navbar currentUser={user} logout={logoutUser} />
+      <Navbar />
       <div className="grid-container">
         <div className="stock-header">
           <h3>{ticker}</h3>

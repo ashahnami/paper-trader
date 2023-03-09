@@ -9,7 +9,6 @@ import {
 } from './NavbarComponents';
 
 import SearchBar from '../search/SearchBar';
-import Tickers from '../search/Tickers.json';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -45,7 +44,7 @@ const Navbar = () => {
           <>
             <Nav>
               <NavLink to='/'>Portfolio</NavLink>
-              <SearchBar placeholder="Search..." data={Tickers} />
+              <SearchBar />
               <NavBtn>
                 <NavBtnLink to='/' onClick={logoutUser}>Log out</NavBtnLink>
               </NavBtn> 

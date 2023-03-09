@@ -2,12 +2,12 @@ import { NavLink as Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const Nav = styled.nav`
-  height: 60px;
+  height: 20px;
   display: flex;
   justify-content: flex-end;
   padding: 0.2rem;
   z-index: 10;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   align-items: center;
 `;
 
