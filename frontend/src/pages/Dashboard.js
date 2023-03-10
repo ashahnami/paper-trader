@@ -45,32 +45,31 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio">
-      <div className="portfolio-container">
         <Navbar />
-
-        {isFinished ? (
-            <table className="portfolio-table">
-                <thead>
-                    <tr>
-                        <th>SYMBOL</th>       
-                        <th>QUANTITY</th>
-                        <th>CHANGE</th>
-                        <th>CURRENT VALUE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {positions.map((position, i) => (
-                        <tr key={i}>
-                            <td>{position.stockSymbol}</td>
-                            <td>{position.shares}</td>
-                            <td>{changes[i]}%</td>
-                            <td>${currValues[i]}</td>
+        <div className="portfolio-container">
+            {isFinished ? (
+                <table className="portfolio-table">
+                    <thead>
+                        <tr>
+                            <th>SYMBOL</th>       
+                            <th>QUANTITY</th>
+                            <th>CHANGE</th>
+                            <th>CURRENT VALUE</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        ) : "Loading positions..."}
-      </div>
+                    </thead>
+                    <tbody>
+                        {positions.map((position, i) => (
+                            <tr key={i}>
+                                <td>{position.stockSymbol}</td>
+                                <td>{position.shares}</td>
+                                <td>{changes[i]}%</td>
+                                <td>${currValues[i]}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : "Loading positions..."}
+        </div>
   </div>
   )
 }

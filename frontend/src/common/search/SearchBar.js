@@ -16,7 +16,7 @@ const SearchBar = () => {
       const json = response.data.result;
       const r = json.filter((x) => {
         return  (
-          !x.displaySymbol.toLowerCase().includes('.')
+          !x.displaySymbol.toLowerCase().includes('.') && !x.displaySymbol.toLowerCase().includes('/') && !x.displaySymbol.toLowerCase().includes('_') && !x.displaySymbol.toLowerCase().includes('^')
         )
       })
       setResults(r)
@@ -31,6 +31,7 @@ const SearchBar = () => {
     }, 500)
     setTimer(newTimer)
   }
+
 
   return (
     <div className="search">

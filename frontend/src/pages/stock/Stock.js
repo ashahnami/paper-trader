@@ -93,7 +93,7 @@ const Stock = () => {
         </div>
 
         <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
-        {/* <div className="grid-item stock-details"><StockDetails ticker={ticker} /></div> */}
+        <div className="grid-item stock-details"><StockDetails ticker={ticker} /></div>
 
         <div className="stock-buy">
           <form onSubmit={handleSubmit}>
@@ -111,7 +111,6 @@ const Stock = () => {
               <input type="submit" value="Submit Order" />
           </form>
         </div>
-
       </div>
     </div>
   )

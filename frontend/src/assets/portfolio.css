@@ -1,9 +1,3 @@
-.portfolio {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
 .portfolio-container {
     width: 90%;
     padding: 2%;

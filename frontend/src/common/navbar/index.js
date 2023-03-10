@@ -1,12 +1,8 @@
 import React from 'react';
 import httpClient from "../../httpClient";
+import { Link } from "react-router-dom";
 
-import {
-  Nav,
-  NavLink,
-  NavBtn,
-  NavBtnLink
-} from './NavbarComponents';
+import '../../assets/navbar.css';
 
 import SearchBar from '../search/SearchBar';
 
@@ -39,8 +35,9 @@ const Navbar = () => {
   }
 
     return (
-      <>
-        {user_id != null ? (
+      <div className="navbar">
+        {/* <Link to="/dashboard">Portfolio</Link> */}
+        {/* {user_id != null ? (
           <>
             <Nav>
               <NavLink to='/'>Portfolio</NavLink>
@@ -61,8 +58,12 @@ const Navbar = () => {
               </NavBtn>
             </Nav>
           </>
-        )}
-      </>
+        )} */}
+
+        <Link to="/" className="navbar-link">Portfolio</Link>
+        <SearchBar />
+
+      </div>
     )
 }
 
