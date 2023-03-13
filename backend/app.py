@@ -107,17 +107,13 @@ def buy_stock():
     if balance <  (price * quantity):
         return jsonify({"Error": "Insufficient balance"})
     
-    # find stock
     stock = Stock.query.filter_by(ticker=ticker).first()
 
-    # add transaction
     new_transaction = Transaction(stock_id=stock.id, price=price, shares=quantity, user_id=user_id)
     db.session.add(new_transaction)
 
-    # update balance
     user.balance = balance-(price*quantity)
 
-    # update portfolio 
     portfolioItem = PortfolioItem.query.filter_by(stockId=stock.id).first()
     if(portfolioItem):
         portfolioItem.averagePrice = (portfolioItem.averagePrice*portfolioItem.quantity + price*quantity) / (portfolioItem.quantity+quantity)
@@ -128,6 +124,26 @@ def buy_stock():
     
     db.session.commit()
     return "200"
+
+@app.route("/closeposition/<ticker>", methods=["POST"])
+def close_position(ticker):
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+    if user is None:
+        return jsonify({"error": "Unauthorised not logged in"})
+
+    stock = Stock.query.filter_by(ticker=ticker).first()
+    if stock is None:
+        return jsonify({"error": "Stock not found"})
+
+    position = PortfolioItem.query.filter_by(user_id=user_id, stockId=stock.id).first()
+    if position is None:
+        return jsonify({"error": "User does not hold this stock"})
+
+    db.session.delete(position)
+    db.session.commit()
+    return "200"
+    
 
 @app.route("/transactions/<ticker>", methods=["GET"])
 def get_transactions(ticker):

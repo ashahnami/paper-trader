@@ -41,3 +41,25 @@
     box-shadow: 0px 0px 3px 0px white;
     cursor: pointer;
 }
+
+.stock-details {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.stock-details-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.stock-details-row h5 {
+    color: grey;
+    font-weight: 400;
+}
+
+.stock-details-row h3 {
+    color: white;
+}

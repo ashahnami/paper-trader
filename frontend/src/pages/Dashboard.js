@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
-
+import CloseIcon from '@mui/icons-material/Close';
 import Navbar from "../common/navbar/index";
 import {useGetPositionsQuery} from '../api/userApi'
+import httpClient from '../httpClient';
 import "../assets/portfolio.css"
 
 const Portfolio = () => {
 
-    const {data: positions, isFetching} = useGetPositionsQuery()
+    const {data: positions, isFetching, refetch} = useGetPositionsQuery()
     const [changes, setChanges] = useState([]);
     const [currValues, setCurrValues] = useState([])
     const [isFinished, setIsFinished] = useState(false);
@@ -43,6 +44,13 @@ const Portfolio = () => {
         }
     }, [positions])
 
+    const closePosition = async (ticker) => {
+        await httpClient.post(`http://localhost:5000/closeposition/${ticker}`)
+        .then(function(response){
+            refetch()
+        })
+    }
+
   return (
     <div className="portfolio">
         <Navbar />
@@ -64,6 +72,7 @@ const Portfolio = () => {
                                 <td>{position.shares}</td>
                                 <td>{changes[i]}%</td>
                                 <td>${currValues[i]}</td>
+                                <td className="crossIcon" onClick={() => closePosition(position.stockSymbol)}><CloseIcon /></td>
                             </tr>
                         ))}
                     </tbody>

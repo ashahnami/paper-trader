@@ -5,7 +5,7 @@ import axios from 'axios'
 import httpClient from "../../httpClient";
 import Navbar from '../../common/navbar/index';
 import StockChart from '../../components/chart/index.js';
-import StockDetails from '../../components/stock/details.js';
+import { useGetStockDetailsQuery } from '../../api/stockApi';
 
 import './style.css'
 import '../../assets/stock.css';
@@ -13,42 +13,9 @@ import '../../assets/stock.css';
 const Stock = () => {
   
   const { ticker } = useParams();
-  const [user, setUser] = useState({});
   const [price, setPrice] = useState(0);
   const [details, setDetails] = useState({ change: 0, prevClose: 0 });
   const [order, setOrder] = useState({ ticker: ticker, price: 50, quantity: 1})
-
-  const logoutUser = async () => {
-
-    await httpClient.post("http://localhost:5000/logout")
-    .then(function(response){
-      console.log(response);
-      window.location.href="/";
-    })
-    .catch(function(error){
-      if(error.response){
-        console.log(error.response.data)
-      }
-      console.log(error);
-    });
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await httpClient.get("http://localhost:5000/@me")
-      .then(function(response){
-        setUser(response.data)
-      })
-      .catch(function(error){
-        console.log('Error', error.message)
-      })
-    }
-    
-    fetchData();
-    
-    fetchStockData();
-    
-  }, [])
   
   const fetchStockData = () => {
     axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
@@ -66,6 +33,15 @@ const Stock = () => {
       }, 5000);
     })
   }
+  
+  useEffect(() => {
+    fetchStockData();
+  }, [])
+  
+  const { data, isFetching } = useGetStockDetailsQuery(ticker);
+  if(isFetching) return <div>Loading...</div>
+  const stockDetails = data["Global Quote"]
+
 
   const handleSubmit = async (e) => {
         e.preventDefault();
@@ -93,7 +69,6 @@ const Stock = () => {
         </div>
 
         <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
-        <div className="grid-item stock-details"><StockDetails ticker={ticker} /></div>
 
         <div className="stock-buy">
           <form onSubmit={handleSubmit}>
@@ -110,6 +85,38 @@ const Stock = () => {
               </label>
               <input type="submit" value="Submit Order" />
           </form>
+        </div>
+
+        <div className="stock-details">
+          <div className="stock-details-row">
+            <h5>Open</h5>
+            <h3>{parseFloat(stockDetails["02. open"]).toFixed(2)}</h3>
+          </div>
+
+          <div className="stock-details-row">
+            <h5>High</h5>
+            <h3>{parseFloat(stockDetails["03. high"]).toFixed(2)}</h3>
+          </div>
+
+          <div className="stock-details-row">
+            <h5>Low</h5>
+            <h3>{parseFloat(stockDetails["04. low"]).toFixed(2)}</h3>
+          </div>
+
+          <div className="stock-details-row">
+            <h5>Volume</h5>
+            <h3>{parseInt(stockDetails["06. volume"]).toLocaleString()}</h3>
+          </div>
+
+          <div className="stock-details-row">
+            <h5>Previous close</h5>
+            <h3>{parseFloat(stockDetails["08. previous close"]).toFixed(2)}</h3>
+          </div>
+
+          <div className="stock-details-row">
+            <h5>Change percent</h5>
+            <h3>{parseFloat(stockDetails["10. change percent"]).toFixed(2)}%</h3>
+          </div>
         </div>
       </div>
     </div>

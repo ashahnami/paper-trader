@@ -19,3 +19,7 @@
 .portfolio-table td {
     text-align: center;
 }
+
+.crossIcon:hover {
+    cursor: pointer;
+}
