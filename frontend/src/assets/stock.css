@@ -63,3 +63,41 @@
 .stock-details-row h3 {
     color: white;
 }
+
+.grid-container {
+    display: grid;
+    gap: 0.5rem;
+    width: min(80%, 80rem);
+    height: min(80%, 50rem);
+    margin: auto;
+    grid-template-columns: repeat(4, 1fr); 
+    grid-template-areas: 
+        "header header header header"
+        "chart chart chart buy"
+        "chart chart chart details";
+    grid-template-rows:  100px 370px 300px;
+}
+
+.grid-item {
+    background-color: #bcb8b1;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.stock-header {
+    grid-area: header;
+}
+
+.stock-chart {
+    grid-area: chart;
+    background-color: white;
+}
+
+.stock-details {
+    grid-area: details;
+    width: 100%;
+}
+
+.stock-buy {
+    grid-area: buy;
+}

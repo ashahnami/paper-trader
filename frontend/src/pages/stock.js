@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios'
 
-import httpClient from "../../httpClient";
-import Navbar from '../../common/navbar/index';
-import StockChart from '../../components/chart/index.js';
-import { useGetStockDetailsQuery } from '../../api/stockApi';
+import httpClient from "../httpClient";
+import Navbar from '../common/navbar/index';
+import StockChart from '../components/chart/index.js';
+import { useGetStockDetailsQuery } from '../api/stockApi';
 
-import './style.css'
-import '../../assets/stock.css';
+import '../assets/stock.css';
 
 const Stock = () => {
   
@@ -17,46 +16,46 @@ const Stock = () => {
   const [details, setDetails] = useState({ change: 0, prevClose: 0 });
   const [order, setOrder] = useState({ ticker: ticker, price: 50, quantity: 1})
   
-  const fetchStockData = () => {
-    axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-    .then(function(response){
-      setPrice(response.data.c)
-      setDetails({ ...details, change: response.data.d, prevClose: response.data.pc})
-    })
-    .then(() => {
-      setInterval(() => {
-        axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-        .then(function(response){
-          setPrice(response.data.c)
-          setDetails({ ...details, change: response.data.d})
-        })
-      }, 5000);
-    })
-  }
-  
   useEffect(() => {
-    fetchStockData();
-  }, [])
+    const fetchQuote = async () => {
+      await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+      .then(function(response){
+        setPrice(response.data.c)
+        setDetails({ ...details, change: response.data.d.toFixed(2), prevClose: response.data.pc})
+      })
+    }
+
+    let interval = setInterval(async () => {
+      await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+      .then(function(response){
+        setPrice(response.data.c)
+        setDetails({ ...details, change: response.data.d.toFixed(2)})
+      })
+    }, 2000)
+
+    fetchQuote()
+
+    return () => {clearInterval(interval)}
+  }, [ticker])
   
   const { data, isFetching } = useGetStockDetailsQuery(ticker);
   if(isFetching) return <div>Loading...</div>
   const stockDetails = data["Global Quote"]
 
-
   const handleSubmit = async (e) => {
-        e.preventDefault();
-        await httpClient.post('http://localhost:5000/buy', {
-            ticker: order.ticker,
-            price: price,
-            quantity: order.quantity 
-        })
-        .then(function(response){
-            console.log(response);
-        })
-        .catch(function(error){
-            console.log(error);
-        })
-    }
+    e.preventDefault();
+    await httpClient.post('http://localhost:5000/buy', {
+        ticker: order.ticker,
+        price: price,
+        quantity: order.quantity 
+    })
+    .then(function(response){
+        console.log(response);
+    })
+    .catch(function(error){
+        console.log(error);
+    })
+  }
 
   return (
     <div className="stock">
@@ -65,7 +64,7 @@ const Stock = () => {
         <div className="stock-header">
           <h3>{ticker}</h3>
           <h2>${price}</h2>
-          <h6>{details.change}%</h6>
+          <h6>{(details.change<0 ? "" : "+" ) + details.change} ({(parseFloat(stockDetails["10. change percent"]).toFixed(2) < 0 ? "" : "+") + parseFloat(stockDetails["10. change percent"]).toFixed(2)}%)</h6>
         </div>
 
         <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
