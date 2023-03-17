@@ -14,7 +14,10 @@ const Stock = () => {
   const { ticker } = useParams();
   const [price, setPrice] = useState(0);
   const [details, setDetails] = useState({ change: 0, prevClose: 0 });
-  const [order, setOrder] = useState({ ticker: ticker, price: 50, quantity: 1})
+  const [order, setOrder] = useState({ ticker: ticker, price: 50, quantity: 1});
+  const [orderType, setOrderType] = useState("");
+  const [priceType, setPriceType] = useState("")
+  const [marketOrder, setMarketOrder] = useState(true);
   
   useEffect(() => {
     const fetchQuote = async () => {
@@ -28,7 +31,7 @@ const Stock = () => {
     let interval = setInterval(async () => {
       await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
       .then(function(response){
-        setPrice(response.data.c)
+        setPrice(response.data.c.toFixed(2))
         setDetails({ ...details, change: response.data.d.toFixed(2)})
       })
     }, 2000)
@@ -70,20 +73,65 @@ const Stock = () => {
         <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
 
         <div className="stock-buy">
+          <div className="order-type" onChange={(e) => setOrderType(e.target.value)}>
+            <div>
+              <input type="radio" value="Buy" name="orderType" /> Buy
+            </div>
+
+            <div>
+              <input type="radio" value="Sell" name="orderType" /> Sell
+            </div>
+          </div>
+
+          {orderType !== "" ? 
+
           <form onSubmit={handleSubmit}>
-              <label>QUANTITY
-                  <input
-                      type="number"
-                      placeholder="Enter quantity"
-                      min="1"
-                      onChange={(e) => setOrder(previousState => {
-                          return { ...previousState, quantity: e.target.value}
-                      })}
-                      required
-                  />
-              </label>
-              <input type="submit" value="Submit Order" />
+
+            <input
+              type="text"
+              placeholder="Enter ticker"
+              onChange={(e) => setOrder(previousState => {
+                return { ...previousState, ticker: e.target.value}
+              })}
+              required
+            />
+
+            <input
+                type="number"
+                placeholder="Enter quantity"
+                min="1"
+                onChange={(e) => setOrder(previousState => {
+                    return { ...previousState, quantity: e.target.value}
+                })}
+                required
+            />
+
+            <div className="price-type" onChange={(e) => setPriceType(e.target.value)}>
+              <div>
+                <input type="radio" value="Limit" name="orderType" /> Limit
+              </div>
+
+              <div>
+                <input type="radio" value="Market" name="orderType" /> Market
+              </div>
+            </div>
+
+            {priceType === "Limit" ? 
+              <input
+                  type="number"
+                  placeholder="Enter price"
+                  onChange={(e) => setOrder(previousState => {
+                      return { ...previousState, price: e.target.value}
+                  })}
+                  required
+              />
+            : null }
+
+            <input type="submit" value={orderType} style={{"backgroundColor": orderType==="Buy" ? "green" : "red"}} />
           </form>
+
+          : null }
+
         </div>
 
         <div className="stock-details">

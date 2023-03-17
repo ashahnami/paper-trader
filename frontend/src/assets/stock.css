@@ -10,6 +10,21 @@
     color: white;
 }
 
+.order-type, .price-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    color: white;
+}
+
+.order-type .buy-button {
+    background-color: green;
+}
+
+.order-type .sell-button {
+    background-color: red;
+}
+
 .stock-buy form label {
     display: block;
     color: white;
@@ -31,6 +46,7 @@
 
 .stock-buy form input[type=submit] {
     background-color: #DBFCFF;
+    color: white;
     padding: 10px;
     border-radius: 3px;
     font-weight: bold;
