@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import SearchIcon from '@mui/icons-material/Search';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import "../../assets/search.css";
 
@@ -35,10 +37,18 @@ const SearchBar = () => {
 
   return (
     <div className="search">
-      <input 
-        type="text" 
-        onChange={(e) => handleChange(e.target.value)} 
-        placeholder="Search" />
+      <div className="input-container">
+        <input 
+          type="text" 
+          onChange={(e) => handleChange(e.target.value)} 
+          placeholder="Search" 
+        />
+        
+        <div class="search-icon">
+          <SearchIcon />
+        </div>
+      </div>
+
       <div className="results">
         {results.slice(0, 5).map((stock, i) => {
           return (
@@ -49,7 +59,7 @@ const SearchBar = () => {
                 navigate(`/stock/${stock.displaySymbol}`)
               }}
               >
-                <h4>{stock.displaySymbol}</h4>
+                <h4 style={{"font-weight": "bold"}}>{stock.displaySymbol}</h4>
                 <h6>{stock.description}</h6>
               </div>
           );

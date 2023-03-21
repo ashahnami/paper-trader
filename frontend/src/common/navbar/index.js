@@ -1,68 +1,15 @@
 import React from 'react';
-import httpClient from "../../httpClient";
 import { Link } from "react-router-dom";
 
 import '../../assets/navbar.css';
 
 import SearchBar from '../search/SearchBar';
 
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { logout } from '../../features/auth/authSlice'
-import { userApi } from '../../api/userApi'
-
 const Navbar = () => {
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const user_id = useSelector((state) => state.auth.userId)
-
-  const logoutUser = async () => {
-
-    await httpClient.post("http://localhost:5000/logout")
-      .then(function(response){
-        console.log(response);
-        dispatch(logout());
-        dispatch(userApi.util.resetApiState())
-        navigate("/login");
-      })
-      .catch(function(error){
-        if(error.response){
-          console.log(error.response.data)
-        }
-        console.log(error);
-      });
-  }
-
     return (
       <div className="navbar">
-        {/* <Link to="/dashboard">Portfolio</Link> */}
-        {/* {user_id != null ? (
-          <>
-            <Nav>
-              <NavLink to='/'>Portfolio</NavLink>
-              <SearchBar />
-              <NavBtn>
-                <NavBtnLink to='/' onClick={logoutUser}>Log out</NavBtnLink>
-              </NavBtn> 
-            </Nav>
-          </>
-        ) : (
-          <>
-            <Nav>
-              <NavBtn>
-                <NavBtnLink to='/login'>Login</NavBtnLink>
-              </NavBtn>
-              <NavBtn>
-                <NavBtnLink to='/register'>Register</NavBtnLink>
-              </NavBtn>
-            </Nav>
-          </>
-        )} */}
-
         <Link to="/" className="navbar-link">Portfolio</Link>
         <SearchBar />
-
       </div>
     )
 }

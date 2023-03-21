@@ -1,20 +1,17 @@
-.stock-header h2 {
-    color: white;
-}
-
-.stock-header h3 {
-    color: white;
-}
-
-.stock-header h6 {
-    color: white;
-}
-
 .order-type, .price-type {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    color: white;
+    gap: 10px;
+}
+
+.order-type input[type=button] {
+    width: 80px;
+    height: 40px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
 }
 
 .order-type .buy-button {
@@ -25,9 +22,19 @@
     background-color: red;
 }
 
+.price-type .react-select-container {
+    width: 100%;
+    margin-bottom: 5px;
+    border: solid 1px #c0c0c0;
+    border-radius: 3px;
+}
+
+.price-type .react-select__control {
+    border: none;
+}
+
 .stock-buy form label {
     display: block;
-    color: white;
 }
 
 .stock-buy form input {
@@ -35,8 +42,9 @@
     width: 100%;
     padding: 10px;
     border-radius: 3px;
-    border: none;
-    font-weight: bold;
+    border: solid 1px #c0c0c0;
+    color: #808080;
+    font-size: 1rem;
     margin-bottom: 5px;
 }
 
@@ -74,10 +82,6 @@
 .stock-details-row h5 {
     color: grey;
     font-weight: 400;
-}
-
-.stock-details-row h3 {
-    color: white;
 }
 
 .grid-container {

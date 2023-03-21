@@ -58,7 +58,7 @@ const Portfolio = () => {
             {isFinished ? (
                 <table className="portfolio-table">
                     <thead>
-                        <tr>
+                        <tr className="header-row">
                             <th>SYMBOL</th>       
                             <th>QUANTITY</th>
                             <th>CHANGE</th>
@@ -68,7 +68,7 @@ const Portfolio = () => {
                     <tbody>
                         {positions.map((position, i) => (
                             <tr key={i}>
-                                <td>{position.stockSymbol}</td>
+                                <td style={{"font-weight": "bold"}}>{position.stockSymbol}</td>
                                 <td>{position.shares}</td>
                                 <td>{changes[i]}%</td>
                                 <td>${currValues[i]}</td>

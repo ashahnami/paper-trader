@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
+import Select from 'react-select';
 
 import httpClient from "../httpClient";
 import Navbar from '../common/navbar/index';
@@ -17,7 +18,6 @@ const Stock = () => {
   const [order, setOrder] = useState({ ticker: ticker, price: 50, quantity: 1});
   const [orderType, setOrderType] = useState("");
   const [priceType, setPriceType] = useState("")
-  const [marketOrder, setMarketOrder] = useState(true);
   
   useEffect(() => {
     const fetchQuote = async () => {
@@ -47,18 +47,26 @@ const Stock = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await httpClient.post('http://localhost:5000/buy', {
-        ticker: order.ticker,
-        price: price,
-        quantity: order.quantity 
-    })
-    .then(function(response){
-        console.log(response);
-    })
-    .catch(function(error){
-        console.log(error);
-    })
+
+    if(priceType === "market"){
+      await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+        .then(function(response){
+          httpClient.post('http://localhost:5000/buy', {
+          ticker: order.ticker,
+          price: response.data.c,
+          quantity: order.quantity 
+        })
+        .then(function(response){
+            console.log(response);
+        })
+      })
+    }
   }
+
+  const priceTypeOptions = [
+    {value: "limit", label: "Limit"},
+    {value: "market", label: "Market"}
+  ]
 
   return (
     <div className="stock">
@@ -73,19 +81,15 @@ const Stock = () => {
         <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
 
         <div className="stock-buy">
-          <div className="order-type" onChange={(e) => setOrderType(e.target.value)}>
-            <div>
-              <input type="radio" value="Buy" name="orderType" /> Buy
-            </div>
-
-            <div>
-              <input type="radio" value="Sell" name="orderType" /> Sell
-            </div>
-          </div>
 
           {orderType !== "" ? 
 
           <form onSubmit={handleSubmit}>
+
+            <div className="order-type">
+                <input type="button" value="Buy" className="buy-button" name="orderType" onClick={(e) => setOrderType(e.target.value)}/>
+                <input type="button" value="Sell" className="sell-button" name="orderType" onClick={(e) => setOrderType(e.target.value)}/>
+            </div>
 
             <input
               type="text"
@@ -106,17 +110,11 @@ const Stock = () => {
                 required
             />
 
-            <div className="price-type" onChange={(e) => setPriceType(e.target.value)}>
-              <div>
-                <input type="radio" value="Limit" name="orderType" /> Limit
-              </div>
-
-              <div>
-                <input type="radio" value="Market" name="orderType" /> Market
-              </div>
+            <div className="price-type">
+              <Select className="react-select-container" classNamePrefix="react-select" options={priceTypeOptions} onChange={(selectedOption) => setPriceType(selectedOption.value)} />
             </div>
 
-            {priceType === "Limit" ? 
+            {priceType === "limit" ? 
               <input
                   type="number"
                   placeholder="Enter price"
