@@ -1,52 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
-import CancelIcon from '@mui/icons-material/Cancel';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import "../../assets/search.css";
 
 const SearchBar = () => {
   const [input, setInput] = useState("")
   const [results, setResults] = useState([])
-  const [timer, setTimer] = useState(null)
   const navigate = useNavigate()
+  const [allStocks, setAllStocks] = useState([{displaySymbol: ""}])
 
-  const fetchData = (value) => {
-    axios.get(`https://finnhub.io/api/v1/search?q=${value}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-    .then(function(response){
-      const json = response.data.result;
-      const r = json.filter((x) => {
-        return  (
-          !x.displaySymbol.toLowerCase().includes('.') && !x.displaySymbol.toLowerCase().includes('/') && !x.displaySymbol.toLowerCase().includes('_') && !x.displaySymbol.toLowerCase().includes('^')
-        )
+  const handleChange = (e) => {
+    setInput(e.target.value)
+    if(e.target.value.length > 0 && allStocks.length > 0){
+      const result = allStocks.filter((stock) => {
+        return stock.displaySymbol.includes(e.target.value.toUpperCase());
       })
-      setResults(r)
-    })
-  } 
-
-  const handleChange = (value) => {
-    setInput(value)
-    clearTimeout(timer)
-    const newTimer = setTimeout(() => {
-      fetchData(value);
-    }, 500)
-    setTimer(newTimer)
+      setResults(result)
+    } else {
+      setResults([])
+    }
   }
 
+  const clearInput = () => {
+    setInput("");
+  }
+
+  useEffect(() => {
+    axios.get(`https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    .then(function(response){
+      setAllStocks(response.data.filter((stock) => {return stock.type === "Common Stock"}))
+    })
+  }, [])
 
   return (
     <div className="search">
       <div className="input-container">
         <input 
           type="text" 
-          onChange={(e) => handleChange(e.target.value)} 
+          value={input}
+          onChange={handleChange} 
           placeholder="Search" 
         />
         
-        <div class="search-icon">
-          <SearchIcon />
+        <div className="search-icon">
+          {input.length > 0 ? <ClearIcon onClick={clearInput}/> : <SearchIcon />}
         </div>
+
       </div>
 
       <div className="results">
@@ -59,7 +61,7 @@ const SearchBar = () => {
                 navigate(`/stock/${stock.displaySymbol}`)
               }}
               >
-                <h4 style={{"font-weight": "bold"}}>{stock.displaySymbol}</h4>
+                <h4 style={{"fontWeight": "bold"}}>{stock.displaySymbol}</h4>
                 <h6>{stock.description}</h6>
               </div>
           );

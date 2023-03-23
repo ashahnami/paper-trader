@@ -82,7 +82,6 @@ const Stock = () => {
 
         <div className="stock-buy">
 
-          {orderType !== "" ? 
 
           <form onSubmit={handleSubmit}>
 
@@ -91,44 +90,47 @@ const Stock = () => {
                 <input type="button" value="Sell" className="sell-button" name="orderType" onClick={(e) => setOrderType(e.target.value)}/>
             </div>
 
-            <input
-              type="text"
-              placeholder="Enter ticker"
-              onChange={(e) => setOrder(previousState => {
-                return { ...previousState, ticker: e.target.value}
-              })}
-              required
-            />
-
-            <input
-                type="number"
-                placeholder="Enter quantity"
-                min="1"
+            {orderType !== "" ? 
+            <>
+              <input
+                type="text"
+                placeholder="Enter ticker"
                 onChange={(e) => setOrder(previousState => {
-                    return { ...previousState, quantity: e.target.value}
+                  return { ...previousState, ticker: e.target.value}
                 })}
                 required
-            />
+              />
 
-            <div className="price-type">
-              <Select className="react-select-container" classNamePrefix="react-select" options={priceTypeOptions} onChange={(selectedOption) => setPriceType(selectedOption.value)} />
-            </div>
-
-            {priceType === "limit" ? 
               <input
                   type="number"
-                  placeholder="Enter price"
+                  placeholder="Enter quantity"
+                  min="1"
                   onChange={(e) => setOrder(previousState => {
-                      return { ...previousState, price: e.target.value}
+                      return { ...previousState, quantity: e.target.value}
                   })}
                   required
               />
-            : null }
 
-            <input type="submit" value={orderType} style={{"backgroundColor": orderType==="Buy" ? "green" : "red"}} />
+              <div className="price-type">
+                <Select className="react-select-container" classNamePrefix="react-select" options={priceTypeOptions} onChange={(selectedOption) => setPriceType(selectedOption.value)} />
+              </div>
+
+              {priceType === "limit" ? 
+                <input
+                    type="number"
+                    placeholder="Enter price"
+                    onChange={(e) => setOrder(previousState => {
+                        return { ...previousState, price: e.target.value}
+                    })}
+                    required
+                />
+              : null }
+
+              <input type="submit" value={orderType} style={{"backgroundColor": orderType==="Buy" ? "green" : "red"}} />
+            </>
+            : null }
           </form>
 
-          : null }
 
         </div>
 
