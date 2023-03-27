@@ -71,98 +71,119 @@ const Stock = () => {
   return (
     <div className="stock">
       <Navbar />
-      <div className="grid-container">
-        <div className="stock-header">
-          <h3>{ticker}</h3>
-          <h2>${price}</h2>
-          <h6>{(details.change<0 ? "" : "+" ) + details.change} ({(parseFloat(stockDetails["10. change percent"]).toFixed(2) < 0 ? "" : "+") + parseFloat(stockDetails["10. change percent"]).toFixed(2)}%)</h6>
-        </div>
 
-        <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
+      <div className="stock-header">
+        <h3>{ticker}</h3>
+        <h2>${price}</h2>
+        <h6>{(details.change<0 ? "" : "+" ) + details.change} ({(parseFloat(stockDetails["10. change percent"]).toFixed(2) < 0 ? "" : "+") + parseFloat(stockDetails["10. change percent"]).toFixed(2)}%)</h6>
+      </div>
 
-        <div className="stock-buy">
+      <div className="stock-container">
+        <div className="col1">
 
+          <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
 
-          <form onSubmit={handleSubmit}>
-
-            <div className="order-type">
-                <input type="button" value="Buy" className="buy-button" name="orderType" onClick={(e) => setOrderType(e.target.value)}/>
-                <input type="button" value="Sell" className="sell-button" name="orderType" onClick={(e) => setOrderType(e.target.value)}/>
-            </div>
-
-            {orderType !== "" ? 
-            <>
-              <input
-                type="text"
-                placeholder="Enter ticker"
-                onChange={(e) => setOrder(previousState => {
-                  return { ...previousState, ticker: e.target.value}
-                })}
-                required
-              />
-
-              <input
-                  type="number"
-                  placeholder="Enter quantity"
-                  min="1"
-                  onChange={(e) => setOrder(previousState => {
-                      return { ...previousState, quantity: e.target.value}
-                  })}
-                  required
-              />
-
-              <div className="price-type">
-                <Select className="react-select-container" classNamePrefix="react-select" options={priceTypeOptions} onChange={(selectedOption) => setPriceType(selectedOption.value)} />
+          <div className="stock-details">
+            <div className="stock-details-col">
+              <div className="row">
+                <div>Open</div>
+                <div>{parseFloat(stockDetails["02. open"]).toFixed(2)}</div>
               </div>
 
-              {priceType === "limit" ? 
-                <input
-                    type="number"
-                    placeholder="Enter price"
-                    onChange={(e) => setOrder(previousState => {
-                        return { ...previousState, price: e.target.value}
-                    })}
-                    required
-                />
-              : null }
+              <div className="row">
+                <div>Previous close</div>
+                <div>{parseFloat(stockDetails["08. previous close"]).toFixed(2)}</div>
+              </div>
+            </div>
 
-              <input type="submit" value={orderType} style={{"backgroundColor": orderType==="Buy" ? "green" : "red"}} />
-            </>
-            : null }
-          </form>
+            <div className="stock-details-col">
+              <div className="row">
+                <div>High</div>
+                <div>{parseFloat(stockDetails["03. high"]).toFixed(2)}</div>
+              </div>
+              <div className="row">
+                <div>Low</div>
+                <div>{parseFloat(stockDetails["04. low"]).toFixed(2)}</div>
+              </div>
+            </div>
 
-
+            <div className="stock-details-col">
+              <div className="row">
+                <div>Change percent</div>
+                <div>{parseFloat(stockDetails["10. change percent"]).toFixed(2)}%</div>
+              </div>
+              <div className="row">
+                <div>Volume</div>
+                <div>{parseInt(stockDetails["06. volume"]).toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="stock-details">
-          <div className="stock-details-row">
-            <h5>Open</h5>
-            <h3>{parseFloat(stockDetails["02. open"]).toFixed(2)}</h3>
-          </div>
+      <div className="col2">
+          <div className="stock-buy">
+            <form onSubmit={handleSubmit}>
+              <div className="order-type">
+                  <input type="button" value="Buy" className="buy-button" name="orderType" onClick={(e) => setOrderType(e.target.value)}/>
+                  <input type="button" value="Sell" className="sell-button" name="orderType" onClick={(e) => setOrderType(e.target.value)}/>
+              </div>
 
-          <div className="stock-details-row">
-            <h5>High</h5>
-            <h3>{parseFloat(stockDetails["03. high"]).toFixed(2)}</h3>
-          </div>
+              {orderType !== "" ? 
+              <>
+                <label>
+                  SYMBOL
+                  <input
+                    type="text"
+                    placeholder="Enter ticker"
+                    onChange={(e) => setOrder(previousState => {
+                      return { ...previousState, ticker: e.target.value}
+                    })}
+                    required
+                  />
+                </label>
 
-          <div className="stock-details-row">
-            <h5>Low</h5>
-            <h3>{parseFloat(stockDetails["04. low"]).toFixed(2)}</h3>
-          </div>
+                <label>
+                  QUANTITY
+                  <input
+                      type="number"
+                      placeholder="Enter quantity"
+                      min="1"
+                      onChange={(e) => setOrder(previousState => {
+                          return { ...previousState, quantity: e.target.value}
+                      })}
+                      required
+                  />
+                </label>
 
-          <div className="stock-details-row">
-            <h5>Volume</h5>
-            <h3>{parseInt(stockDetails["06. volume"]).toLocaleString()}</h3>
-          </div>
+                <label>ORDER TYPE
+                  <div className="price-type">
+                    <Select 
+                      className="react-select-container" 
+                      classNamePrefix="react-select"
+                      options={priceTypeOptions} 
+                      onChange={(selectedOption) => setPriceType(selectedOption.value)}
+                    />
+                  </div>
+                </label>
 
-          <div className="stock-details-row">
-            <h5>Previous close</h5>
-            <h3>{parseFloat(stockDetails["08. previous close"]).toFixed(2)}</h3>
-          </div>
+                {priceType === "limit" ? 
+                  <label>
+                    LIMIT PRICE
+                    <input
+                      type="number"
+                      placeholder="Enter price"
+                      onChange={(e) => setOrder(previousState => {
+                          return { ...previousState, price: e.target.value}
+                      })}
+                      required
+                    />
+                  </label>
+                : null }
 
-          <div className="stock-details-row">
-            <h5>Change percent</h5>
-            <h3>{parseFloat(stockDetails["10. change percent"]).toFixed(2)}%</h3>
+                <input type="submit" value={orderType} style={{"backgroundColor": orderType==="Buy" ? "green" : "red"}} />
+              </>
+              : null }
+            </form>
           </div>
         </div>
       </div>

@@ -6,12 +6,11 @@
 }
 
 .order-type input[type=button] {
-    width: 80px;
-    height: 40px;
     border-radius: 3px;
     border: none;
     cursor: pointer;
     color: #fff;
+    padding: 8px 16px;
 }
 
 .order-type .buy-button {
@@ -24,17 +23,23 @@
 
 .price-type .react-select-container {
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     border: solid 1px #c0c0c0;
     border-radius: 3px;
+    font-size: 1rem;
 }
 
 .price-type .react-select__control {
     border: none;
 }
 
+.react-select__control > input {
+    color: black;
+}
+
 .stock-buy form label {
-    display: block;
+    font-size: 0.85rem;
+    color: #c0c0c0;
 }
 
 .stock-buy form input {
@@ -45,7 +50,7 @@
     border: solid 1px #c0c0c0;
     color: #808080;
     font-size: 1rem;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
 .stock-buy form input:focus {
@@ -68,56 +73,101 @@
 
 .stock-details {
     display: flex;
-    flex-direction: column;
-    padding: 5px;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 0.8rem;
 }
 
-.stock-details-row {
+.stock-details-col {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    border-right: solid 1px #c0c0c0;
+    padding-inline-start: 16px;
+    padding-inline-end: 16px;
+}
+
+.stock-details .stock-details-col:first-child {
+    padding-inline-start: 0;
+}
+
+.stock-details .stock-details-col:last-child {
+    padding-inline-end: 0;
+    border: none;
+}
+
+.stock-details-col .row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: baseline;
 }
 
-.stock-details-row h5 {
-    color: grey;
-    font-weight: 400;
+.stock-details-col .row div:first-child {
+    flex: 1 1 auto;
 }
 
-.grid-container {
-    display: grid;
-    gap: 0.5rem;
-    width: min(80%, 80rem);
-    height: min(80%, 50rem);
+.stock-details-col .row div:last-child {
+    flex: 0 0 auto;
+    font-weight: bold;
+}
+
+.stock-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 1278px;
+    width: 100%;
     margin: auto;
-    grid-template-columns: repeat(4, 1fr); 
-    grid-template-areas: 
-        "header header header header"
-        "chart chart chart buy"
-        "chart chart chart details";
-    grid-template-rows:  100px 370px 300px;
 }
 
-.grid-item {
-    background-color: #bcb8b1;
-    border-radius: 3px;
-    padding: 5px;
+.stock-container .col1 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1 1 0px;
 }
 
-.stock-header {
-    grid-area: header;
-}
-
-.stock-chart {
-    grid-area: chart;
-    background-color: white;
+.stock-container .col2 {
+    flex: 0 0 100%;
+    flex-basis: 290px;
 }
 
 .stock-details {
-    grid-area: details;
     width: 100%;
+    padding: 10px;
+}
+
+.stock-chart {
+    height: 500px;
+    min-height: 250px;
+    padding: 10px;
+}
+
+.stock-header {
+    max-width: 1278px;
+    width: 100%;
+    padding: 10px;
+}
+
+.stock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .stock-buy {
-    grid-area: buy;
+    padding: 10px;
+    height: 400px;
+}
+
+.stock-buy form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 768px) {
+    .stock-container {
+        flex-direction: column;
+    }
 }

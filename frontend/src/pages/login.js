@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import httpClient from "../httpClient";
@@ -32,39 +32,44 @@ const LoginPage = () => {
       if(error.response.status === 401){
         setErrorMessage("Incorrect username or password");
       }
-    });
+    })
+  }
 
-  };
+  useEffect(() => {
+    document.title = "Login";
+  })
 
   return (
     <div className="login">
-      <form onSubmit={handleSubmit}>
+      <div className="login-container">
+        <form onSubmit={handleSubmit}>
 
-        <h3>Log in</h3>
-        <label>Username
-            <input 
-              type="text"
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-        </label>
+          <h3>Login</h3>
+          <label>Username
+              <input 
+                type="text"
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+          </label>
 
-        <label>Password
-            <input 
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-        </label>
+          <label>Password
+              <input 
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+          </label>
 
-        {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
+          {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
 
-        <button type="submit">Log In</button>
-      
-        <p className="pLink">Don't have an account? <Link to="/register" className="link">Sign up</Link></p>
-      </form>
+          <button type="submit">Login</button>
+        
+          <p className="pLink">Don't have an account? <Link to="/register" className="link">Sign up</Link></p>
+        </form>
+      </div>
     </div>
   )
 };

@@ -1,5 +1,4 @@
 .login, .register {
-    width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -7,8 +6,22 @@
     background-color: #f1f1f1;
 }
 
+.login-container {
+    width: 500px;
+    height: 400px;
+}
+
+.register-container {
+    width: 500px;
+    height: 500px;
+}
+
 .login form, .register form {
-    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
     padding: 20px 30px;
     box-shadow: 0 0 40px rgba(5,5,5,0.03); 
@@ -24,9 +37,9 @@
 
 .login h3, .register h3 {
     text-align: center;
-    font-size: 32px;
-    font-weight: 800;
-    color: black;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #4056a1;
 }
 
 .login label, .register label {
@@ -43,10 +56,8 @@
     height: 50px;
     width: 100%;
     border-radius: 3px;
-    padding: 0 10px;
-    margin-top: 6px;
-    font-size: 16px;
-    border: none;
+    padding: 10px 10px;
+    font-size: 1.1rem;
     border: solid 1px #c0c0c0;
 }
 
@@ -57,7 +68,8 @@
 
 .login button, .register button {
     margin-top: 50px;
-    background-color: #DBFCFF;
+    background-color: #4056a1;
+    color: white;
     cursor: pointer;
     width: 100%;
     border-radius: 3px;
@@ -67,7 +79,7 @@
 }
 
 .login button:hover, .register button:hover {
-    background-color: #d3d3d3;
+    background-color: #31437d;
 }
 
 .pLink {
@@ -78,7 +90,7 @@
 }
 
 .login .link, .register .link {
-    color: blue;
+    color: #4056a1;
     text-decoration: none;
 }
 

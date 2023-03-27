@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import httpClient from "../httpClient";
@@ -28,49 +28,54 @@ const RegisterPage = () => {
             if(error.response.status === 409){
                 setErrorMessage("Username/email already exists");
             }
-        });
+        })
+    }
 
-    };
+    useEffect(() => {
+        document.title = "Register"
+    })
 
   return (
     <div className="register">
-        <form onSubmit={handleSubmit}>
+        <div className="register-container">
+            <form onSubmit={handleSubmit}>
 
-            <h3>Sign up</h3>
-            <label>Username
-                <input 
-                    type="text"
-                    placeholder="Username"
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-            </label>
+                <h3>Sign up</h3>
+                <label>Username
+                    <input 
+                        type="text"
+                        placeholder="Username"
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </label>
 
-            <label>Email
-                <input 
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-            </label>
+                <label>Email
+                    <input 
+                        type="email"
+                        placeholder="Email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </label>
 
-            <label>Password
-                <input 
-                    type="password"
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-            </label>
+                <label>Password
+                    <input 
+                        type="password"
+                        placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </label>
 
-            {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
+                {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
 
-            <button type="submit">Sign up</button>
+                <button type="submit">Sign up</button>
 
-            <p className="pLink">Already have an account? <Link to="/login" className="link">Sign in</Link></p>
+                <p className="pLink">Already have an account? <Link to="/login" className="link">Sign in</Link></p>
 
-        </form>
+            </form>
+        </div>
     </div>
   )
 }
