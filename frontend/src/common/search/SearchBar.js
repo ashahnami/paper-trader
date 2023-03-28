@@ -9,6 +9,7 @@ import "../../assets/search.css";
 const SearchBar = () => {
   const [input, setInput] = useState("")
   const [results, setResults] = useState([])
+  const [showResults, setShowResults] = useState(true)
   const navigate = useNavigate()
   const [allStocks, setAllStocks] = useState([{displaySymbol: ""}])
 
@@ -26,6 +27,7 @@ const SearchBar = () => {
 
   const clearInput = () => {
     setInput("");
+    setResults([]);
   }
 
   useEffect(() => {
@@ -41,8 +43,10 @@ const SearchBar = () => {
         <input 
           type="text" 
           value={input}
+          onFocus={() => setShowResults(true)}
           onChange={handleChange} 
-          placeholder="Search" 
+          onBlur={() => setShowResults(false)}
+          placeholder="Search for stocks" 
         />
         
         <div className="search-icon">
@@ -52,7 +56,7 @@ const SearchBar = () => {
       </div>
 
       <div className="results">
-        {results.slice(0, 5).map((stock, i) => {
+        {showResults ? results.slice(0, 5).map((stock, i) => {
           return (
             <div 
               className="result"
@@ -65,7 +69,7 @@ const SearchBar = () => {
                 <h6>{stock.description}</h6>
               </div>
           );
-        })}
+        }) : null}
       </div>
     </div>
   );

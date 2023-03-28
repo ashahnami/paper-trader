@@ -3,23 +3,21 @@
 }
 
 .search .input-container {
+    border: solid 1px #f0f0f0;
+    border-radius: 3px;
     display: flex;
-    justify-content: right;
-    background-color: #ededed;
-    padding: 5px;
     align-items: center;
-    height: 3em;
     width: 500px;
+    padding: 2px 2px;
 }
 
 .search input {
-    border: none;
     font-size: 1rem;
-    padding: 20px 6px;
+    padding: 5px 6px;
     width: 100%;
-    height: 30px;
+    height: 100%;
     border-radius: 3px;
-    background-color: #ededed;
+    border: none;
 }
 
 .search input {
@@ -32,19 +30,24 @@
     position: absolute;
     width: 500px;
     z-index: 10;
+    border: solid 1px #f0f0f0;
+}
+
+.search .results:empty {
+    border: none;
 }
 
 .search .results .result {
     padding: 5px;
     font-size: 1rem;
-    background-color: #ededed;
+    background-color: #fff;
     border: none;
     text-align: left;
     transition: 0.3s;
 }
 
 .search .result:hover {
-    background-color: #d3d3d3;
+    background-color: #f0f0f0;
     cursor: pointer;
 }
 
