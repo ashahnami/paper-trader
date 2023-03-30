@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import CloseIcon from '@mui/icons-material/Close';
 import Navbar from "../common/navbar/index";
@@ -13,6 +14,7 @@ const Portfolio = () => {
     const [currValues, setCurrValues] = useState([])
     const [isFinished, setIsFinished] = useState(false);
 
+    const navigate = useNavigate();
 
     const updatePrices = () => {
         const requests = positions.map(position =>
@@ -63,16 +65,20 @@ const Portfolio = () => {
                             <th>SYMBOL</th>       
                             <th>QUANTITY</th>
                             <th>CHANGE</th>
+                            <th>AVG PRICE</th>
                             <th>CURRENT VALUE</th>
+                            <th>UNREALISED P&L</th>
                         </tr>
                     </thead>
                     <tbody>
                         {positions.map((position, i) => (
-                            <tr key={i}>
+                            <tr key={i} onClick={() => navigate(`/stock/${position.stockSymbol}`)}>
                                 <td style={{"fontWeight": "bold"}}>{position.stockSymbol}</td>
                                 <td>{position.shares}</td>
                                 <td>{changes[i]}%</td>
-                                <td>${currValues[i]}</td>
+                                <td>{position.averagePrice.toFixed(2)}</td>
+                                <td>{currValues[i]}</td>
+                                <td>{(position.averagePrice*position.shares-currValues[i]).toFixed(2)}</td>
                                 <td className="crossIcon" onClick={() => closePosition(position.stockSymbol)}><CloseIcon /></td>
                             </tr>
                         ))}

@@ -14,6 +14,7 @@ const SearchBar = () => {
   const [allStocks, setAllStocks] = useState([{displaySymbol: ""}])
 
   const handleChange = (e) => {
+    setShowResults(true)
     setInput(e.target.value)
     if(e.target.value.length > 0 && allStocks.length > 0){
       const result = allStocks.filter((stock) => {
@@ -35,6 +36,19 @@ const SearchBar = () => {
     .then(function(response){
       setAllStocks(response.data.filter((stock) => {return stock.type === "Common Stock"}))
     })
+
+    const handleClickOutside = (event) => {
+      const searchContainer = document.querySelector(".search");
+      if (searchContainer && !searchContainer.contains(event.target)) {
+        setShowResults(false);
+      }
+    }
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
   }, [])
 
   return (
@@ -43,16 +57,14 @@ const SearchBar = () => {
         <input 
           type="text" 
           value={input}
-          onFocus={() => setShowResults(true)}
           onChange={handleChange} 
-          onBlur={() => setShowResults(false)}
+          onFocus={() => setShowResults(true)}
           placeholder="Search for stocks" 
         />
         
         <div className="search-icon">
           {input.length > 0 ? <ClearIcon onClick={clearInput}/> : <SearchIcon />}
         </div>
-
       </div>
 
       <div className="results">
