@@ -74,6 +74,7 @@ const SearchBar = () => {
               className="result"
               key={i}
               onClick={(e) => {
+                clearInput()
                 navigate(`/stock/${stock.displaySymbol}`)
               }}
               >

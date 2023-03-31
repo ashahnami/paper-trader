@@ -31,6 +31,31 @@
     font-size: 1rem;
 }
 
+.navbar .account .icon {
+    cursor: pointer;
+}
+
+.navbar .account .dropdown {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+}
+
+.navbar .account .dropdown div {
+    background-color: white;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    width: 90px;
+    border: solid 1px #f0f0f0;
+    transition: 0.3 ease;
+}
+
+.navbar .account .dropdown div:hover {
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+
 @media only screen and (max-width: 768px) {
     .navbar-container {
         flex-direction: column;
