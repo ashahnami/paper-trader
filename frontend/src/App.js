@@ -5,6 +5,7 @@ import Dashboard from './pages/dashboard';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
 import Stock from './pages/stock';
+import NotFound from './pages/404';
 import PrivateRoutes from './utils/PrivateRoutes';
 import './assets/base.css'
 
@@ -18,6 +19,7 @@ function App() {
         </Route>
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

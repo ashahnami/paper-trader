@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Select from 'react-select';
 
 import httpClient from "../httpClient";
 import Navbar from '../common/navbar/index';
 import StockChart from '../components/chart/index.js';
 import { useGetStockDetailsQuery } from '../api/stockApi';
-import { useGetCurrentUserQuery } from '../api/userApi';
+// import { useGetCurrentUserQuery } from '../api/userApi';
 
 import '../assets/stock.css';
 
@@ -18,7 +17,20 @@ const Stock = () => {
   const [details, setDetails] = useState({ change: 0, prevClose: 0 });
   const [order, setOrder] = useState({ price: 50, quantity: 1});
   const [orderType, setOrderType] = useState("Buy");
-  const { data: user, refetch } = useGetCurrentUserQuery();
+  const [isLoading, setIsLoading] = useState(true)
+  const [balance, setBalance] = useState(0.00)
+
+  const fetchBalance = () => {
+    httpClient.get("http://localhost:5000/@me")
+    .then(function(response){
+      setBalance(response.data.balance)
+      setIsLoading(false)
+    })
+    .catch(function(error){
+      console.log(error)
+      setIsLoading(false)
+    })
+  }
   
   useEffect(() => {
     const fetchQuote = async () => {
@@ -38,6 +50,7 @@ const Stock = () => {
     }, 2000)
     
     fetchQuote()
+    fetchBalance()
     
     return () => {clearInterval(interval)}
   }, [ticker])
@@ -58,6 +71,7 @@ const Stock = () => {
       })
       .then(function(response){
           console.log(response);
+          fetchBalance()
       })
     })
   }
@@ -143,9 +157,11 @@ const Stock = () => {
                   <div>${(price * order.quantity).toFixed(2)}</div>
                 </div>
 
-                <input type="submit" value={orderType} onClick={refetch}/>
+                <input type="submit" value={orderType} />
 
-                <div className="balance">${user.balance.toFixed(2)} available</div>
+                { isLoading ? "Loading balance" :
+                  <div className="balance">${balance.toFixed(2)} available</div>
+                }
             </form>
           </div>
         </div>

@@ -1,0 +1,41 @@
+.notfound {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.notfound-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    margin-top: 200px;
+    gap: 10px;
+    color: #606060;
+}
+
+.notfound-container h1 {
+    font-size: 10rem;
+}
+
+.notfound-container h4 {
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+
+.notfound-container p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.notfound-container .link:link {
+    font-weight: 800;;
+    color: #31437d;
+    text-decoration: none;
+}
+
+.notfound-container .link:visited {
+    color: #31437d;
+}

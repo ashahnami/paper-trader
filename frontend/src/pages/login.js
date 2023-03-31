@@ -37,6 +37,14 @@ const LoginPage = () => {
 
   useEffect(() => {
     document.title = "Login";
+
+    httpClient.get("http://localhost:5000/@me")
+    .then(function(response){
+      navigate("/")
+    })
+    .catch(function(error){
+      console.log(error)
+    })
   })
 
   return (

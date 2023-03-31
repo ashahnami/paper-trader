@@ -1,13 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import httpClient from '../httpClient'
 
 const PrivateRoutes = () => {
+    
+    const [isLoading, setIsLoading] = useState(true) 
+    const [loggedIn, setLoggedIn] = useState() 
 
-    const isLoggedIn = useSelector((state) => state.auth.userId)
+    httpClient.get("http://localhost:5000/@me")
+    .then(function(response){
+        setLoggedIn(true)
+        setIsLoading(false)
+    })
+    .catch(function(error){
+        setLoggedIn(false)
+        setIsLoading(false)
+    })
+
+    if(isLoading){
+        return <div></div>
+    }
 
     return (
-        isLoggedIn ? <Outlet /> : <Navigate to="/login" />
+        loggedIn ? <Outlet /> : <Navigate to="/login" />
     )
 }
 

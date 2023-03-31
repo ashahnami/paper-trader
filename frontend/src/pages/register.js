@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import httpClient from "../httpClient";
 import '../assets/login.css';
 
 const RegisterPage = () => {
+
+    const navigate = useNavigate();
 
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -33,6 +35,14 @@ const RegisterPage = () => {
 
     useEffect(() => {
         document.title = "Register"
+
+        httpClient.get("http://localhost:5000/@me")
+        .then(function(response){
+            navigate("/")
+        })
+        .catch(function(error){
+            console.log(error)
+        })
     })
 
   return (
