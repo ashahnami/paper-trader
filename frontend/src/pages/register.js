@@ -51,32 +51,26 @@ const RegisterPage = () => {
             <form onSubmit={handleSubmit}>
 
                 <h3>Sign up</h3>
-                <label>Username
-                    <input 
-                        type="text"
-                        placeholder="Username"
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </label>
+                <input 
+                    type="text"
+                    placeholder="Username"
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
 
-                <label>Email
-                    <input 
-                        type="email"
-                        placeholder="Email"
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </label>
+                <input 
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
-                <label>Password
-                    <input 
-                        type="password"
-                        placeholder="Password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </label>
+                <input 
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
 
                 {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
 
