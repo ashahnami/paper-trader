@@ -38,14 +38,16 @@ const LoginPage = () => {
   useEffect(() => {
     document.title = "Login";
 
-    httpClient.get("http://localhost:5000/@me")
+    httpClient.get("http://localhost:5000/checklogin")
     .then(function(response){
-      navigate("/")
+      if(response.data["logged_in"]){
+        navigate("/")
+      }
     })
     .catch(function(error){
       console.log(error)
     })
-  })
+  }, [])
 
   return (
     <div className="login">

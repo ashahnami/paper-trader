@@ -41,7 +41,7 @@ const Portfolio = () => {
     };
 
     useEffect(() => {
-        document.title = "Paper Trading Web Application"
+        document.title = "Paper Trading Application"
         if(positions && !isFetching) {
             updatePrices()
         }

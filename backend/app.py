@@ -15,6 +15,14 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+@app.route("/checklogin")
+def is_logged_in():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"logged_in": False})
+    return jsonify({"logged_in": True})
     
 @app.route("/@me")
 def get_user():

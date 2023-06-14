@@ -7,14 +7,14 @@ const PrivateRoutes = () => {
     const [isLoading, setIsLoading] = useState(true) 
     const [loggedIn, setLoggedIn] = useState() 
 
-    httpClient.get("http://localhost:5000/@me")
+    httpClient.get("http://localhost:5000/checklogin")
     .then(function(response){
-        setLoggedIn(true)
+        setLoggedIn(response.data["logged_in"])
         setIsLoading(false)
     })
     .catch(function(error){
-        setLoggedIn(false)
-        setIsLoading(false)
+        console.error(error);
+        setIsLoading(false);
     })
 
     if(isLoading){
