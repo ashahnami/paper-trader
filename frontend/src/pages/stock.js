@@ -17,8 +17,9 @@ const Stock = () => {
   const [details, setDetails] = useState({ change: 0, prevClose: 0 });
   const [order, setOrder] = useState({ price: 50, quantity: 1});
   const [orderType, setOrderType] = useState("Buy");
-  const [isLoading, setIsLoading] = useState(true)
-  const [balance, setBalance] = useState(0.00)
+  const [isLoading, setIsLoading] = useState(true);
+  const [balance, setBalance] = useState(0.00);
+  const [description, setDescription] = useState("");
 
   const fetchBalance = () => {
     httpClient.get("http://localhost:5000/@me")
@@ -31,15 +32,23 @@ const Stock = () => {
       setIsLoading(false)
     })
   }
+
+  const fetchQuote = async () => {
+    await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    .then(function(response){
+      setPrice(response.data.c)
+      setDetails({ ...details, change: response.data.d.toFixed(2), prevClose: response.data.pc})
+    })
+  }
+
+  const fetchDescription = async () => {
+    await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${process.env.API_KEY}`)
+      .then(function(response){
+        setDescription(response.data.Description);
+      })
+  }
   
   useEffect(() => {
-    const fetchQuote = async () => {
-      await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-      .then(function(response){
-        setPrice(response.data.c)
-        setDetails({ ...details, change: response.data.d.toFixed(2), prevClose: response.data.pc})
-      })
-    }
     
     let interval = setInterval(async () => {
       await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
@@ -49,8 +58,9 @@ const Stock = () => {
       })
     }, 2000)
     
-    fetchQuote()
     fetchBalance()
+    fetchQuote()
+    fetchDescription()
     
     return () => {clearInterval(interval)}
   }, [ticker])
@@ -126,6 +136,12 @@ const Stock = () => {
               </div>
             </div>
           </div>
+
+          <div className="stock-description">
+            <h2>About {ticker}</h2>
+            {description}
+          </div>
+
         </div>
 
       <div className="col2">
