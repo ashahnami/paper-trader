@@ -24,6 +24,10 @@
     outline: none;
 }
 
+.search input::placeholder {
+    color: #999999;
+}
+
 .search .results {
     display: flex;
     flex-direction: column;

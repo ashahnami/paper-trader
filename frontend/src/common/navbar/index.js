@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ShowChartIcon from '@mui/icons-material/ShowChart';
 
 import httpClient from '../../httpClient'
 import SearchBar from '../search/SearchBar';
@@ -22,7 +23,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar-container">
-        <div></div>
+        <ShowChartIcon></ShowChartIcon>
         <SearchBar />
         <div className="links">
           <Link to="/" className="navbar-link">Portfolio</Link>

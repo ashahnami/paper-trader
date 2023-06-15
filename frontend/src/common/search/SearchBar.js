@@ -59,11 +59,11 @@ const SearchBar = () => {
           value={input}
           onChange={handleChange} 
           onFocus={() => setShowResults(true)}
-          placeholder="Search for stocks" 
+          placeholder="Search" 
         />
         
         <div className="search-icon">
-          {input.length > 0 ? <ClearIcon onClick={clearInput}/> : <SearchIcon />}
+          {input.length > 0 ? <ClearIcon onClick={clearInput} style={{color:"999999"}}/> : <SearchIcon style={{color:"999999"}}/>}
         </div>
       </div>
 
