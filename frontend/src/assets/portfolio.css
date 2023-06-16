@@ -7,6 +7,28 @@
     padding: 5px;
 }
 
+.portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1280px;
+    width: 100%;
+    height: 100px;
+}
+
+.portfolio-header .balance {
+    display: flex;
+    gap: 50px;
+}
+
+.portfolio-header h4 {
+    font-weight: 400;
+    font-size: 0.8rem;
+}
+
+.portfolio-header .balance .price {
+    font-size: 1.6rem;
+}
+
 .portfolio-table {
     max-width: 1280px;
     width: 100%;
@@ -45,9 +67,9 @@
 
 .crossIcon:hover {
     cursor: pointer;
+    color: #4056a1;
 }
 
 .portfolio-table tbody tr:hover {
     background-color: #fafcfe;
-    cursor: pointer;
 }

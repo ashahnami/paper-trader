@@ -200,6 +200,18 @@ def get_positions():
 
     return positions
 
+@app.route("/balance", methods=["GET"])
+def get_balance():
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return jsonify({"error": "Unauthorised"})
+    
+    return jsonify({
+        "balance": user.balance
+    })
+
 if __name__ == "__main__":
     app.run(debug=True)
     
