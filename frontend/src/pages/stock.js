@@ -75,14 +75,14 @@ const Stock = () => {
     await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
       .then(function(response){
         httpClient.post('http://localhost:5000/buy', {
-        ticker: ticker,
-        price: response.data.c,
-        quantity: order.quantity 
-      })
-      .then(function(response){
-          console.log(response);
-          fetchBalance()
-      })
+          ticker: ticker,
+          price: response.data.c,
+          quantity: order.quantity 
+        })
+        .then(function(response){
+            console.log(response);
+            fetchBalance()
+        })
     })
   }
 

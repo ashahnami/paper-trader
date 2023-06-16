@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_session import Session
 from models import db, User, Transaction, Stock, PortfolioItem
 from config import AppConfig
+import yfinance as yf
 
 app = Flask(__name__)
 app.config.from_object(AppConfig)
@@ -147,6 +148,10 @@ def close_position(ticker):
     position = PortfolioItem.query.filter_by(user_id=user_id, stockId=stock.id).first()
     if position is None:
         return jsonify({"error": "User does not hold this stock"})
+
+    stock = yf.Ticker(stock.ticker)
+    price = position.quantity * stock.info['currentPrice']
+    user.balance += price
 
     db.session.delete(position)
     db.session.commit()
