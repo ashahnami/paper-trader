@@ -5,8 +5,6 @@ import axios from 'axios';
 import httpClient from "../httpClient";
 import Navbar from '../common/navbar/index';
 import StockChart from '../components/chart/index.js';
-import { useGetStockDetailsQuery } from '../api/stockApi';
-// import { useGetCurrentUserQuery } from '../api/userApi';
 
 import '../assets/stock.css';
 
@@ -14,60 +12,31 @@ const Stock = () => {
   
   const { ticker } = useParams();
   const [price, setPrice] = useState(0);
-  const [details, setDetails] = useState({ change: 0, prevClose: 0 });
+  const [details, setDetails] = useState({});
   const [order, setOrder] = useState({ price: 50, quantity: 1});
   const [orderType, setOrderType] = useState("Buy");
-  const [isLoading, setIsLoading] = useState(true);
   const [balance, setBalance] = useState(0.00);
-  const [description, setDescription] = useState("");
 
-  const fetchBalance = () => {
-    httpClient.get("http://localhost:5000/@me")
-    .then(function(response){
-      setBalance(response.data.balance)
-      setIsLoading(false)
-    })
-    .catch(function(error){
-      console.log(error)
-      setIsLoading(false)
-    })
+  const fetchBalance = async () => {
+    const { data } = await httpClient.get("http://localhost:5000/balance");
+    setBalance(data.balance);
   }
 
   const fetchQuote = async () => {
-    await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-    .then(function(response){
-      setPrice(response.data.c)
-      setDetails({ ...details, change: response.data.d.toFixed(2), prevClose: response.data.pc})
-    })
-  }
-
-  const fetchDescription = async () => {
-    await axios.get(`https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=${process.env.API_KEY}`)
-      .then(function(response){
-        setDescription(response.data.Description);
-      })
+    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+    setPrice(data.c);
+    setDetails(data);
   }
   
   useEffect(() => {
     
-    let interval = setInterval(async () => {
-      await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-      .then(function(response){
-        setPrice(response.data.c.toFixed(2))
-        setDetails({ ...details, change: response.data.d.toFixed(2)})
-      })
-    }, 2000)
+    fetchQuote();
+    let interval = setInterval(async () => { fetchQuote() }, 5000)
     
     fetchBalance()
-    fetchQuote()
-    fetchDescription()
     
     return () => {clearInterval(interval)}
   }, [ticker])
-  
-  const { data, isFetching } = useGetStockDetailsQuery(ticker);
-  if(isFetching) return <div>Loading...</div>
-  const stockDetails = data["Global Quote"]
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,7 +62,7 @@ const Stock = () => {
       <div className="stock-header">
         <h3>{ticker}</h3>
         <div className="price">${price}</div>
-        <div className="change">{(details.change<0 ? "" : "+" ) + details.change} ({(parseFloat(stockDetails["10. change percent"]) < 0 ? "" : "+") + parseFloat(stockDetails["10. change percent"]).toFixed(2)}%) <span>Today</span></div>
+        <div className="change">{(details.d < 0 ? "" : "+" ) + details.d} ({(parseFloat(details.dp) < 0 ? "" : "+") + parseFloat(details.dp).toFixed(2)}%) <span>Today</span></div>
       </div>
 
       <div className="stock-container">
@@ -105,42 +74,38 @@ const Stock = () => {
             <div className="stock-details-col">
               <div className="row">
                 <div>Open</div>
-                <div>{parseFloat(stockDetails["02. open"]).toFixed(2)}</div>
+                <div>{parseFloat(details.o).toFixed(2)}</div>
               </div>
 
               <div className="row">
                 <div>Previous close</div>
-                <div>{parseFloat(stockDetails["08. previous close"]).toFixed(2)}</div>
+                <div>{parseFloat(details.pc).toFixed(2)}</div>
               </div>
             </div>
 
             <div className="stock-details-col">
               <div className="row">
                 <div>High</div>
-                <div>{parseFloat(stockDetails["03. high"]).toFixed(2)}</div>
+                <div>{parseFloat(details.h).toFixed(2)}</div>
               </div>
               <div className="row">
                 <div>Low</div>
-                <div>{parseFloat(stockDetails["04. low"]).toFixed(2)}</div>
+                <div>{parseFloat(details.l).toFixed(2)}</div>
               </div>
             </div>
 
             <div className="stock-details-col">
               <div className="row">
                 <div>Change percent</div>
-                <div>{parseFloat(stockDetails["10. change percent"]).toFixed(2)}%</div>
-              </div>
-              <div className="row">
-                <div>Volume</div>
-                <div>{parseInt(stockDetails["06. volume"]).toLocaleString()}</div>
+                <div>{parseFloat(details.dp).toFixed(2)}%</div>
               </div>
             </div>
           </div>
 
-          <div className="stock-description">
+          {/* <div className="stock-description">
             <h2>About {ticker}</h2>
             {description}
-          </div>
+          </div> */}
 
         </div>
 
@@ -175,9 +140,10 @@ const Stock = () => {
 
                 <input type="submit" value={orderType} />
 
-                { isLoading ? "Loading balance" :
+                {/* { isLoading ? "Loading balance" :
                   <div className="balance">${balance.toFixed(2)} available</div>
-                }
+                } */}
+                <div className="balance">${balance.toFixed(2)} available</div>
             </form>
           </div>
         </div>
