@@ -8,6 +8,9 @@ import StockChart from '../components/chart/index.js';
 
 import '../assets/stock.css';
 
+const negativeStyle = {color: 'red'};
+const positiveStyle = {color: 'green'};
+
 const Stock = () => {
   
   const { ticker } = useParams();
@@ -16,6 +19,8 @@ const Stock = () => {
   const [order, setOrder] = useState({ price: 50, quantity: 1});
   const [orderType, setOrderType] = useState("Buy");
   const [balance, setBalance] = useState(0.00);
+  const [positive, setPositive] = useState(true);
+  const [stockInfo, setStockInfo] = useState({});
 
   const fetchBalance = async () => {
     const { data } = await httpClient.get("http://localhost:5000/balance");
@@ -24,15 +29,25 @@ const Stock = () => {
 
   const fetchQuote = async () => {
     const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
-    setPrice(data.c);
+    setPrice(data.c.toFixed(2));
     setDetails(data);
+
+    if(data.d < 0){
+      setPositive(false);
+    }
+  }
+
+  const fetchStockInfo = async () => {
+    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+    setStockInfo(data);
   }
   
   useEffect(() => {
     
     fetchQuote();
-    let interval = setInterval(async () => { fetchQuote() }, 5000)
+    let interval = setInterval(async () => { fetchQuote() }, 4000)
     
+    fetchStockInfo();
     fetchBalance()
     
     return () => {clearInterval(interval)}
@@ -41,17 +56,17 @@ const Stock = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-      .then(function(response){
-        httpClient.post('http://localhost:5000/buy', {
-          ticker: ticker,
-          price: response.data.c,
-          quantity: order.quantity 
-        })
-        .then(function(response){
-            console.log(response);
-            fetchBalance()
-        })
+    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    const latestPrice = data.c
+
+    httpClient.post('http://localhost:5000/buy', {
+      ticker: ticker,
+      price: latestPrice,
+      quantity: order.quantity 
+    })
+    .then(function(response){
+        console.log(response);
+        fetchBalance()
     })
   }
 
@@ -60,9 +75,14 @@ const Stock = () => {
       <Navbar />
 
       <div className="stock-header">
-        <h3>{ticker}</h3>
+        <div className="info">
+          <h3>{ticker}</h3>
+          <div>{stockInfo.name.toUpperCase()}</div>
+          <div>{stockInfo.exchange.toUpperCase()}</div>
+        </div>
+
         <div className="price">${price}</div>
-        <div className="change">{(details.d < 0 ? "" : "+" ) + details.d} ({(parseFloat(details.dp) < 0 ? "" : "+") + parseFloat(details.dp).toFixed(2)}%) <span>Today</span></div>
+        <div className="change" style={positive ? positiveStyle : negativeStyle}>{(positive ? "+" : "" ) + details.d} ({(positive ? "+" : "") + parseFloat(details.dp).toFixed(2)}%) <span>Today</span></div>
       </div>
 
       <div className="stock-container">

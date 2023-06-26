@@ -32,7 +32,14 @@
     transition: 0.2s;
 }
 
-.navbar-link:hover {
+.home-link {
+    display: flex;
+    flex-direction: column;
+    transition: 0.2s;
+    color: black;
+}
+
+.navbar-link:hover, .home-link:hover {
     color: #4056a1;
 }
 

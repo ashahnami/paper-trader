@@ -23,10 +23,10 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar-container">
-        <ShowChartIcon></ShowChartIcon>
+        <Link to="/" className="home-link"><ShowChartIcon></ShowChartIcon></Link>
         <SearchBar />
         <div className="links">
-          <Link to="/" className="navbar-link">Portfolio</Link>
+          <Link to="/portfolio" className="navbar-link">Portfolio</Link>
           <div className="account">
             <AccountCircleIcon className="icon" onClick={() => setDropdown(!dropdown)} />
             {dropdown ? 

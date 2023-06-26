@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
+
 import Navbar from "../common/navbar/index";
 import { useGetPositionsQuery } from '../api/userApi';
 import httpClient from '../httpClient';
@@ -16,12 +16,8 @@ const Portfolio = () => {
   const [netBalance, setNetBalance] = useState(0);
 
   const fetchBalance = async () => {
-    try {
-      const response = await httpClient.get("http://localhost:5000/balance");
-      setBalance(response.data.balance.toFixed(2));
-    } catch (error) {
-      console.error(error);
-    }
+    const { data } = await httpClient.get("http://localhost:5000/balance");
+    setBalance(data.balance.toFixed(2));
   };
 
   const updatePrices = async () => {
@@ -49,7 +45,7 @@ const Portfolio = () => {
 
       setCurrValues(currValueChanges);
       setChanges(updatedChanges);
-      setNetBalance(parseFloat(net.toFixed(2)) + parseFloat(balance));
+      setNetBalance(parseFloat(net) + parseFloat(balance));
       setIsFinished(true);
     } catch (error) {
       console.error(error);
