@@ -163,6 +163,13 @@
     padding: 10px;
 }
 
+.stock-header .info {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    font-weight: 300;
+}
+
 .stock {
     display: flex;
     flex-direction: column;
