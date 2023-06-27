@@ -6,3 +6,33 @@
     height: 100%;
     padding: 5px;
 }
+
+.news {
+    width: 600px;
+    padding: 5px;
+}
+
+.news table {
+    border-collapse: collapse;
+}
+
+.news thead th {
+    border-top: solid 1px #d3d3d3;
+    border-bottom: solid 1px #d3d3d3;
+    height: 30px;
+    text-align: left;
+    font-weight: 400;
+}
+
+.news td {
+    border-bottom: solid 1px #d3d3d3;
+}
+
+.news tbody tr:hover {
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+
+.news td, .news th {
+    padding: 5px;
+}
