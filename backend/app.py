@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_session import Session
-from models import db, User, Transaction, Stock, PortfolioItem
+from models import db, User, Transaction, Stock, PortfolioItem, WatchlistItem
 from config import AppConfig
 import yfinance as yf
 
@@ -216,6 +216,69 @@ def get_balance():
     return jsonify({
         "balance": user.balance
     })
+
+@app.route("/watchlist", methods=["GET"])
+def get_watchlist():
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return jsonify({"error": "Unauthorised"})
+    
+    watchlist = []
+    watchlistRows = WatchlistItem.query.filter_by(user_id=user_id)
+
+    for w in watchlistRows:
+        stock = Stock.query.filter_by(id=w.stockId).first()
+        watchlist.append({
+            "stockSymbol": stock.ticker
+        })
+    
+    return watchlist
+
+@app.route("/addwatchlist", methods=["POST"])
+def add_to_watchlist():
+    ticker = request.json["ticker"]
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return jsonify({"error": "Unauthorised"})
+
+    stock = Stock.query.filter_by(ticker=ticker).first()
+    if stock is None:
+        return  jsonify({"error": "Stock not found"})
+
+    watchlistItem = WatchlistItem.query.filter_by(stockId=stock.id).first()
+    if watchlistItem:
+        return jsonify({"error": "Stock already exists in watchlist"})
+
+    new_watchlist_item = WatchlistItem(stockId=stock.id, user_id=user_id)
+    db.session.add(new_watchlist_item)
+    db.session.commit()
+
+    return "200"
+    
+@app.route("/removewatchlist", methods=["POST"])
+def remove_from_watchlist():
+    ticker = request.json["ticker"]
+
+    user_id = session.get("user_id")
+    user = User.query.filter_by(id=user_id).first()
+
+    if user is None:
+        return jsonify({"error": "Unauthorised"})
+
+    stock = Stock.query.filter_by(ticker=ticker).first()
+    if stock is None:
+        return jsonify({"error": "Stock not found"})
+    
+    watchlistItem = WatchlistItem.query.filter_by(stockId=stock.id)
+    db.session.delete(watchlistItem)
+    db.session.commit()
+
+    return "200"
 
 if __name__ == "__main__":
     app.run(debug=True)

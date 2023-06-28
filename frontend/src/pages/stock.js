@@ -20,7 +20,7 @@ const Stock = () => {
   const [orderType, setOrderType] = useState("Buy");
   const [balance, setBalance] = useState(0.00);
   const [positive, setPositive] = useState(true);
-  const [stockInfo, setStockInfo] = useState({});
+  const [stockInfo, setStockInfo] = useState({name: "", exchange: ""});
 
   const fetchBalance = async () => {
     const { data } = await httpClient.get("http://localhost:5000/balance");
@@ -40,6 +40,12 @@ const Stock = () => {
   const fetchStockInfo = async () => {
     const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
     setStockInfo(data);
+  }
+
+  const addToWatchlist = () => {
+    httpClient.post("http://localhost:5000/addwatchlist", {
+      ticker: ticker
+    })
   }
   
   useEffect(() => {
@@ -165,6 +171,10 @@ const Stock = () => {
                 } */}
                 <div className="balance">${balance.toFixed(2)} available</div>
             </form>
+          </div>
+
+          <div>
+            <div onClick={addToWatchlist}>add to watchlist</div>
           </div>
         </div>
       </div>

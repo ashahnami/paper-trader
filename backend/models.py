@@ -17,6 +17,7 @@ class User(db.Model):
     balance = db.Column(db.Float, default=10000.00, nullable=False)
     transactions = db.relationship("Transaction", backref="user")
     portfolio_item = db.relationship("PortfolioItem", backref="user")
+    watchlist = db.relationship("WatchlistItem", backref="user")
 
 class Transaction(db.Model):
     __tablename__ = "Transactions"
@@ -51,5 +52,11 @@ class PortfolioItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
     averagePrice = db.Column(db.Float, nullable=False)
+    stockId = db.Column(db.Integer, index=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("Users.id"))
+
+class WatchlistItem(db.Model):
+    __tablename__ = "Watchlist"
+    id = db.Column(db.Integer, primary_key=True)
     stockId = db.Column(db.Integer, index=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("Users.id"))
