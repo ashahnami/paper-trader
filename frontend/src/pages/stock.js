@@ -21,6 +21,7 @@ const Stock = () => {
   const [balance, setBalance] = useState(0.00);
   const [positive, setPositive] = useState(true);
   const [stockInfo, setStockInfo] = useState({name: "", exchange: ""});
+  const [inWatchlist, setInWatchlist] = useState(false);
 
   const fetchBalance = async () => {
     const { data } = await httpClient.get("http://localhost:5000/balance");
@@ -47,6 +48,22 @@ const Stock = () => {
       ticker: ticker
     })
   }
+
+  const checkInWatchlist = async () => {
+    const { data } = await httpClient.get("http://localhost:5000/watchlist");
+    data.forEach((item) => {
+      if(item.stockSymbol === ticker){
+        setInWatchlist(true);
+      }
+    })
+  }
+
+  const removeFromWatchlist = () => {
+    httpClient.post("http://localhost:5000/removewatchlist", {
+      ticker: ticker
+    })
+    setInWatchlist(false);
+  }
   
   useEffect(() => {
     
@@ -54,7 +71,8 @@ const Stock = () => {
     let interval = setInterval(async () => { fetchQuote() }, 4000)
     
     fetchStockInfo();
-    fetchBalance()
+    fetchBalance();
+    checkInWatchlist();
     
     return () => {clearInterval(interval)}
   }, [ticker])
@@ -166,15 +184,16 @@ const Stock = () => {
 
                 <input type="submit" value={orderType} />
 
-                {/* { isLoading ? "Loading balance" :
-                  <div className="balance">${balance.toFixed(2)} available</div>
-                } */}
                 <div className="balance">${balance.toFixed(2)} available</div>
             </form>
           </div>
 
           <div>
-            <div onClick={addToWatchlist}>add to watchlist</div>
+            {inWatchlist ? (
+              <div onClick={removeFromWatchlist}>remove from watchlist</div>
+            ) : (
+              <div onClick={addToWatchlist}>add to watchlist</div>
+            )}
           </div>
         </div>
       </div>

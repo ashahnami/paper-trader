@@ -274,7 +274,7 @@ def remove_from_watchlist():
     if stock is None:
         return jsonify({"error": "Stock not found"})
     
-    watchlistItem = WatchlistItem.query.filter_by(stockId=stock.id)
+    watchlistItem = WatchlistItem.query.filter_by(stockId=stock.id).first()
     db.session.delete(watchlistItem)
     db.session.commit()
 

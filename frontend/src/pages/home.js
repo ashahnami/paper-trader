@@ -22,7 +22,15 @@ const Home = () => {
 
   const fetchWatchlist = async () => {
     const { data } = await httpClient.get("http://localhost:5000/watchlist");
-    setWatchlist(data, setIsFetching(false));
+    setWatchlist(data);
+
+    const requests = data.map(item => 
+      axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.stockSymbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    );
+
+    const responses = await Promise.all(requests);
+    setQuotes(responses);
+    setIsFetching(false);
   }
 
   useEffect(() => {
@@ -31,15 +39,13 @@ const Home = () => {
     fetchNews();
   }, [])
 
-  if(isFetching){
-    return <div>Loading...</div>
-  }
-
   return (
     <div className="home">
       <Navbar />
       <div className="home-container">
         <div className="watchlist">
+
+          {isFetching ? "Fetching watchlist" : (
           <table>
             <thead>
               <tr>
@@ -50,15 +56,16 @@ const Home = () => {
             </thead>
 
             <tbody>
-              {isFetching ? "Loading" : watchlist.map((watchlistItem, index) => (
+              {watchlist.map((watchlistItem, index) => (
                 <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.stockSymbol}`)}>
                   <td>{watchlistItem.stockSymbol}</td>
-                  <td>55.7</td>
-                  <td>3.26</td>
+                  <td>{parseFloat(quotes[index].data.c).toFixed(2)}</td>
+                  <td>{parseFloat(quotes[index].data.dp).toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+          )}
         </div>
 
         <div className="news">
