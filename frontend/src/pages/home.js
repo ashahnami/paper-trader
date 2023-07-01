@@ -45,6 +45,8 @@ const Home = () => {
       <div className="home-container">
         <div className="watchlist">
 
+          <h5 className="header">Watchlist</h5>
+
           {isFetching ? "Fetching watchlist" : (
           <table>
             <thead>
@@ -63,19 +65,20 @@ const Home = () => {
                   <td>{parseFloat(quotes[index].data.dp).toFixed(2)}</td>
                 </tr>
               ))}
+
+              {watchlist.length === 0 ? (
+                <tr>
+                  <td colSpan={3}>No stocks in watchlist</td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
           )}
         </div>
 
         <div className="news">
+          <h5>Recent News</h5>
           <table>
-            <thead>
-              <tr>
-                <th colSpan={2}>NEWS</th>
-              </tr>
-            </thead>
-
             <tbody>
               {news.slice(0, 5).map((newsItem, index) => (
                 <tr key={index} onClick={() => window.location.replace(newsItem.url)}>

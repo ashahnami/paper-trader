@@ -14,6 +14,8 @@ const Portfolio = () => {
   const [isFinished, setIsFinished] = useState(false);
   const [balance, setBalance] = useState(0);
   const [netBalance, setNetBalance] = useState(0);
+  const [openModal, setOpenModal] = useState(false);
+  const [selTicker, setSelTicker] = useState("");
 
   const fetchBalance = async () => {
     const { data } = await httpClient.get("http://localhost:5000/balance");
@@ -63,6 +65,7 @@ const Portfolio = () => {
   const closePosition = async (ticker) => {
     try {
       await httpClient.post(`http://localhost:5000/closeposition/${ticker}`);
+      setOpenModal(false);
       refetch();
     } catch (error) {
       console.error(error);
@@ -107,13 +110,30 @@ const Portfolio = () => {
                   <td>{position.averagePrice.toFixed(2)}</td>
                   <td>{currValues[i]}</td>
                   <td>{(position.averagePrice * position.shares - currValues[i]).toFixed(2)}</td>
-                  <td className="crossIcon" onClick={() => closePosition(position.stockSymbol)}><CloseIcon /></td>
+                  {/* <td className="crossIcon" onClick={() => closePosition(position.stockSymbol)}><CloseIcon /></td> */}
+                  <td className="crossIcon" onClick={() => {setOpenModal(true); setSelTicker(position.stockSymbol)}}><CloseIcon /></td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : "Loading positions..."}
       </div>
+
+      {openModal && 
+      <>
+        <div className="overlay" />
+        <div className="modal">
+          <div className="modal-container">
+            <div>Are you sure to want to sell this stock?</div>
+            <div className="footer">
+              <button onClick={() => setOpenModal(false)}>Cancel</button>
+              <button className="continue" onClick={() => closePosition(selTicker)}>Continue</button>
+            </div>
+          </div>
+        </div>
+      </>
+      }
+
     </div>
   );
 };

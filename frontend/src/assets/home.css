@@ -41,12 +41,15 @@
     padding: 5px;
 }
 
-.watchlist {
+.watchlist, .news {
     width: 600px;
     padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.news {
-    width: 600px;
-    padding: 5px;
+.watchlist h5, .news h5 {
+    font-weight: 800;
+    font-size: 1.2rem;
 }

@@ -32,8 +32,7 @@ class Stock(db.Model):
     __tablename__ = "Stocks"
     id = db.Column(db.Integer, primary_key=True)
     ticker = db.Column(db.String(128), index=True, nullable=False)
-    name = db.Column(db.String(128), index=True, nullable=False)
-    market = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.String(128), index=True, nullable=False)
     exchange_id = db.Column(db.Integer, db.ForeignKey("Exchanges.id"))
     portfolios = db.relationship("PortfolioItem", secondary=stock_portfolio, backref="stocks")
     transactions = db.relationship("Transaction", backref="stock")

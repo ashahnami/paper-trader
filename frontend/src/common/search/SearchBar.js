@@ -18,7 +18,7 @@ const SearchBar = () => {
     setInput(e.target.value)
     if(e.target.value.length > 0 && allStocks.length > 0){
       const result = allStocks.filter((stock) => {
-        return stock.displaySymbol.includes(e.target.value.toUpperCase());
+        return stock.displaySymbol.startsWith(e.target.value.toUpperCase()) || stock.description.startsWith(e.target.value.toUpperCase()); 
       })
       setResults(result)
     } else {
@@ -34,7 +34,7 @@ const SearchBar = () => {
   useEffect(() => {
     axios.get(`https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
     .then(function(response){
-      setAllStocks(response.data.filter((stock) => {return stock.type === "Common Stock"}))
+      setAllStocks(response.data.filter((stock) => {return stock.type === "Common Stock" && (stock.mic === "XNYS" || stock.mic === "XNAS")}))
     })
 
     const handleClickOutside = (event) => {
