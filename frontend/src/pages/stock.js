@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
 import httpClient from "../httpClient";
 import Navbar from '../common/navbar/index';
@@ -47,6 +49,7 @@ const Stock = () => {
     httpClient.post("http://localhost:5000/addwatchlist", {
       ticker: ticker
     })
+    setInWatchlist(true);
   }
 
   const checkInWatchlist = async () => {
@@ -188,11 +191,11 @@ const Stock = () => {
             </form>
           </div>
 
-          <div>
+          <div className='watchlist'>
             {inWatchlist ? (
-              <div onClick={removeFromWatchlist}>remove from watchlist</div>
+              <FontAwesomeIcon icon={icon({name: 'bookmark', family: 'classic', style: 'solid'})} onClick={removeFromWatchlist} className='watchlistIcon' />
             ) : (
-              <div onClick={addToWatchlist}>add to watchlist</div>
+              <FontAwesomeIcon icon={icon({name: 'bookmark', family: 'classic', style: 'regular'})} onClick={addToWatchlist} className='watchlistIcon' />
             )}
           </div>
         </div>
