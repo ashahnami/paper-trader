@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,6 +12,8 @@ const SearchBar = () => {
   const [showResults, setShowResults] = useState(true)
   const navigate = useNavigate()
   const [allStocks, setAllStocks] = useState([{displaySymbol: ""}])
+
+  let searchRef = useRef()
 
   const handleChange = (e) => {
     setShowResults(true)
@@ -37,22 +39,21 @@ const SearchBar = () => {
       setAllStocks(response.data.filter((stock) => {return stock.type === "Common Stock" && (stock.mic === "XNYS" || stock.mic === "XNAS")}))
     })
 
-    const handleClickOutside = (event) => {
-      const searchContainer = document.querySelector(".search");
-      if (searchContainer && !searchContainer.contains(event.target)) {
+    const handler = (event) => {
+      if(!searchRef.current.contains(event.target)){
         setShowResults(false);
       }
     }
-    document.addEventListener("click", handleClickOutside);
+
+    document.addEventListener("mousedown", handler);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handler);
     }
-
   }, [])
 
   return (
-    <div className="search">
+    <div className="search" ref={searchRef}>
       <div className="input-container">
         <input 
           type="text" 

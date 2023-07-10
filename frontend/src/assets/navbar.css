@@ -44,6 +44,7 @@
 }
 
 .navbar .account {
+    position: relative;
     display: flex;
     flex-direction: column;
 }
@@ -61,15 +62,17 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
+    width: 200px;
+    right: 5%;
+    top: 200%;
+    padding: 10px;
+    background-color: #fff;
+    border: solid 1px #e0e0e0;
 }
 
 .navbar .account .dropdown div {
-    background-color: white;
     font-size: 0.9rem;
-    padding: 5px 10px;
-    width: 90px;
-    border: solid 1px #f0f0f0;
+    padding: 5px;
     transition: 0.3 ease;
 }
 
