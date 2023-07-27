@@ -39,18 +39,21 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="home-link"><ShowChartIcon></ShowChartIcon></Link>
+        <div className='links'>
+          <ShowChartIcon></ShowChartIcon>
+          <Link to="/" className='navbar-link'>Home</Link>
+          <Link to="/portfolio" className='navbar-link'>Portfolio</Link>
+        </div>
+
         <SearchBar />
-        <div className="links">
-          <Link to="/portfolio" className="navbar-link">Portfolio</Link>
-          <div className="account" ref={accountMenuRef}>
-            <AccountCircleIcon className="icon" onClick={() => setDropdown(!dropdown)} />
-            {dropdown ? 
-              <div className="dropdown">
-                <div onClick={logout}>Log Out</div>
-              </div> 
-            : null}
-          </div>
+
+        <div className="account" ref={accountMenuRef}>
+          <AccountCircleIcon className="icon" onClick={() => setDropdown(!dropdown)} />
+          {dropdown ? 
+            <div className="dropdown">
+              <div onClick={logout}>Log Out</div>
+            </div> 
+          : null}
         </div>
       </div>
     </div>
