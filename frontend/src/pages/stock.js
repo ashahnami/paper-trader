@@ -10,9 +10,6 @@ import StockChart from '../components/chart/index.js';
 
 import '../assets/stock.css';
 
-const negativeStyle = {color: 'red'};
-const positiveStyle = {color: 'green'};
-
 const Stock = () => {
   
   const { ticker } = useParams();
@@ -21,7 +18,7 @@ const Stock = () => {
   const [order, setOrder] = useState({ price: 50, quantity: 1});
   const [orderType, setOrderType] = useState("Buy");
   const [balance, setBalance] = useState(0.00);
-  const [positive, setPositive] = useState(true);
+  const [positiveChange, setPositiveChange] = useState(true);
   const [stockInfo, setStockInfo] = useState({name: "", exchange: ""});
   const [inWatchlist, setInWatchlist] = useState(false);
 
@@ -36,7 +33,7 @@ const Stock = () => {
     setDetails(data);
 
     if(data.d < 0){
-      setPositive(false);
+      setPositiveChange(false);
     }
   }
 
@@ -109,7 +106,9 @@ const Stock = () => {
         </div>
 
         <div className="price">${price}</div>
-        <div className="change" style={positive ? positiveStyle : negativeStyle}>{(positive ? "+" : "" ) + details.d} ({(positive ? "+" : "") + parseFloat(details.dp).toFixed(2)}%) <span>Today</span></div>
+        <div className="change" style={{ color: positiveChange ? 'green' : 'red' }}>
+          {(positiveChange ? "+" : "") + parseFloat(details.d).toFixed(2)} ({(positiveChange ? "+" : "") + parseFloat(details.dp).toFixed(2)}%) <span style={{ color: 'black' }}>Today</span>
+        </div>
       </div>
 
       <div className="stock-container">

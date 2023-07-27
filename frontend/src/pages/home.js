@@ -62,7 +62,9 @@ const Home = () => {
                 <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.stockSymbol}`)}>
                   <td>{watchlistItem.stockSymbol}</td>
                   <td>{parseFloat(quotes[index].data.c).toFixed(2)}</td>
-                  <td>{parseFloat(quotes[index].data.dp).toFixed(2)}</td>
+                  <td style={{
+                    color: parseFloat(quotes[index].data.dp < 0) ? 'red' : 'green'
+                  }}>{parseFloat(quotes[index].data.dp).toFixed(2)}</td>
                 </tr>
               ))}
 
