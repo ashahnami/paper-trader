@@ -65,20 +65,46 @@
     width: 200px;
     right: 5%;
     top: 200%;
-    padding: 10px;
+    padding: 4px;
     background-color: #fff;
     border: solid 1px #e0e0e0;
 }
 
-.navbar .account .dropdown div {
+.navbar .account .dropdown .links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+}
+
+.navbar .account .dropdown .links div {
+    width: 100%;
     font-size: 0.9rem;
     padding: 5px;
     transition: 0.3 ease;
 }
 
-.navbar .account .dropdown div:hover {
+.navbar .account .dropdown .links div:hover {
     cursor: pointer;
     background-color: #f0f0f0;
+}
+
+.navbar .account .dropdown .details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+}
+
+.navbar .account .dropdown .email {
+    color: #a0a0a0;
+    font-size: 0.9rem;
+}
+
+.navbar .account .dropdown .divider {
+    width: 100%;
+    border: solid 1px #f1f1f1;
+    margin: 4px 0;
 }
 
 @media only screen and (max-width: 768px) {
