@@ -1,0 +1,85 @@
+.settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.settingsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1260px;
+    height: 100%;
+    padding: 5px;
+    gap: 30px;
+}
+
+.settings .changeUsername {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 40px rgba(5,5,5,0.03); 
+    border: solid 1px #e0e0e0;
+    padding: 40px 60px;
+}
+
+.settings form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    width: 400px;
+}
+
+
+.settings label {
+    display: block;
+    margin-top:20px;
+    font-size: 16px;
+    color: black;
+}
+
+.settings input[type=text] {
+    outline: none;
+    display: block;
+    height: 40px;
+    width: 100%;
+    border-radius: 3px;
+    margin-top: 20px;
+    padding: 10px 10px;
+    font-size: 1.1rem;
+    border: solid 1px #e0e0e0;
+    transition: 0.2s ease-in;
+    font-family: 'Open Sans';
+}
+
+.settings input:hover {
+    border: solid 1px black;
+}
+
+.settings input[type=text]:focus {
+    border: solid 1px #4056a1;
+}
+
+.settings input:focus {
+    border: solid 1px #4056a1;
+}
+
+.settings input[type=submit] {
+    background-color: #4056a1;
+    color: white;
+    cursor: pointer;
+    width: 170px;
+    height: 50px;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 20px;
+    border: none
+}
+
+.settings input[type=submit]:hover {
+    background-color: #31437d;
+}
