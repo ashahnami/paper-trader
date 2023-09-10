@@ -16,7 +16,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const fetchNews = async () => {
-    const { data } = await axios.get(`https://finnhub.io/api/v1/news?category=general&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+    const { data } = await axios.get(`https://finnhub.io/api/v1/news?category=general&token=${process.env.FINNHUB_API_KEY}`);
     setNews(data);
   }
 
@@ -25,7 +25,7 @@ const Home = () => {
     setWatchlist(data);
 
     const requests = data.map(item => 
-      axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.stockSymbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+      axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.stockSymbol}&token=${process.env.FINNHUB_API_KEY}`)
     );
 
     const responses = await Promise.all(requests);
