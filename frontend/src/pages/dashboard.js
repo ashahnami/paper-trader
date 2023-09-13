@@ -25,7 +25,7 @@ const Portfolio = () => {
   const updatePrices = async () => {
     try {
       const requests = positions.map(position =>
-        axios.get(`https://finnhub.io/api/v1/quote?symbol=${position.stockSymbol}&token=${process.env.FINNHUB_API_KEY}`)
+        axios.get(`https://finnhub.io/api/v1/quote?symbol=${position.stockSymbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
       );
 
       const responses = await Promise.all(requests);

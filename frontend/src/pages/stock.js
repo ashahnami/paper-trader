@@ -28,7 +28,7 @@ const Stock = () => {
   }
 
   const fetchQuote = async () => {
-    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.FINNHUB_API_KEY}`);
+    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
     setPrice(data.c.toFixed(2));
     setDetails(data);
 
@@ -38,7 +38,7 @@ const Stock = () => {
   }
 
   const fetchStockInfo = async () => {
-    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.FINNHUB_API_KEY}`);
+    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
     setStockInfo(data);
   }
 
@@ -80,7 +80,7 @@ const Stock = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.FINNHUB_API_KEY}`)
+    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
     const latestPrice = data.c
 
     httpClient.post('http://localhost:5000/buy', {
