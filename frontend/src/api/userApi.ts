@@ -7,10 +7,10 @@ export const userApi = createApi({
         credentials: 'include'
     }),
     endpoints: (builder) => ({
-        getCurrentUser: builder.query({
+        getCurrentUser: builder.query<any, void>({
             query: () => "@me",
         }),
-        getPositions: builder.query({
+        getPositions: builder.query<any, void>({
             query: () => "positions",
         })
     }),

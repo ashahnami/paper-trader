@@ -9,13 +9,13 @@ import "../assets/portfolio.css";
 
 const Portfolio = () => {
   const { data: positions, isFetching, refetch } = useGetPositionsQuery();
-  const [changes, setChanges] = useState([]);
-  const [currValues, setCurrValues] = useState([]);
-  const [isFinished, setIsFinished] = useState(false);
-  const [balance, setBalance] = useState(0);
-  const [netBalance, setNetBalance] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
-  const [selTicker, setSelTicker] = useState("");
+  const [changes, setChanges] = useState<any>([]);
+  const [currValues, setCurrValues] = useState<any>([]);
+  const [isFinished, setIsFinished] = useState<any>(false);
+  const [balance, setBalance] = useState<any>(0);
+  const [netBalance, setNetBalance] = useState<any>(0);
+  const [openModal, setOpenModal] = useState<any>(false);
+  const [selTicker, setSelTicker] = useState<any>("");
 
   const fetchBalance = async () => {
     const { data } = await httpClient.get("http://localhost:5000/balance");
@@ -24,13 +24,13 @@ const Portfolio = () => {
 
   const updatePrices = async () => {
     try {
-      const requests = positions.map(position =>
+      const requests = positions.map((position: any) =>
         axios.get(`https://finnhub.io/api/v1/quote?symbol=${position.stockSymbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
       );
 
       const responses = await Promise.all(requests);
 
-      let net = 0;
+      let net : number = 0;
 
       const updatedChanges = responses.map((response, index) => {
         const { c: latestPrice } = response.data;
@@ -47,7 +47,7 @@ const Portfolio = () => {
 
       setCurrValues(currValueChanges);
       setChanges(updatedChanges);
-      setNetBalance(parseFloat(net) + parseFloat(balance));
+      setNetBalance(net + parseFloat(balance));
       setIsFinished(true);
     } catch (error) {
       console.error(error);
@@ -62,7 +62,7 @@ const Portfolio = () => {
     }
   }, [positions, isFetching, balance]);
 
-  const closePosition = async (ticker) => {
+  const closePosition = async (ticker: any) => {
     try {
       await httpClient.post(`http://localhost:5000/closeposition/${ticker}`);
       setOpenModal(false);
@@ -102,7 +102,7 @@ const Portfolio = () => {
               </tr>
             </thead>
             <tbody>
-              {positions.map((position, i) => (
+              {positions.map((position: any, i: any) => (
                 <tr key={i}>
                   <td style={{ fontWeight: "bold" }}>{position.stockSymbol}</td>
                   <td>{position.shares}</td>

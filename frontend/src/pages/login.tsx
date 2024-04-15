@@ -17,7 +17,7 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     await httpClient.post('http://localhost:5000/login', {
@@ -29,9 +29,9 @@ const LoginPage = () => {
       navigate('/');
     })
     .catch(function(error){
-      if(error.response.status === 401){
+      // if(error.response.status === 401){
         setErrorMessage("Incorrect username or password");
-      }
+      // }
     })
   }
 
