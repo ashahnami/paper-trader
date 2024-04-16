@@ -6,18 +6,22 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import httpClient from '../../httpClient'
 import SearchBar from '../search/SearchBar';
 import '../../assets/navbar.css';
-import { useGetCurrentUserQuery } from '../../api/userApi'
+import { fetchProfile } from '../../api/userApi'
+import { useQuery } from '@tanstack/react-query';
 
 const Navbar = () => {
-  const { data: user, isLoading } = useGetCurrentUserQuery()
-
-  const [dropdown, setDropdown] = useState(false)
-
-  let accountMenuRef = useRef();
+  const { data: user, isLoading } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => fetchProfile(),
+  })
 
   const navigate = useNavigate()
+  const [dropdown, setDropdown] = useState<boolean>(false)
+
+  let accountMenuRef = useRef<HTMLInputElement>(null);
+
   const logout = () => {
-    httpClient.post("http://localhost:5000/logout")
+    httpClient.post("/logout")
     .then(function(response){
       console.log(response)
     })
@@ -25,8 +29,8 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-    let handler = (event) => {
-      if(!accountMenuRef.current.contains(event.target)){
+    let handler = (event: any) => {
+      if(!accountMenuRef.current?.contains(event.target)){
         setDropdown(false);
       }
     }
@@ -54,8 +58,8 @@ const Navbar = () => {
 
               {!isLoading ? 
                 <div className='details'>
-                  <div className='username'>{user.username}</div>
-                  <div className='email'>{user.email}</div>
+                  <div className='username'>{user?.username}</div>
+                  <div className='email'>{user?.email}</div>
                 </div>
               : null}
 
@@ -75,7 +79,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Navbar;

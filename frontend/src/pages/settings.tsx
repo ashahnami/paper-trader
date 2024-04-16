@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../common/navbar'
-import '../assets/settings.css'
-import { useGetCurrentUserQuery } from '../api/userApi'
+import React, { useEffect, useState } from 'react';
+import Navbar from '../common/navbar';
+import '../assets/settings.css';
+import { fetchProfile } from '../api/userApi';
+import { useQuery } from '@tanstack/react-query';
 
 const Settings = () => {
-  const [input, setInput] = useState("")
-  const { data: user, isLoading } = useGetCurrentUserQuery()
+  const [input, setInput] = useState<string>();
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => fetchProfile(),
+  })
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
   }
   
   useEffect(() => {
-    if(!isLoading){
-      setInput(user.username)
+    if (profile) {
+      setInput(profile?.username)
     }
-  }, [isLoading, user])
+  }, [isLoading])
   
   if(isLoading){
-    return <div>Loading...</div>
+    return <span>Loading...</span>
   }
 
   return (

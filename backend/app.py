@@ -176,8 +176,8 @@ def get_transactions(ticker):
 
     for purchase in purchases:
         transactions.append({
-            "stockSymbol": stock.ticker,
-            "stockName": stock.name,
+            "symbol": stock.ticker,
+            "name": stock.name,
             "price": purchase.price,
             "shares": purchase.shares
         })
@@ -198,7 +198,7 @@ def get_positions():
     for p in positionRows:
         stock = Stock.query.filter_by(id=p.stockId).first()
         positions.append({
-            "stockSymbol": stock.ticker,
+            "symbol": stock.ticker,
             "shares": p.quantity,
             "averagePrice": p.averagePrice
         })

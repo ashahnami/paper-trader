@@ -1,19 +1,21 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { Position } from '../entities/Position';
+import { Profile } from '../entities/Profile';
+import { Transaction } from '../entities/Transaction';
+import { WatchlistItem } from '../entities/Watchlist';
+import httpClient from '../httpClient';
 
-export const userApi = createApi({
-    reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:5000/',
-        credentials: 'include'
-    }),
-    endpoints: (builder) => ({
-        getCurrentUser: builder.query<any, void>({
-            query: () => "@me",
-        }),
-        getPositions: builder.query<any, void>({
-            query: () => "positions",
-        })
-    }),
-})
+export const fetchProfile = async (): Promise<Profile> => {
+    return (await httpClient.get<Profile>('/@me')).data;
+}
 
-export const { useGetCurrentUserQuery, useGetPositionsQuery } = userApi
+export const fetchPositions = async (): Promise<Position[]> => {
+    return (await httpClient.get<Position[]>('/positions')).data;
+}
+
+export const fetchWatchlist = async (): Promise<WatchlistItem[]> => {
+    return (await httpClient.get<WatchlistItem[]>('/watchlist')).data;
+}
+
+export const fetchTransactions = async (ticker: string): Promise<Transaction[]> => {
+    return (await httpClient.get<Transaction[]>(`/transactions/${ticker}`)).data;
+}

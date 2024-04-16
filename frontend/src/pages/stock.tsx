@@ -9,49 +9,85 @@ import Navbar from '../common/navbar/index';
 import StockChart from '../components/chart/index.js';
 
 import '../assets/stock.css';
+import { useQuery } from '@tanstack/react-query';
+import { fetchProfile, fetchWatchlist } from '../api/userApi';
+import { WatchlistItem } from '../entities/Watchlist';
+
+interface Order {
+  price: number;
+  quantity: number;
+}
+
+interface Quote {
+  "c": number;
+  "d": number;
+  "dp": number;
+  "h": number;
+  "l": number;
+  "o": number;
+  "pc": number;
+  "t": number;
+}
+
+interface Info {
+  "country": string;
+  "currency": string;
+  "exchange": string;
+  "ipo": string; 
+  "marketCapitalization": number;
+  "name": string;
+  "phone": string;
+  "shareOutstanding": number;
+  "ticker": string;
+  "weburl": string;
+  "logo": string;
+  "finnhubIndustry": string;
+}
 
 const Stock = () => {
-  
+  const { data: watchlist, isLoading: isLoadingWatchlist } = useQuery({
+    queryKey: ['watchlist'],
+    queryFn: () => fetchWatchlist(),
+  })
+
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => fetchProfile(),
+  })
+
   const { ticker } = useParams();
-  const [price, setPrice] = useState(0);
-  const [details, setDetails] = useState({});
-  const [order, setOrder] = useState({ price: 50, quantity: 1});
-  const [orderType, setOrderType] = useState("Buy");
-  const [balance, setBalance] = useState(0.00);
-  const [positiveChange, setPositiveChange] = useState(true);
-  const [stockInfo, setStockInfo] = useState({name: "", exchange: ""});
+  const [price, setPrice] = useState<number>(0);
+  const [details, setDetails] = useState<Quote>();
+  const [order, setOrder] = useState<Order>();
+  const [orderType, setOrderType] = useState<string>("Buy");
+  const [positiveChange, setPositiveChange] = useState<boolean>(true);
+  const [stockInfo, setStockInfo] = useState<Info>();
   const [inWatchlist, setInWatchlist] = useState(false);
 
-  const fetchBalance = async () => {
-    const { data } = await httpClient.get("http://localhost:5000/balance");
-    setBalance(data.balance);
-  }
-
   const fetchQuote = async () => {
-    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
-    setPrice(data.c.toFixed(2));
-    setDetails(data);
+    const { data: quote } = await axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+    setPrice(parseFloat(quote.c.toFixed(2)));
+    setDetails(quote);
 
-    if(data.d < 0){
+    if(quote.d < 0){
       setPositiveChange(false);
     }
   }
 
   const fetchStockInfo = async () => {
-    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
-    setStockInfo(data);
+    const { data: info } = await axios.get<Info>(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+    setStockInfo(info);
   }
 
   const addToWatchlist = () => {
-    httpClient.post("http://localhost:5000/addwatchlist", {
+    httpClient.post("/addwatchlist", {
       ticker: ticker
     })
     setInWatchlist(true);
   }
 
   const checkInWatchlist = async () => {
-    const { data } = await httpClient.get("http://localhost:5000/watchlist");
-    data.forEach((item) => {
+    watchlist?.forEach((item: WatchlistItem) => {
       if(item.stockSymbol === ticker){
         setInWatchlist(true);
       }
@@ -59,7 +95,7 @@ const Stock = () => {
   }
 
   const removeFromWatchlist = () => {
-    httpClient.post("http://localhost:5000/removewatchlist", {
+    httpClient.post("/removewatchlist", {
       ticker: ticker
     })
     setInWatchlist(false);
@@ -71,26 +107,27 @@ const Stock = () => {
     let interval = setInterval(async () => { fetchQuote() }, 4000)
     
     fetchStockInfo();
-    fetchBalance();
-    checkInWatchlist();
+
+    if (!isLoadingWatchlist) {
+      checkInWatchlist();
+    }
     
     return () => {clearInterval(interval)}
-  }, [ticker])
+  }, [ticker, isLoadingWatchlist])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-    const latestPrice = data.c
+    const { data: quote } = await axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    const latestPrice = quote.c
 
-    httpClient.post('http://localhost:5000/buy', {
+    httpClient.post('/buy', {
       ticker: ticker,
       price: latestPrice,
-      quantity: order.quantity 
+      quantity: order?.quantity 
     })
     .then(function(response){
         console.log(response);
-        fetchBalance()
     })
   }
 
@@ -101,13 +138,13 @@ const Stock = () => {
       <div className="stock-header">
         <div className="info">
           <h3>{ticker}</h3>
-          <div>{stockInfo.name.toUpperCase()}</div>
-          <div>{stockInfo.exchange.toUpperCase()}</div>
+          <div>{stockInfo?.name.toUpperCase()}</div>
+          <div>{stockInfo?.exchange.toUpperCase()}</div>
         </div>
 
         <div className="price">${price}</div>
         <div className="change" style={{ color: positiveChange ? 'green' : 'red' }}>
-          {(positiveChange ? "+" : "") + parseFloat(details.d).toFixed(2)} ({(positiveChange ? "+" : "") + parseFloat(details.dp).toFixed(2)}%) <span style={{ color: 'black' }}>Today</span>
+          {(positiveChange ? "+" : "") + details?.d.toFixed(2)} ({(positiveChange ? "+" : "") + details?.dp.toFixed(2)}%) <span style={{ color: 'black' }}>Today</span>
         </div>
       </div>
 
@@ -120,30 +157,30 @@ const Stock = () => {
             <div className="stock-details-col">
               <div className="row">
                 <div>Open</div>
-                <div>{parseFloat(details.o).toFixed(2)}</div>
+                <div>{details?.o.toFixed(2)}</div>
               </div>
 
               <div className="row">
                 <div>Previous close</div>
-                <div>{parseFloat(details.pc).toFixed(2)}</div>
+                <div>{details?.pc.toFixed(2)}</div>
               </div>
             </div>
 
             <div className="stock-details-col">
               <div className="row">
                 <div>High</div>
-                <div>{parseFloat(details.h).toFixed(2)}</div>
+                <div>{details?.h.toFixed(2)}</div>
               </div>
               <div className="row">
                 <div>Low</div>
-                <div>{parseFloat(details.l).toFixed(2)}</div>
+                <div>{details?.l.toFixed(2)}</div>
               </div>
             </div>
 
             <div className="stock-details-col">
               <div className="row">
                 <div>Change percent</div>
-                <div>{parseFloat(details.dp).toFixed(2)}%</div>
+                <div>{details?.dp.toFixed(2)}%</div>
               </div>
             </div>
           </div>
@@ -167,7 +204,7 @@ const Stock = () => {
                       type="number"
                       defaultValue={1}
                       min="1"
-                      onChange={(e) => setOrder(previousState => {
+                      onChange={(e) => setOrder((previousState: any) => {
                           return { ...previousState, quantity: e.target.value}
                       })}
                       required
@@ -181,12 +218,12 @@ const Stock = () => {
 
                 <div className="cost">
                   <div>Estimated cost</div>
-                  <div>${(price * order.quantity).toFixed(2)}</div>
+                  {order && <div>${(price * order.quantity).toFixed(2)}</div>}
                 </div>
 
                 <input type="submit" value={orderType} />
 
-                <div className="balance">${balance.toFixed(2)} available</div>
+                <div className="balance">${profile?.balance.toFixed(2)} available</div>
             </form>
           </div>
 

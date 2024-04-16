@@ -4,28 +4,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import httpClient from "../httpClient";
 import '../assets/login.css';
 
-import { useDispatch } from 'react-redux'
-import { login } from '../features/auth/authSlice'
-
 const LoginPage = () => {
-
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await httpClient.post('http://localhost:5000/login', {
+    await httpClient.post('/login', {
       username: username,
       password: password
     })
     .then(function(response){
-      dispatch(login(response.data.id));
+      // dispatch(login(response.data.id));
       navigate('/');
     })
     .catch(function(error){
@@ -38,7 +31,7 @@ const LoginPage = () => {
   useEffect(() => {
     document.title = "Login";
 
-    httpClient.get("http://localhost:5000/checklogin")
+    httpClient.get("/checklogin")
     .then(function(response){
       if(response.data["logged_in"]){
         navigate("/")

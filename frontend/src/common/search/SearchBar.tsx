@@ -6,19 +6,29 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 import "../../assets/search.css";
 
+interface StockSymbol {
+    "currency": string;
+    "description": string;
+    "displaySymbol": string;
+    "figi": string;
+    "mic": string;
+    "symbol": string;
+    "type": string;
+}
+
 const SearchBar = () => {
-  const [input, setInput] = useState("")
-  const [results, setResults] = useState([])
-  const [showResults, setShowResults] = useState(true)
   const navigate = useNavigate()
-  const [allStocks, setAllStocks] = useState([{displaySymbol: ""}])
+  const [input, setInput] = useState<string>("")
+  const [results, setResults] = useState<StockSymbol[]>()
+  const [showResults, setShowResults] = useState<boolean>(true)
+  const [allStocks, setAllStocks] = useState<StockSymbol[]>()
 
-  let searchRef = useRef()
+  let searchRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShowResults(true)
     setInput(e.target.value)
-    if(e.target.value.length > 0 && allStocks.length > 0){
+    if(allStocks && e.target.value.length > 0 && allStocks.length > 0){
       const result = allStocks.filter((stock) => {
         return stock.displaySymbol.startsWith(e.target.value.toUpperCase()) || stock.description.startsWith(e.target.value.toUpperCase()); 
       })
@@ -34,13 +44,13 @@ const SearchBar = () => {
   }
 
   useEffect(() => {
-    axios.get(`https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    axios.get<StockSymbol[]>(`https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
     .then(function(response){
       setAllStocks(response.data.filter((stock) => {return stock.type === "Common Stock" && (stock.mic === "XNYS" || stock.mic === "XNAS")}))
     })
 
-    const handler = (event) => {
-      if(!searchRef.current.contains(event.target)){
+    const handler = (event: any) => {
+      if(!searchRef?.current?.contains(event.target)){
         setShowResults(false);
       }
     }
@@ -69,7 +79,7 @@ const SearchBar = () => {
       </div>
 
       <div className="results">
-        {showResults ? results.slice(0, 5).map((stock, i) => {
+        {showResults ? results?.slice(0, 5).map((stock, i) => {
           return (
             <div 
               className="result"

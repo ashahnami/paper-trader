@@ -1,53 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Navbar from "../common/navbar/index";
-import { useGetPositionsQuery } from '../api/userApi';
 import httpClient from '../httpClient';
+import { fetchPositions, fetchProfile } from '../api/userApi';
 import "../assets/portfolio.css";
+import { Position } from '../entities/Position';
+
+interface Quote {
+    "c": number;
+    "h": number;
+    "l": number;
+    "o": number;
+    "pc": number;
+    "t": number;
+}
 
 const Portfolio = () => {
-  const { data: positions, isFetching, refetch } = useGetPositionsQuery();
+  const { data: positions, isLoading: isLoadingPositions } = useQuery({
+    queryKey: ['positions'],
+    queryFn: () => fetchPositions(),
+  })
+
+  const { data: profile, isLoading: isLoadingProfile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => fetchProfile(),
+  })
+
   const [changes, setChanges] = useState<any>([]);
   const [currValues, setCurrValues] = useState<any>([]);
-  const [isFinished, setIsFinished] = useState<any>(false);
-  const [balance, setBalance] = useState<any>(0);
-  const [netBalance, setNetBalance] = useState<any>(0);
-  const [openModal, setOpenModal] = useState<any>(false);
-  const [selTicker, setSelTicker] = useState<any>("");
+  const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [netBalance, setNetBalance] = useState<number>(0);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [selTicker, setSelTicker] = useState<string>("");
 
-  const fetchBalance = async () => {
-    const { data } = await httpClient.get("http://localhost:5000/balance");
-    setBalance(data.balance.toFixed(2));
-  };
+  const styles = {
+    negative: { color: 'red' },
+    positive: { color: 'green'},
+  }
 
   const updatePrices = async () => {
     try {
-      const requests = positions.map((position: any) =>
-        axios.get(`https://finnhub.io/api/v1/quote?symbol=${position.stockSymbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+      const requests: any = positions?.map((position: Position) =>
+        axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${position.symbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
       );
 
       const responses = await Promise.all(requests);
 
-      let net : number = 0;
+      let net: number = 0;
 
-      const updatedChanges = responses.map((response, index) => {
+      const updatedChanges = responses?.map((response: any, index: number) => {
         const { c: latestPrice } = response.data;
-        const change = ((latestPrice - positions[index].averagePrice) / latestPrice * 100).toFixed(2);
+        const change: number = positions ? parseFloat(((latestPrice - positions[index].averagePrice) / latestPrice * 100).toFixed(2)) : 0;
         return change;
       });
 
-      const currValueChanges = responses.map((response, index) => {
+      const currValueChanges = responses.map((response: any, index: number) => {
         const { c: latestPrice } = response.data;
-        const currValue = (positions[index].shares * latestPrice).toFixed(2);
-        net += parseFloat(currValue);
+        const currValue: number = positions ? parseFloat((positions[index].shares * parseFloat(latestPrice)).toFixed(2)) : 0;
+        net += currValue;
         return currValue;
       });
 
       setCurrValues(currValueChanges);
       setChanges(updatedChanges);
-      setNetBalance(net + parseFloat(balance));
+      profile && setNetBalance(net + profile?.balance);
       setIsFinished(true);
     } catch (error) {
       console.error(error);
@@ -56,17 +75,15 @@ const Portfolio = () => {
 
   useEffect(() => {
     document.title = "Paper Trading Application";
-    fetchBalance();
-    if (positions && !isFetching) {
+    if (!isLoadingPositions && !isLoadingProfile) {
       updatePrices();
     }
-  }, [positions, isFetching, balance]);
+  }, [isLoadingPositions, isLoadingProfile]);
 
   const closePosition = async (ticker: any) => {
     try {
-      await httpClient.post(`http://localhost:5000/closeposition/${ticker}`);
+      await httpClient.post(`/closeposition/${ticker}`);
       setOpenModal(false);
-      refetch();
     } catch (error) {
       console.error(error);
     }
@@ -85,7 +102,7 @@ const Portfolio = () => {
             </div>
             <div>
               <h4>Excess Liquidity</h4>
-              <div className="price">{balance}</div>
+              <div className="price">{profile?.balance}</div>
             </div>
           </div>
         </div>
@@ -102,16 +119,20 @@ const Portfolio = () => {
               </tr>
             </thead>
             <tbody>
-              {positions.map((position: any, i: any) => (
+              {positions?.map((position: Position, i: number) => (
                 <tr key={i}>
-                  <td style={{ fontWeight: "bold" }}>{position.stockSymbol}</td>
+                  <td style={{ fontWeight: "bold" }}>{position.symbol}</td>
                   <td>{position.shares}</td>
                   <td>{changes[i]}%</td>
                   <td>{position.averagePrice.toFixed(2)}</td>
                   <td>{currValues[i]}</td>
-                  <td>{(position.averagePrice * position.shares - currValues[i]).toFixed(2)}</td>
+                  <td style={
+                    position.averagePrice * position.shares - currValues[i] >= 0 ? styles.positive : styles.negative
+                  }>
+                    {(position.averagePrice * position.shares - currValues[i]).toFixed(2)}
+                  </td>
                   {/* <td className="crossIcon" onClick={() => closePosition(position.stockSymbol)}><CloseIcon /></td> */}
-                  <td className="crossIcon" onClick={() => {setOpenModal(true); setSelTicker(position.stockSymbol)}}><CloseIcon /></td>
+                  <td className="crossIcon" onClick={() => {setOpenModal(true); setSelTicker(position.symbol)}}><CloseIcon /></td>
                 </tr>
               ))}
             </tbody>
