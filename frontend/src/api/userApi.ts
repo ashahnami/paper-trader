@@ -1,3 +1,5 @@
+import { LoginDetails } from '../entities/LoginDetails';
+import { LoginStatus } from '../entities/LoginStatus';
 import { Position } from '../entities/Position';
 import { Profile } from '../entities/Profile';
 import { Transaction } from '../entities/Transaction';
@@ -18,4 +20,12 @@ export const fetchWatchlist = async (): Promise<WatchlistItem[]> => {
 
 export const fetchTransactions = async (ticker: string): Promise<Transaction[]> => {
     return (await httpClient.get<Transaction[]>(`/transactions/${ticker}`)).data;
+}
+
+export const login = async ({ username, password }: { username: string, password: string }): Promise<LoginDetails> => {
+    return (await httpClient.post<LoginDetails>('/login', {username, password})).data;
+}
+
+export const checkLogin = async (): Promise<LoginStatus> => {
+    return (await httpClient.get<LoginStatus>('/checklogin')).data;
 }

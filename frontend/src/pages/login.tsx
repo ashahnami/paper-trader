@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import httpClient from "../httpClient";
 import '../assets/login.css';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '../api/userApi';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -10,22 +12,24 @@ const LoginPage = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const { mutateAsync: loginMutation } = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      navigate('/');
+    },
+    onError: () => {
+      setErrorMessage("Incorrect username or password");
+    }
+  })
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await httpClient.post('/login', {
-      username: username,
-      password: password
-    })
-    .then(function(response){
-      // dispatch(login(response.data.id));
-      navigate('/');
-    })
-    .catch(function(error){
-      // if(error.response.status === 401){
-        setErrorMessage("Incorrect username or password");
-      // }
-    })
+    try {
+      await loginMutation({ username, password }); 
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import httpClient from '../../httpClient';
+import { buyStock } from '../../api/stockApi';
 import './style.css';
 
 interface Order {
@@ -27,6 +28,10 @@ const StockBuy = () => {
         setOrderType(e.target.value);
     }
 
+    const { mutateAsync: buyStockMutation } = useMutation({
+        mutationFn: buyStock,
+    });
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -37,17 +42,9 @@ const StockBuy = () => {
             }))
         }
 
-        await httpClient.post('/buy', {
-            ticker: order?.ticker,
-            price: order?.price,
-            quantity: order?.quantity 
-        })
-        .then(function(response){
-            console.log(response);
-        })
-        .catch(function(error){
-            console.log(error);
-        })
+        if (order) {
+            buyStockMutation({ticker: order?.ticker, price: order?.price, quantity: order?.quantity});
+        }
     }
 
     const limitOrderForm = () => {
@@ -101,6 +98,7 @@ const StockBuy = () => {
                     onChange={(e) => setOrder((previousState: any) => {
                         return { ...previousState, quantity: e.target.value}
                     })}
+                    required
                 />
             </label>
             <input type="submit" value="Submit Order" />

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Navbar from "../common/navbar/index";
-import httpClient from '../httpClient';
 import { fetchPositions, fetchProfile } from '../api/userApi';
+import { closePosition } from '../api/stockApi';
 import "../assets/portfolio.css";
 import { Position } from '../entities/Position';
 
@@ -40,6 +40,13 @@ const Portfolio = () => {
     negative: { color: 'red' },
     positive: { color: 'green'},
   }
+
+  const { mutateAsync: closePositionMutation } = useMutation({
+    mutationFn: closePosition,
+    onSuccess: () => {
+      setOpenModal(false);
+    }
+  })
 
   const updatePrices = async () => {
     try {
@@ -79,15 +86,6 @@ const Portfolio = () => {
       updatePrices();
     }
   }, [isLoadingPositions, isLoadingProfile]);
-
-  const closePosition = async (ticker: any) => {
-    try {
-      await httpClient.post(`/closeposition/${ticker}`);
-      setOpenModal(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div className="portfolio">
@@ -148,7 +146,13 @@ const Portfolio = () => {
             <div>Are you sure to want to sell this stock?</div>
             <div className="footer">
               <button onClick={() => setOpenModal(false)}>Cancel</button>
-              <button className="continue" onClick={() => closePosition(selTicker)}>Continue</button>
+              <button className="continue" onClick={async () => {
+                try {
+                  await closePositionMutation(selTicker)
+                } catch (e) {
+                  console.log(e);
+                }
+              }}>Continue</button>
             </div>
           </div>
         </div>
