@@ -56,13 +56,13 @@ FINNHUB_API_KEY=YOUR_FINNHUB_API_KEY
 
 ### Running
 
-Run the following command in the backend folder to run the Flask application.
+Run the following command in the `backend` folder to run the Flask application.
 
 ```
-$ python app.py
+$ flask run
 ```
 
-Then run the following command in the frontend folder to run the React app.
+Then run the following command in the `frontend` folder to run the React app.
 
 ```
 $ yarn start

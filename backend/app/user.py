@@ -2,10 +2,8 @@ from flask import Blueprint, jsonify, session, request
 import yfinance as yf
 
 from app.models.stock import Stock, Position
-from app.models.transaction import Transaction
-from app.models.user import User
+from app.models.user import User, Transaction, WatchlistItem
 from app.extensions import db
-from app.models.watchlist import WatchlistItem
 
 bp = Blueprint('users', __name__, url_prefix='/users')
 

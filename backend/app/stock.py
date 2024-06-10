@@ -2,8 +2,7 @@ from flask import Blueprint, jsonify, session, request
 
 from app.extensions import db
 from app.models.stock import Stock, Position
-from app.models.transaction import Transaction
-from app.models.user import User
+from app.models.user import User, Transaction
 
 bp = Blueprint('stocks', __name__, url_prefix='/stocks')
 
