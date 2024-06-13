@@ -35,7 +35,7 @@ const LoginPage = () => {
   useEffect(() => {
     document.title = "Login";
 
-    httpClient.get("/checklogin")
+    httpClient.get("/auth/checklogin")
     .then(function(response){
       if(response.data["logged_in"]){
         navigate("/")

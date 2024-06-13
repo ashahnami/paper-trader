@@ -21,7 +21,7 @@ const Navbar = () => {
   let accountMenuRef = useRef<HTMLInputElement>(null);
 
   const logout = () => {
-    httpClient.post("/logout")
+    httpClient.post("/auth/logout")
     .then(function(response){
       console.log(response)
     })

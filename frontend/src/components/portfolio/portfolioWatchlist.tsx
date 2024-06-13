@@ -17,7 +17,7 @@ interface Quote {
 
 const Watchlist = () => {
     const { data: watchlist, isLoading } = useQuery({
-      queryKey: ['watchlist'],
+      queryKey: ['watchlist.py'],
       queryFn: () => fetchWatchlist(),
     })
 
@@ -49,7 +49,7 @@ const Watchlist = () => {
 
     return (
       <div>
-        {isLoading ? "Fetching watchlist" : (
+        {isLoading ? "Fetching watchlist.py" : (
           <table>
             <thead>
               <tr>

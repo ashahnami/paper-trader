@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
 import httpClient from "../httpClient";
 import '../assets/login.css';
+import { register } from '../api/userApi';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -12,29 +14,30 @@ const RegisterPage = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
+    const { mutateAsync: registerMutation } = useMutation({
+        mutationFn: register,
+        onSuccess: () => {
+            navigate('/login');
+        },
+        onError: () => {
+            setErrorMessage("Username/Email already exists");
+        }
+    })
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await httpClient.post('http://localhost:5000/register', {
-            username: username,
-            email: email,
-            password: password
-        })
-        .then(function(response){
-            console.log(response);
-            window.location.href="/login";
-        })
-        .catch(function(error){
-            if(error.response.status === 409){
-                setErrorMessage("Username/email already exists");
-            }
-        })
+        try {
+            await registerMutation({ username, email, password });
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     useEffect(() => {
         document.title = "Register"
 
-        httpClient.get("http://localhost:5000/@me")
+        httpClient.get("/auth/checklogin")
         .then(function(response){
             navigate("/")
         })

@@ -8,9 +8,9 @@ export const fetchStock = async (ticker: string): Promise<Stock> => {
 }
 
 export const buyStock = async (order: BuyOrder): Promise<any> => {
-    return (await httpClient.post<BuyOrder>('/buy')).data;
+    return (await httpClient.post<BuyOrder>('/positions')).data;
 }
 
 export const closePosition = async (ticker: string): Promise<any> => {
-    return (await httpClient.post(`/closeposition/${ticker}`)).data;
+    return (await httpClient.delete(`/positions/${ticker}/close`)).data;
 }

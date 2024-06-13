@@ -46,7 +46,7 @@ interface Info {
 
 const Stock = () => {
   const { data: watchlist, isLoading: isLoadingWatchlist } = useQuery({
-    queryKey: ['watchlist'],
+    queryKey: ['watchlist.py'],
     queryFn: () => fetchWatchlist(),
   })
 
