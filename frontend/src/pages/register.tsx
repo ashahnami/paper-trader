@@ -13,6 +13,7 @@ const RegisterPage = () => {
     const [username, setUsername] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(true);
 
     const { mutateAsync: registerMutation } = useMutation({
         mutationFn: register,
@@ -35,16 +36,23 @@ const RegisterPage = () => {
     }
 
     useEffect(() => {
-        document.title = "Register"
+        document.title = "Register";
 
-        httpClient.get("/auth/checklogin")
-        .then(function(response){
-            navigate("/")
-        })
-        .catch(function(error){
-            console.log(error)
-        })
+        const fetchDetails = async () => {
+            try {
+                await httpClient.get('/auth/@me');
+                navigate('/');
+            } catch (error) {
+                setLoading(false);
+            }
+        }
+
+        fetchDetails();
     })
+
+    if (loading) {
+        return <div></div>
+    }
 
   return (
     <div className="register">

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Navbar from "../common/navbar/index";
 import "../assets/home.css";
 import Watchlist from '../components/portfolio/portfolioWatchlist';
+import AuthContext from '../context/AuthProvider';
 
 interface News {
   "category": string;
@@ -19,6 +20,7 @@ interface News {
 
 const Home = () => {
   const [news, setNews] = useState<News[]>();
+  const { auth } : any = useContext(AuthContext);
 
   const fetchNews = async () => {
     const { data: news } = await axios.get(`https://finnhub.io/api/v1/news?category=general&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
@@ -36,8 +38,9 @@ const Home = () => {
       <div className="home-container">
         <div className="watchlist">
           <h5 className="header">Watchlist</h5>
+          <div>test: {auth?.user}</div>
 
-          <Watchlist />
+          {/* <Watchlist /> */}
         </div>
 
         <div className="news">

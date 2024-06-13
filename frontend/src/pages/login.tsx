@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import httpClient from "../httpClient";
 import '../assets/login.css';
 import { useMutation } from '@tanstack/react-query';
 import { login } from '../api/userApi';
+import useAuth from '../hooks/useAuth';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { setAuth } : any = useAuth();
 
   const { mutateAsync: loginMutation } = useMutation({
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setAuth({ user: data.username })
       navigate('/');
     },
     onError: () => {
@@ -34,16 +36,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     document.title = "Login";
-
-    httpClient.get("/auth/checklogin")
-    .then(function(response){
-      if(response.data["logged_in"]){
-        navigate("/")
-      }
-    })
-    .catch(function(error){
-      console.log(error)
-    })
   }, [])
 
   return (

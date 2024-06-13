@@ -8,6 +8,7 @@ import SearchBar from '../search/SearchBar';
 import '../../assets/navbar.css';
 import { fetchProfile } from '../../api/userApi'
 import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../hooks/useAuth';
 
 const Navbar = () => {
   const { data: user, isLoading } = useQuery({
@@ -17,15 +18,16 @@ const Navbar = () => {
 
   const navigate = useNavigate()
   const [dropdown, setDropdown] = useState<boolean>(false)
+  const { setAuth } : any = useAuth();
 
   let accountMenuRef = useRef<HTMLInputElement>(null);
 
   const logout = () => {
     httpClient.post("/auth/logout")
     .then(function(response){
-      console.log(response)
+      setAuth({});
     })
-    navigate("/login")
+    navigate("/login");
   }
 
   useEffect(() => {
