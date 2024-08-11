@@ -38,7 +38,7 @@ $ yarn install
 
 ### Usage
 
-Enter the following secret keys in the `backend` folder in a .env file.
+In the `backend` folder, rename the file `.env.example` to `.env` and enter your secret keys.
 
 ```env
 DATABASE_URI=YOUR_POSTGRES_DATABASE_URI
@@ -47,7 +47,7 @@ SECRET_KEY=ANY_SECRET_KEY
 
 This platform makes use of two different API keys. One is for the Finnhub API and other is for the Alpha Vantage API.
 
-Enter the API keys in the `frontend` folder in a .env file.
+In the `frontend` folder, rename the file `.env.example` to `.env` and enter your secret keys.
 
 ```env
 ALPHAVANTAGE_API_KEY=YOUR_ALPHAVANTAGE_API_KEY
