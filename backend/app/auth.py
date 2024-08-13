@@ -75,3 +75,20 @@ def login():
 def logout():
     logout_user()
     return jsonify({'message': 'Successfully logged out'}), 200
+
+
+@bp.route("/change-password", methods=["PATCH"])
+@login_required
+def change_password():
+    old_password = request.json['oldPassword']
+    new_password = request.json['newPassword']
+
+    if not check_password_hash(current_user.password, old_password):
+        return jsonify({'error': 'Unauthorised'}), 401
+
+    if check_password_hash(current_user.password, new_password):
+        return jsonify({'message': 'Password changed'}), 500
+
+    current_user.password = generate_password_hash(new_password)
+    db.session.commit()
+    return jsonify({'message': 'Successfully changed password'}), 200

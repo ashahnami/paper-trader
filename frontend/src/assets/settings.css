@@ -14,7 +14,7 @@
     gap: 30px;
 }
 
-.settings .changeUsername {
+.settings .changeUsername, .settings .changePassword {
     width: 100%;
     background-color: #fff;
     box-shadow: 0 0 40px rgba(5,5,5,0.03); 
@@ -40,7 +40,7 @@
     color: black;
 }
 
-.settings input[type=text] {
+.settings input[type=text], .settings input[type=password] {
     outline: none;
     display: block;
     height: 40px;
