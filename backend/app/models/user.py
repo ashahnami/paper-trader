@@ -10,10 +10,23 @@ class User(db.Model):
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     balance = db.Column(db.Numeric(precision=10, scale=2), default=10000.00, nullable=False)
+    active = db.Column(db.Boolean, default=True, nullable=False)
 
     transactions = db.relationship("Transaction", backref="user", lazy=True)
     positions = db.relationship("Position", backref="user", lazy=True)
     watchlist = db.relationship("WatchlistItem", backref="user", lazy=True)
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return self.active
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
 
 
 class Transaction(db.Model):

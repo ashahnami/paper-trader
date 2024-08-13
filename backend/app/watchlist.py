@@ -1,34 +1,23 @@
 from flask import Blueprint, jsonify, session, request
+from flask_login import login_required, current_user
 
 from app.models.stock import Stock
-from app.models.user import User, WatchlistItem
+from app.models.user import WatchlistItem
 from app.extensions import db
 
 bp = Blueprint('watchlist', __name__, url_prefix='/watchlist')
 
 
 @bp.route("/", methods=["GET"])
+@login_required
 def get_watchlist():
-    user_id = session.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
-
-    return "watchlist: okay"
-
-    # if user is None:
-    #     return jsonify({"error": "Unauthorised"}), 401
-
-    # return jsonify({'watchlist': user.watchlist}), 200
+    return jsonify({'watchlist': current_user.watchlist}), 200
 
 
 @bp.route("/add", methods=["POST"])
+@login_required
 def add_to_watchlist():
     ticker = request.json["ticker"]
-
-    user_id = session.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
-
-    if user is None:
-        return jsonify({"error": "Unauthorised"}), 401
 
     stock = Stock.query.filter_by(ticker=ticker).first()
     if stock is None:
@@ -38,7 +27,7 @@ def add_to_watchlist():
     if watchlist_item:
         return jsonify({"error": "Stock already exists in watchlist"})
 
-    new_watchlist_item = WatchlistItem(stockId=stock.id, user_id=user_id)
+    new_watchlist_item = WatchlistItem(stockId=stock.id, user_id=current_user.id)
     db.session.add(new_watchlist_item)
     db.session.commit()
 
@@ -46,20 +35,15 @@ def add_to_watchlist():
 
 
 @bp.route("/remove", methods=["DELETE"])
+@login_required
 def remove_from_watchlist():
     ticker = request.json["ticker"]
-
-    user_id = session.get("user_id")
-    user = User.query.filter_by(id=user_id).first()
-
-    if user is None:
-        return jsonify({"error": "Unauthorised"}), 401
 
     stock = Stock.query.filter_by(ticker=ticker).first()
     if stock is None:
         return jsonify({"error": "Stock not found"}), 404
 
-    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id).first()
+    watchlist_item = current_user.watchlist.query.filter_by(stockId=stock.id).first()
     db.session.delete(watchlist_item)
     db.session.commit()
 

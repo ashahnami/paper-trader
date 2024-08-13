@@ -1,38 +1,37 @@
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, logout_user, login_required, current_user
 
-from app.extensions import db
+from app.extensions import db, login_manager
 from app.models.user import User
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+
 @bp.route('/checklogin', methods=['GET'])
 def is_logged_in():
-    user_id = session.get("user_id")
-
-    if not user_id:
+    if not current_user.id:
         return jsonify({"logged_in": False}), 200
     return jsonify({"logged_in": True}), 200
 
 
 @bp.route("/@me")
+@login_required
 def get_user():
-    user_id = session.get("user_id")
-
-    if not user_id:
-        return jsonify({"error": "Unauthorised"}), 401
-
-    user = User.query.filter_by(id=user_id).first()
     return jsonify({
-        "username": user.username,
-        "email": user.email,
-        "balance": user.balance
+        "username": current_user.username,
+        "email": current_user.email,
+        "balance": current_user.balance
     }), 200
 
 
 @bp.route("/register", methods=["POST"])
-def register_user():
+def register():
     username = request.json["username"]
     email = request.json["email"]
     password = request.json["password"]
@@ -54,16 +53,16 @@ def register_user():
 
 
 @bp.route("/login", methods=["POST"])
-def login_user():
+def login():
     username = request.json["username"]
     password = request.json["password"]
 
     user = User.query.filter_by(username=username).first()
 
     if not user or not check_password_hash(user.password, password):
-        return jsonify({"error": "Unauthorised"}), 401
+        return jsonify({"error": "Incorrect login details"}), 401
 
-    session["user_id"] = user.id
+    login_user(user)
 
     return jsonify({
         "id": user.id,
@@ -72,6 +71,7 @@ def login_user():
 
 
 @bp.route("/logout", methods=["POST"])
-def logout_user():
-    session.pop("user_id", None)
+@login_required
+def logout():
+    logout_user()
     return jsonify({'message': 'Successfully logged out'}), 200
