@@ -65,7 +65,11 @@ const Stock = () => {
   const [inWatchlist, setInWatchlist] = useState(false);
 
   const fetchQuote = async () => {
-    const { data: quote } = await axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+    // const { data: quote } = await axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+
+    /* temporary */
+    const quote = {"c":216.24,"d":2.93,"dp":1.3736,"h":216.78,"l":211.98,"o":212.08,"pc":213.31,"t":1723233601}
+
     setPrice(parseFloat(quote.c.toFixed(2)));
     setDetails(quote);
 
@@ -75,7 +79,11 @@ const Stock = () => {
   }
 
   const fetchStockInfo = async () => {
-    const { data: info } = await axios.get<Info>(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+    // const { data: info } = await axios.get<Info>(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
+
+    /* temporary */
+    const info = {"country":"US","currency":"USD","estimateCurrency":"USD","exchange":"NASDAQ NMS - GLOBAL MARKET","finnhubIndustry":"Technology","ipo":"1980-12-12","logo":"https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png","marketCapitalization":3287742.607581,"name":"Apple Inc","phone":"14089961010","shareOutstanding":15334.08,"ticker":"AAPL","weburl":"https://www.apple.com/"}
+
     setStockInfo(info);
   }
 
@@ -87,11 +95,12 @@ const Stock = () => {
   }
 
   const checkInWatchlist = async () => {
-    watchlist?.forEach((item: WatchlistItem) => {
-      if(item.stockSymbol === ticker){
+    console.log('watchlist', watchlist)
+    // watchlist?.forEach((item: WatchlistItem) => {
+      // if(item.stockSymbol === ticker){
         setInWatchlist(true);
-      }
-    })
+      // }
+    // })
   }
 
   const removeFromWatchlist = () => {
@@ -118,7 +127,11 @@ const Stock = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { data: quote } = await axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+    // const { data: quote } = await axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+
+    /* temporary */
+    const quote = {"c":216.24,"d":2.93,"dp":1.3736,"h":216.78,"l":211.98,"o":212.08,"pc":213.31,"t":1723233601}
+
     const latestPrice = quote.c
 
     httpClient.post('/buy', {
@@ -133,7 +146,7 @@ const Stock = () => {
 
   return (
     <div className="stock">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="stock-header">
         <div className="info">
@@ -151,7 +164,7 @@ const Stock = () => {
       <div className="stock-container">
         <div className="col1">
 
-          <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
+          {/* <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div> */}
 
           <div className="stock-details">
             <div className="stock-details-col">
@@ -223,7 +236,7 @@ const Stock = () => {
 
                 <input type="submit" value={orderType} />
 
-                <div className="balance">${profile?.balance.toFixed(2)} available</div>
+                {/* <div className="balance">${profile?.balance.toFixed(2)} available</div> */}
             </form>
           </div>
 
