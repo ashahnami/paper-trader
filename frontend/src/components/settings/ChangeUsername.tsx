@@ -1,19 +1,35 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
 
-import { fetchProfile } from '../../api/userApi';
+import { changeUsername, fetchProfile } from '../../api/userApi';
 import '../../assets/settings.css';
 
 export const ChangeUsername = () => {
-  const [username, setUsername] = useState<string>();
+  const [username, setUsername] = useState<string>("");
   
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: () => fetchProfile(),
   })
 
+  const { mutateAsync: changeUsernameMutation } = useMutation({
+    mutationFn: changeUsername,
+    onSuccess: (data) => {
+        console.log('Successfully changed username');
+    },
+    onError: () => {
+        console.log('Could not change username');
+    }
+  })
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    try {
+        await changeUsernameMutation({ newUsername: username });
+    } catch (e) {
+        console.log(e);
+    }
   }
 
   useEffect(() => {

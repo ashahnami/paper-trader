@@ -92,3 +92,17 @@ def change_password():
     current_user.password = generate_password_hash(new_password)
     db.session.commit()
     return jsonify({'message': 'Successfully changed password'}), 200
+
+
+@bp.route("/change-username", methods=["PATCH"])
+@login_required
+def change_username():
+    new_username = request.json['newUsername']
+
+    user = User.query.filter_by(username=new_username).first()
+    if user:
+        return jsonify({'error': 'Username already exists'}), 409
+
+    current_user.username = new_username
+    db.session.commit()
+    return jsonify({'message': 'Successfully changed username'})

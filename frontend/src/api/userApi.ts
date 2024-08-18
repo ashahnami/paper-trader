@@ -1,6 +1,7 @@
 import { LoginDetails } from '../entities/LoginDetails';
 import { RegisterDetails } from '../entities/RegisterDetails';
 import { ChangePasswordDetails } from '../entities/ChangePasswordDetails';
+import { ChangeUsername } from '../entities/ChangeUsername';
 import { LoginStatus } from '../entities/LoginStatus';
 import { Position } from '../entities/Position';
 import { Profile } from '../entities/Profile';
@@ -38,4 +39,8 @@ export const checkLogin = async (): Promise<LoginStatus> => {
 
 export const changePassword = async ({ oldPassword, newPassword }: { oldPassword: string, newPassword: string }): Promise<ChangePasswordDetails> => {
     return (await httpClient.patch<ChangePasswordDetails>('/auth/change-password', {oldPassword, newPassword})).data;
+}
+
+export const changeUsername = async ({ newUsername }: { newUsername: string }): Promise<ChangeUsername> => {
+    return (await httpClient.patch<ChangeUsername>('/auth/change-username', {newUsername})).data;
 }
