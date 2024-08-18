@@ -83,3 +83,7 @@
 .settings input[type=submit]:hover {
     background-color: #31437d;
 }
+
+.settings .error {
+    color: red;
+}

@@ -87,7 +87,7 @@ def change_password():
         return jsonify({'error': 'Unauthorised'}), 401
 
     if check_password_hash(current_user.password, new_password):
-        return jsonify({'message': 'Password changed'}), 500
+        return jsonify({'message': 'New password must be different to old password'}), 500
 
     current_user.password = generate_password_hash(new_password)
     db.session.commit()

@@ -9,14 +9,18 @@ export const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
+  const [error, setError] = useState<string>();
+  const [showError, setShowError] = useState<boolean>(false);
 
   const { mutateAsync: changePasswordMutation } = useMutation({
     mutationFn: changePassword,
     onSuccess: (data) => {
-      console.log('Successfully changed password')
+        console.log('Successfully changed password');
+        setShowError(false); 
     },
-    onError: () => {
-      console.log('Could not change password')
+    onError: (error) => {
+        setError("Could not change password");
+        setShowError(true);
     }
   })
 
@@ -24,14 +28,15 @@ export const ChangePassword = () => {
     e.preventDefault()
 
     if (newPassword !== confirmNewPassword) {
-      console.log('Passwords do not match')
+      setError('Passwords do not match');
+      setShowError(true);
       return;
     }
 
     try {
       await changePasswordMutation({ oldPassword, newPassword });
     } catch (e) {
-      console.log(e)
+      setShowError(true);
     }
 
   }
@@ -70,6 +75,11 @@ export const ChangePassword = () => {
 
                 <input type="submit" value="Change Password" />
               </form>
+
+            {showError ? (
+                <span className='error'>{error}</span>
+            ): null}
+              
             </div>
   )
 }
