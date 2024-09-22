@@ -14,11 +14,11 @@ export const fetchProfile = async (): Promise<Profile> => {
 }
 
 export const fetchPositions = async (): Promise<Position[]> => {
-    return (await httpClient.get<Position[]>('/positions/')).data;
+    return (await httpClient.get<{ positions: Position[] }>('/positions/')).data.positions;
 }
 
 export const fetchWatchlist = async (): Promise<WatchlistItem[]> => {
-    return (await httpClient.get<WatchlistItem[]>('/watchlist/')).data;
+    return (await httpClient.get<{ watchlist: WatchlistItem[] }>('/watchlist/')).data.watchlist;
 }
 
 export const fetchTransactions = async (ticker: string): Promise<Transaction[]> => {

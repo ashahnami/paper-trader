@@ -34,7 +34,7 @@ def add_to_watchlist():
     return jsonify({"message": 'Successfully added to watchlist'}), 200
 
 
-@bp.route("/remove", methods=["DELETE"])
+@bp.route("/remove", methods=["POST"])
 @login_required
 def remove_from_watchlist():
     ticker = request.json["ticker"]

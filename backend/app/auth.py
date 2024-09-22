@@ -26,7 +26,7 @@ def get_user():
     return jsonify({
         "username": current_user.username,
         "email": current_user.email,
-        "balance": current_user.balance
+        "balance": int(current_user.balance)
     }), 200
 
 

@@ -83,6 +83,7 @@ const Portfolio = () => {
   useEffect(() => {
     document.title = "Paper Trading Application";
     if (!isLoadingPositions && !isLoadingProfile) {
+      console.log(positions)
       updatePrices();
     }
   }, [isLoadingPositions, isLoadingProfile]);
