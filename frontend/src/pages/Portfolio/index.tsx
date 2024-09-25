@@ -3,11 +3,11 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 
-import Navbar from "../common/navbar/index";
-import { fetchPositions, fetchProfile } from '../api/userApi';
-import { closePosition } from '../api/stockApi';
-import "../assets/portfolio.css";
-import { Position } from '../entities/Position';
+import Navbar from "../../components/navbar";
+import { fetchPositions, fetchProfile } from '../../api/userApi';
+import { closePosition } from '../../api/stockApi';
+import "../../assets/portfolio.css";
+import { Position } from '../../entities/Position';
 
 interface Quote {
     "c": number;

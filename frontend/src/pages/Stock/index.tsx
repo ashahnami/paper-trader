@@ -4,14 +4,14 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro'
 
-import httpClient from "../httpClient";
-import Navbar from '../common/navbar/index';
-import StockChart from '../components/chart/index.js';
+import httpClient from "../../api/httpClient";
+import Navbar from '../../components/navbar';
+import StockChart from './chart';
 
-import '../assets/stock.css';
+import '../../assets/stock.css';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProfile, fetchWatchlist } from '../api/userApi';
-import { WatchlistItem } from '../entities/Watchlist';
+import { fetchProfile, fetchWatchlist } from '../../api/userApi';
+import { WatchlistItem } from '../../entities/Watchlist';
 
 interface Order {
   price: number;

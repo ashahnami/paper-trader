@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 
-import httpClient from '../../httpClient'
-import SearchBar from '../search/SearchBar';
+import httpClient from '../../api/httpClient'
+import SearchBar from '../search';
 import '../../assets/navbar.css';
 import { fetchProfile } from '../../api/userApi'
 import { useQuery } from '@tanstack/react-query';

@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 
-import httpClient from "../httpClient";
-import '../assets/login.css';
-import { register } from '../api/userApi';
+import httpClient from "../../api/httpClient";
+import '../../assets/login.css';
+import { register } from '../../api/userApi';
 
-const RegisterPage = () => {
+const Register = () => {
     const navigate = useNavigate();
 
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -93,4 +93,4 @@ const RegisterPage = () => {
   )
 }
 
-export default RegisterPage;
+export default Register;

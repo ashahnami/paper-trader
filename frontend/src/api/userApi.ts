@@ -7,7 +7,7 @@ import { Position } from '../entities/Position';
 import { Profile } from '../entities/Profile';
 import { Transaction } from '../entities/Transaction';
 import { WatchlistItem } from '../entities/Watchlist';
-import httpClient from '../httpClient';
+import httpClient from './httpClient';
 
 export const fetchProfile = async (): Promise<Profile> => {
     return (await httpClient.get<Profile>('/auth/@me')).data;

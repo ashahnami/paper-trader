@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import '../assets/login.css';
+import '../../assets/login.css';
 import { useMutation } from '@tanstack/react-query';
-import { login } from '../api/userApi';
-import useAuth from '../hooks/useAuth';
+import { login } from '../../api/userApi';
+import useAuth from '../../hooks/useAuth';
 
-const LoginPage = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [username, setUsername] = useState<string>("");
@@ -69,4 +69,4 @@ const LoginPage = () => {
   )
 };
 
-export default LoginPage;
+export default Login;

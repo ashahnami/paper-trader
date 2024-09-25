@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
-import Navbar from "../common/navbar/index";
-import "../assets/home.css";
-import Watchlist from '../components/portfolio/portfolioWatchlist';
-import AuthContext from '../context/AuthProvider';
+import Navbar from "../../components/navbar";
+import "../../assets/home.css";
+import Watchlist from '../Portfolio/portfolioWatchlist';
+import AuthContext from '../../context/AuthProvider';
 
 interface News {
   "category": string;
