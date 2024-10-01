@@ -36,6 +36,13 @@ def register():
     email = request.json["email"]
     password = request.json["password"]
 
+    if not username:
+        return jsonify({"message": "Username is required."}), 400
+    if not email:
+        return jsonify({"message": "Email is required"}), 400
+    if not password:
+        return jsonify({"message": "Password is required."}), 400
+
     if User.query.filter_by(username=username).first() is not None:
         return jsonify({"error": "User already exists"}), 409
 
