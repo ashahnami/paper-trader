@@ -6,13 +6,9 @@ import '../../assets/settings.css';
 const Settings = () => {
   return (
     <div className='settings'>
-        <Navbar />
-
         <div className='settingsContainer'>
             <h1>Settings</h1>
-
             <ChangeUsername />
-
             <ChangePassword />
         </div>
     </div>

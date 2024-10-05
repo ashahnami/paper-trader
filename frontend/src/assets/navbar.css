@@ -1,24 +1,16 @@
-.navbar {
+nav {
     display: flex;
     flex-direction: row;
     width: 100%;
-    margin-bottom: 40px;
+    height: 60px;
     padding: 10px 30px;
     align-items: center;
-    justify-content: center;
-    border-bottom: solid 1px #e0e0e0;
-    box-shadow: 0 0 10px #f0f0f0;
-}
-
-.navbar-container {
-    display: flex;
     justify-content: space-between;
-    align-items: center;
-    max-width: 1280px;
-    width: 100%;
+    border-bottom: solid 1px #e0e0e0;
+    /* box-shadow: 0px 1px 2px #e0e0e0; */
 }
 
-.navbar .links {
+nav .links {
     display: flex;
     gap: 30px;
     align-items: center;
@@ -43,22 +35,22 @@
     color: #4056a1;
 }
 
-.navbar .account {
+nav .account {
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
-.navbar .account .icon {
+nav .account .icon {
     cursor: pointer;
     transition: 0.2 ease;
 }
 
-.navbar .account .icon:hover {
+nav .account .icon:hover {
     color: #4056a1;
 }
 
-.navbar .account .dropdown {
+nav .account .dropdown {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -70,38 +62,38 @@
     border: solid 1px #e0e0e0;
 }
 
-.navbar .account .dropdown .links {
+nav .account .dropdown .links {
     display: flex;
     flex-direction: column;
     gap: 0;
     width: 100%;
 }
 
-.navbar .account .dropdown .links div {
+nav .account .dropdown .links div {
     width: 100%;
     font-size: 0.9rem;
     padding: 5px;
     transition: 0.3 ease;
 }
 
-.navbar .account .dropdown .links div:hover {
+nav .account .dropdown .links div:hover {
     cursor: pointer;
     background-color: #f0f0f0;
 }
 
-.navbar .account .dropdown .details {
+nav .account .dropdown .details {
     display: flex;
     flex-direction: column;
     gap: 2px;
     padding: 4px;
 }
 
-.navbar .account .dropdown .email {
+nav .account .dropdown .email {
     color: #a0a0a0;
     font-size: 0.9rem;
 }
 
-.navbar .account .dropdown .divider {
+nav .account .dropdown .divider {
     width: 100%;
     border: solid 1px #f1f1f1;
     margin: 4px 0;

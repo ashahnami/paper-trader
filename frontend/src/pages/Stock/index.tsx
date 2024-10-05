@@ -142,8 +142,6 @@ const Stock = () => {
 
   return (
     <div className="stock">
-      <Navbar />
-
       <div className="stock-header">
         <div className="info">
           <h3>{ticker}</h3>

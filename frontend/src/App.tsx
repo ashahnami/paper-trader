@@ -7,8 +7,8 @@ import Login from './pages/Login';
 import Stock from './pages/Stock';
 import Settings from './pages/Settings';
 import NotFound from './pages/404';
-import RequireAuth from './utils/RequireAuth';
-import './assets/base.css'
+import { Layout, RequireAuth } from './components/Layout';
+import './assets/base.css';
 
 function App() {
   return (
@@ -21,9 +21,11 @@ function App() {
           <Route path="/settings" element={<Settings />} />
         </Route>
 
-        <Route path="/register" element={<Register/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="*" element={<NotFound />} />
+        <Route element={<Layout />}>
+          <Route path="/register" element={<Register/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="*" element={<NotFound />} />        
+        </Route>
       </Routes>
     </BrowserRouter>
   );

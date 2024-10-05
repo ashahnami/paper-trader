@@ -34,7 +34,6 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Navbar />
       <div className="home-container">
         <div className="watchlist">
           <h5 className="header">Watchlist</h5>
