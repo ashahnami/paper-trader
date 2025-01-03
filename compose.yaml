@@ -1,0 +1,47 @@
+services:
+  backend:
+    container_name: backend
+    build: backend
+    restart: on-failure
+    environment:
+      - DATABASE_URI=postgresql://postgres:postgres@db:5432/paper-trader
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  
+  frontend:
+    container_name: frontend
+    build: frontend
+    ports:
+      - 3000:80
+    restart: on-failure
+    depends_on:
+      - backend
+
+  redis:
+    container_name: redis
+    image: redis:7.4.1
+    restart: on-failure
+    volumes:
+      - cache:/data
+
+  db:
+    container_name: db
+    image: postgres:17.2-alpine
+    restart: on-failure
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=paper-trader
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: echo 'pg_isready'
+      interval: 3s
+      retries: 5
+
+volumes:
+  cache:
+  db:

@@ -32,5 +32,8 @@ def create_app(config_class=Config):
     @app.route('/')
     def test():
         return 'test'
+    
+    with app.app_context():
+        db.create_all()
 
     return app

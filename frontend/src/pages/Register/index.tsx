@@ -40,7 +40,7 @@ const Register = () => {
 
         const fetchDetails = async () => {
             try {
-                await httpClient.get('/auth/@me');
+                await httpClient.get('/api/auth/@me');
                 navigate('/');
             } catch (error) {
                 setLoading(false);
