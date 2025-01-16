@@ -27,7 +27,10 @@ def create_app(config_class=Config):
     app.register_blueprint(position.bp)
 
     from app import watchlist
-    app.register_blueprint(watchlist.bp) 
+    app.register_blueprint(watchlist.bp)
+
+    from app import transaction
+    app.register_blueprint(transaction.bp)
 
     @app.route('/')
     def test():

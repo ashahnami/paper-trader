@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 
-import httpClient from "../../api/httpClient";
 import StockChart from './chart';
-
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { addToWatchlist, checkInWatchlist, fetchProfile, removeFromWatchlist } from '../../api/userApi';
+import { buyStock } from '../../api/stockApi';
 import '../../assets/stock.css';
-import { useQuery } from '@tanstack/react-query';
-import { fetchProfile, fetchWatchlist } from '../../api/userApi';
-import { WatchlistItem } from '../../entities/Watchlist';
 
 interface Order {
   price: number;
@@ -42,24 +40,39 @@ interface Info {
 }
 
 const Stock = () => {
-  const { data: watchlist, isLoading: isLoadingWatchlist } = useQuery({
-    queryKey: ['watchlist.py'],
-    queryFn: () => fetchWatchlist(),
-  })
+  let { state } = useLocation();
+  const [quantity, setQuantity] = useState<number>(1);
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
     queryFn: () => fetchProfile(),
-  })
+  });
+
+  const { data: inWatchlist } = useQuery({
+    queryKey: ['in_watchlist'],
+    queryFn: () => checkInWatchlist(state.id),
+  });
+
+  const { mutateAsync: buyStockMutation } = useMutation({
+    mutationFn: buyStock,
+  });
+
+  const { mutateAsync: addToWatchlistMutation } = useMutation({
+    mutationFn: addToWatchlist,
+  });
+
+  const { mutateAsync: removeFromWatchlistMutation } = useMutation({
+    mutationFn: removeFromWatchlist,
+  });
 
   const { ticker } = useParams();
+
   const [price, setPrice] = useState<number>(0);
   const [details, setDetails] = useState<Quote>();
   const [order, setOrder] = useState<Order>();
   const [orderType, setOrderType] = useState<string>("Buy");
   const [positiveChange, setPositiveChange] = useState<boolean>(true);
   const [stockInfo, setStockInfo] = useState<Info>();
-  const [inWatchlist, setInWatchlist] = useState(false);
 
   const fetchQuote = async () => {
     const { data: quote } = await axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
@@ -79,31 +92,6 @@ const Stock = () => {
 
     setStockInfo(info);
   }
-
-  const addToWatchlist = () => {
-    return;
-    httpClient.post("/addwatchlist", {
-      ticker: ticker
-    })
-    setInWatchlist(true);
-  }
-
-  const checkInWatchlist = async () => {
-    console.log('watchlist', watchlist)
-    watchlist?.forEach((item: WatchlistItem) => {
-      if(item.stockSymbol === ticker){
-        setInWatchlist(true);
-      }
-    })
-  }
-
-  const removeFromWatchlist = () => {
-    return;
-    httpClient.post("/removewatchlist", {
-      ticker: ticker
-    })
-    setInWatchlist(false);
-  }
   
   useEffect(() => {
     
@@ -111,13 +99,9 @@ const Stock = () => {
     let interval = setInterval(async () => { fetchQuote() }, 4000)
     
     fetchStockInfo();
-
-    if (!isLoadingWatchlist) {
-      checkInWatchlist();
-    }
     
     return () => {clearInterval(interval)}
-  }, [ticker, isLoadingWatchlist])
+  }, [ticker])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -127,14 +111,7 @@ const Stock = () => {
 
     const latestPrice = quote.c
 
-    httpClient.post('/buy', {
-      ticker: ticker,
-      price: latestPrice,
-      quantity: order?.quantity 
-    })
-    .then(function(response){
-        console.log(response);
-    })
+    buyStockMutation({id: state.id, quantity: quantity})
   }
 
   return (
@@ -208,9 +185,7 @@ const Stock = () => {
                       type="number"
                       defaultValue={1}
                       min="1"
-                      onChange={(e) => setOrder((previousState: any) => {
-                          return { ...previousState, quantity: e.target.value}
-                      })}
+                      onChange={(e) => setQuantity(Number(e.target.value))}
                       required
                   />
                 </div>
@@ -233,11 +208,19 @@ const Stock = () => {
 
           <div className='watchlist'>
             {inWatchlist ? (
-              "in watchlist icon"
+              <div onClick={() => {
+                removeFromWatchlistMutation(state.id);
+              }}>
+                In watchlist
+              </div>
               // <FontAwesomeIcon icon={icon({name: 'bookmark', family: 'classic', style: 'solid'})} onClick={removeFromWatchlist} className='watchlistIcon' />
             ) : (
               // <FontAwesomeIcon icon={icon({name: 'bookmark', family: 'classic', style: 'regular'})} onClick={addToWatchlist} className='watchlistIcon' />
-              "not in watchlist icon"
+              <div onClick={() => {
+                addToWatchlistMutation(state.id);
+              }}>
+                Not in watchlist
+              </div>
             )}
           </div>
         </div>

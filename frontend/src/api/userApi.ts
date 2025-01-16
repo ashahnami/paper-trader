@@ -21,6 +21,18 @@ export const fetchWatchlist = async (): Promise<WatchlistItem[]> => {
     return (await httpClient.get<{ watchlist: WatchlistItem[] }>('/api/watchlist/')).data.watchlist;
 }
 
+export const checkInWatchlist = async (id: number) => {
+    return (await httpClient.get(`/api/watchlist/${id}`)).data.inWatchlist;
+}
+
+export const addToWatchlist = async (id: number) => {
+    return (await httpClient.post(`/api/watchlist/${id}`)).data;
+}
+
+export const removeFromWatchlist = async (id: number) => {
+    return (await httpClient.delete(`/api/watchlist/${id}`)).data;
+}
+
 export const fetchTransactions = async (ticker: string): Promise<Transaction[]> => {
     return (await httpClient.get<Transaction[]>(`/api/${ticker}/transactions/`)).data;
 }

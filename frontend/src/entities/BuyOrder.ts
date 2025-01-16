@@ -1,5 +1,4 @@
 export interface BuyOrder {
-    ticker: string;
-    price: number;
+    stock_id: number;
     quantity: number;
 }

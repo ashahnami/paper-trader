@@ -14,16 +14,23 @@ def get_watchlist():
     return jsonify({'watchlist': current_user.watchlist}), 200
 
 
-@bp.route("/add", methods=["POST"])
+@bp.route("/<int:stock_id>", methods=["GET"])
 @login_required
-def add_to_watchlist():
-    ticker = request.json["ticker"]
+def check_in_watchlist(stock_id):
+    watchlist_item = WatchlistItem.query.filter_by(stockId=stock_id, user_id=current_user.id).first()
+    if watchlist_item:
+        return jsonify({"inWatchlist": True}), 200
+    return jsonify({"inWatchlist": False}), 200
 
-    stock = Stock.query.filter_by(ticker=ticker).first()
+
+@bp.route("/<int:stock_id>", methods=["POST"])
+@login_required
+def add_to_watchlist(stock_id):
+    stock = Stock.query.filter_by(id=stock_id).first()
     if stock is None:
         return jsonify({"error": "Stock not found"}), 404
 
-    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id).first()
+    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id, user_id=current_user.id).first()
     if watchlist_item:
         return jsonify({"error": "Stock already exists in watchlist"})
 
@@ -34,16 +41,17 @@ def add_to_watchlist():
     return jsonify({"message": 'Successfully added to watchlist'}), 200
 
 
-@bp.route("/remove", methods=["POST"])
+@bp.route("/<int:stock_id>", methods=["DELETE"])
 @login_required
-def remove_from_watchlist():
-    ticker = request.json["ticker"]
-
-    stock = Stock.query.filter_by(ticker=ticker).first()
+def remove_from_watchlist(stock_id):
+    stock = Stock.query.filter_by(id=stock_id).first()
     if stock is None:
         return jsonify({"error": "Stock not found"}), 404
 
-    watchlist_item = current_user.watchlist.query.filter_by(stockId=stock.id).first()
+    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id, user_id=current_user.id).first()
+    if watchlist_item is None:
+        return jsonify({"error": "Stock not found in watchlist"}), 404
+
     db.session.delete(watchlist_item)
     db.session.commit()
 
