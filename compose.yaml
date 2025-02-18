@@ -10,15 +10,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-  
-  frontend:
-    container_name: frontend
-    build: frontend
-    ports:
-      - 3000:80
-    restart: on-failure
-    depends_on:
-      - backend
 
   redis:
     container_name: redis
