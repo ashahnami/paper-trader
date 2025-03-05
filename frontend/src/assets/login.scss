@@ -3,7 +3,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f1f1f1;
 }
 
 .login-container {
@@ -37,9 +36,8 @@
 }
 
 .login h3, .register h3 {
-    text-align: center;
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: 600;
     color: #4056a1;
 }
 
@@ -61,7 +59,6 @@
     font-size: 1.1rem;
     border: solid 1px #e0e0e0;
     transition: 0.2s ease-in;
-    font-family: 'Open Sans';
 }
 
 .login input:hover, .register input:hover {
@@ -108,4 +105,10 @@
 .login .error, .register .error {
     margin-top: 5px;
     color: red;
+}
+
+.login .content, .register .content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }

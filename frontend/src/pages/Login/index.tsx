@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import '../../assets/login.css';
+import '../../assets/login.scss';
 import { useMutation } from '@tanstack/react-query';
 import { login } from '../../api/userApi';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth'; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,25 +42,31 @@ const Login = () => {
     <div className="login">
       <div className="login-container">
         <form onSubmit={handleSubmit}>
+          <h3>Log in</h3>
 
-          <h3>Login</h3>
-          <input 
-            type="text"
-            placeholder="Username"
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+          <div className='content'>
+            <div>
+              <div>Username</div>
+              <input 
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
 
-          <input 
-            type="password"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+            <div>
+              <div>Password</div>
+              <input 
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          </div>
 
           {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
 
-          <button type="submit">Login</button>
+          <button type="submit">Log In</button>
         
           <p className="pLink">Don't have an account? <Link to="/register" className="link">Sign up</Link></p>
         </form>

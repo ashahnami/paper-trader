@@ -7,10 +7,6 @@ import '../assets/layout.css'
 const Layout = () => {
   return (
     <div className='layout'>
-      <div className='navbar'>
-        <Navbar />
-      </div>
-
       <div className='content'>
         <Outlet />
       </div>

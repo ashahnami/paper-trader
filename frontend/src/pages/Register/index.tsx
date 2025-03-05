@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 
 import httpClient from "../../api/httpClient";
-import '../../assets/login.css';
+import '../../assets/login.scss';
 import { register } from '../../api/userApi';
 
 const Register = () => {
@@ -58,32 +58,40 @@ const Register = () => {
     <div className="register">
         <div className="register-container">
             <form onSubmit={handleSubmit}>
-
                 <h3>Sign up</h3>
-                <input 
-                    type="text"
-                    placeholder="Username"
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
 
-                <input 
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+                <div className='content'>
+                    <div>
+                        <div>Username</div>
+                        <input 
+                            type="text"
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+                
+                    <div>
+                        <div>Email</div>
+                        <input 
+                            type="email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
 
-                <input 
-                    type="password"
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+                    <div>
+                        <div>Password</div>
+                        <input 
+                            type="password"
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                </div>
 
                 {errorMessage !== "" ? <span className="error">{errorMessage}</span> : <div />}
 
-                <button type="submit">Sign up</button>
+                <button type="submit">Sign Up</button>
 
                 <p className="pLink">Already have an account? <Link to="/login" className="link">Sign in</Link></p>
 
