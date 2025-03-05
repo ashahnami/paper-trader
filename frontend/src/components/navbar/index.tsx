@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
@@ -66,8 +66,6 @@ const Navbar = () => {
 
             <div className='links'>
               <hr className='divider'></hr>
-
-              <div onClick={() => navigate('/portfolio')}>Portfolio</div>
 
               <div onClick={() => navigate('/settings')}>Settings</div>
 

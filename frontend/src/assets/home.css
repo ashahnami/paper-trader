@@ -6,7 +6,7 @@
 
 .home-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
     gap: 60px;
     width: 100%;
@@ -41,7 +41,7 @@
     padding: 5px;
 }
 
-.watchlist, .news {
+.watchlist, .news, .positions {
     width: 600px;
     padding: 5px;
     display: flex;
@@ -49,7 +49,35 @@
     gap: 20px;
 }
 
-.watchlist h5, .news h5 {
+.watchlist h5, .news h5, .positions h5 {
     font-weight: 800;
     font-size: 1.2rem;
+}
+
+.portfolio-chart {
+    width: 100%;
+    height: 100%;
+}
+
+.portfolioHeaderContainer {
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+}
+
+.showMoreTransactions {
+    width: 100%;
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px;
+    background-color: #e0afa0;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.showMoreTransactions:hover {
+    cursor: pointer;
 }

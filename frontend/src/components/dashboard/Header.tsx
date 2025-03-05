@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchProfile } from '../../api/userApi';
 
-import './style.css';
+import '../../assets/home.css';
 
-const PortfolioHeader = () => {
+const Header = () => {
     const { data: profile, isLoading } = useQuery({
       queryKey: ['profile'],
       queryFn: () => fetchProfile(),
@@ -21,4 +21,4 @@ const PortfolioHeader = () => {
   )
 }
 
-export default PortfolioHeader
+export default Header

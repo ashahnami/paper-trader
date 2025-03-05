@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Home from './pages/Home';
-import Portfolio from './pages/Portfolio';
+import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Stock from './pages/Stock';
@@ -15,8 +14,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<RequireAuth />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/stock/:ticker" element={<Stock />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
