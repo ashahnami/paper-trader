@@ -44,12 +44,12 @@ class Position(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
     averagePrice = db.Column(db.Numeric(10, 2), nullable=False)
-    stockId = db.Column(db.Integer, index=True, nullable=False)
+    stockId = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
 
 class WatchlistItem(db.Model):
     __tablename__ = "watchlist"
     id = db.Column(db.Integer, primary_key=True)
-    stockId = db.Column(db.Integer, index=True, nullable=False)
+    stockId = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))

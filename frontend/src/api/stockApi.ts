@@ -11,8 +11,8 @@ export const buyStock = async ({ id, quantity }: { id: number, quantity: number}
     return (await httpClient.post<BuyOrder>(`/api/transactions/${id}`, {quantity})).data;
 }
 
-export const closePosition = async (ticker: string): Promise<any> => {
-    return (await httpClient.delete(`/api/positions/${ticker}/close`)).data;
+export const closePosition = async (id: number): Promise<any> => {
+    return (await httpClient.delete(`/api/positions/${id}/close`)).data;
 }
 
 export const fetchAllStocks = async (): Promise<any> => {

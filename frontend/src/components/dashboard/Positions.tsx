@@ -31,7 +31,7 @@ const Positions = () => {
     const [isFinished, setIsFinished] = useState<boolean>(false);
     const [netBalance, setNetBalance] = useState<number>(0);
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const [selTicker, setSelTicker] = useState<string>("");
+    const [selId, setSelId] = useState<number>(0);
   
     const styles = {
       negative: { color: 'red' },
@@ -63,7 +63,7 @@ const Positions = () => {
   
         const currValueChanges = responses.map((response: any, index: number) => {
           const { c: latestPrice } = response.data;
-          const currValue: number = positions ? parseFloat((positions[index].shares * parseFloat(latestPrice)).toFixed(2)) : 0;
+          const currValue: number = positions ? parseFloat((positions[index].quantity * parseFloat(latestPrice)).toFixed(2)) : 0;
           net += currValue;
           return currValue;
         });
@@ -104,17 +104,17 @@ const Positions = () => {
             {positions?.map((position: Position, i: number) => (
               <tr key={i}>
                 <td style={{ fontWeight: "bold" }}>{position.symbol}</td>
-                <td>{position.shares}</td>
+                <td>{position.quantity}</td>
                 <td>{changes[i]}%</td>
-                <td>{position.averagePrice.toFixed(2)}</td>
+                {/* <td>{position.averagePrice.toFixed(2)}</td> */}
                 <td>{currValues[i]}</td>
                 <td style={
-                  position.averagePrice * position.shares - currValues[i] >= 0 ? styles.positive : styles.negative
+                  position.averagePrice * position.quantity - currValues[i] >= 0 ? styles.positive : styles.negative
                 }>
-                  {(position.averagePrice * position.shares - currValues[i]).toFixed(2)}
+                  {(position.averagePrice * position.quantity - currValues[i]).toFixed(2)}
                 </td>
                 {/* <td className="crossIcon" onClick={() => closePosition(position.stockSymbol)}><CloseIcon /></td> */}
-                <td className="crossIcon" onClick={() => {setOpenModal(true); setSelTicker(position.symbol)}}><CloseIcon /></td>
+                <td className="crossIcon" onClick={() => {setOpenModal(true); setSelId(position.id)}}><CloseIcon /></td>
               </tr>
             ))}
           </tbody>
@@ -132,7 +132,7 @@ const Positions = () => {
             <button onClick={() => setOpenModal(false)}>Cancel</button>
             <button className="continue" onClick={async () => {
               try {
-                await closePositionMutation(selTicker)
+                await closePositionMutation(selId)
               } catch (e) {
                 console.log(e);
               }

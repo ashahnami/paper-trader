@@ -12,7 +12,17 @@ bp = Blueprint('positions', __name__, url_prefix='/positions')
 @bp.route("/", methods=["GET"])
 @login_required
 def get_positions():
-    return jsonify({'positions': current_user.positions}), 200
+    positions = []
+    for position in current_user.positions:
+        symbol = Stock.query.filter_by(id=position.stockId).first()
+
+        positions.append({'id': position.id, 
+                          'symbol': symbol.ticker,
+                          'quantity': position.quantity, 
+                          'averagePrice': position.averagePrice,
+                        })
+        
+    return jsonify({'positions': positions}), 200
 
 
 @bp.route("/<int:stock_id>/close", methods=["DELETE"])

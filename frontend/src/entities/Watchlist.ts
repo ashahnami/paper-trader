@@ -1,3 +1,3 @@
 export interface WatchlistItem {
-    stockSymbol: string;
+    symbol: string;
 }

@@ -1,5 +1,6 @@
 export interface Position {
+    id: number;
     symbol: string;
-    shares: number;
+    quantity: number;
     averagePrice: number;
 }

@@ -9,7 +9,6 @@ class Stock(db.Model):
     description = db.Column(db.String(128), index=True, nullable=False)
     exchange_id = db.Column(db.Integer, db.ForeignKey("exchange.id"))
 
-
 class Exchange(db.Model):
     __tablename__ = "exchange"
     id = db.Column(db.Integer, primary_key=True)

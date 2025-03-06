@@ -11,7 +11,11 @@ bp = Blueprint('watchlist', __name__, url_prefix='/watchlist')
 @bp.route("/", methods=["GET"])
 @login_required
 def get_watchlist():
-    return jsonify({'watchlist': current_user.watchlist}), 200
+    watchlist = []
+    for watchlistItem in current_user.watchlist:
+        symbol = Stock.query.filter_by(id=watchlistItem.stockId).first()
+        watchlist.append({'symbol': symbol.ticker})
+    return jsonify({'watchlist': watchlist}), 200
 
 
 @bp.route("/<int:stock_id>", methods=["GET"])

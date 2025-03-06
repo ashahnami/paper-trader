@@ -26,7 +26,7 @@ const Watchlist = () => {
 
     const fetchWatchlistPrices = async () => {
       const requests: any = watchlist?.map((item: WatchlistItem) => 
-        axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.stockSymbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+        axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
         .then(function(response) {
           return response.data;
         })
@@ -61,8 +61,8 @@ const Watchlist = () => {
 
             <tbody>
               {quotes && watchlist?.map((watchlistItem: WatchlistItem, index: number) => (
-                <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.stockSymbol}`)}>
-                  <td>{watchlistItem.stockSymbol}</td>
+                <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.symbol}`)}>
+                  <td>{watchlistItem.symbol}</td>
                   <td>{quotes[index]?.c?.toFixed(2)}</td>
                   <td style={{ 
                     color: quotes[index]?.dp < 0 ? 'red' : 'green'

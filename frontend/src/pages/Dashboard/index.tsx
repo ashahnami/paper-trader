@@ -1,5 +1,5 @@
 import "../../assets/home.css";
-import Watchlist from '../Portfolio/portfolioWatchlist';
+import Watchlist from "../../components/dashboard/Watchlist";
 import News from '../../components/dashboard/News';
 import Positions from '../../components/dashboard/Positions';
 import Header from "../../components/dashboard/Header";
