@@ -5,7 +5,7 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 
 import httpClient from '../../api/httpClient'
 import SearchBar from '../search';
-import '../../assets/navbar.css';
+import '../../assets/navbar.scss';
 import { fetchProfile } from '../../api/userApi'
 import { useQuery } from '@tanstack/react-query';
 import useAuth from '../../hooks/useAuth';

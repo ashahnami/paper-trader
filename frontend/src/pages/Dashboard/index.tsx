@@ -1,4 +1,4 @@
-import "../../assets/home.css";
+import "../../assets/dashboard.scss";
 import Watchlist from "../../components/dashboard/Watchlist";
 import News from '../../components/dashboard/News';
 import Positions from '../../components/dashboard/Positions';
@@ -15,14 +15,16 @@ const Dashboard = () => {
           <Positions />
         </div>
 
-        <div className="watchlist">
-          <h5 className="header">Watchlist</h5>
-          <Watchlist />
-        </div>
+        <div className="bottom">
+          <div className="watchlist">
+            <h5 className="header">Watchlist</h5>
+            <Watchlist />
+          </div>
 
-        <div className="news">
-          <h5>Recent News</h5>
-          <News />
+          <div className="news">
+            <h5>Recent News</h5>
+            <News />
+          </div>
         </div>
       </div>
     </div>

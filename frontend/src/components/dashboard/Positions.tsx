@@ -5,6 +5,7 @@ import { closePosition } from '../../api/stockApi';
 import { Position } from '../../entities/Position';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface Quote {
     "c": number;
@@ -32,6 +33,8 @@ const Positions = () => {
     const [netBalance, setNetBalance] = useState<number>(0);
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [selId, setSelId] = useState<number>(0);
+    
+    const navigate = useNavigate();
   
     const styles = {
       negative: { color: 'red' },
@@ -102,11 +105,11 @@ const Positions = () => {
           </thead>
           <tbody>
             {positions?.map((position: Position, i: number) => (
-              <tr key={i}>
-                <td style={{ fontWeight: "bold" }}>{position.symbol}</td>
+              <tr key={i} onClick={() => navigate(`/stock/${position.symbol}`)}>
+                <td>{position.symbol}</td>
                 <td>{position.quantity}</td>
                 <td>{changes[i]}%</td>
-                {/* <td>{position.averagePrice.toFixed(2)}</td> */}
+                <td>{position.averagePrice}</td>
                 <td>{currValues[i]}</td>
                 <td style={
                   position.averagePrice * position.quantity - currValues[i] >= 0 ? styles.positive : styles.negative

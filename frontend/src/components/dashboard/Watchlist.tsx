@@ -61,7 +61,7 @@ const Watchlist = () => {
 
             <tbody>
               {quotes && watchlist?.map((watchlistItem: WatchlistItem, index: number) => (
-                <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.symbol}`)}>
+                <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.symbol}`)} className='watchlist-row'>
                   <td>{watchlistItem.symbol}</td>
                   <td>{quotes[index]?.c?.toFixed(2)}</td>
                   <td style={{ 

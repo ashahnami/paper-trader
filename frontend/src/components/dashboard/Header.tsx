@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchProfile } from '../../api/userApi';
 
-import '../../assets/home.css';
+import '../../assets/dashboard.scss';
 
 const Header = () => {
     const { data: profile, isLoading } = useQuery({
