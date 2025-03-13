@@ -34,7 +34,6 @@ const Watchlist = () => {
 
       const responses: any = await Promise.all(requests);
       setQuotes(responses);
-      console.log(responses)
     }
 
     useEffect(() => {

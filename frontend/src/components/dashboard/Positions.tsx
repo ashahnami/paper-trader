@@ -83,7 +83,6 @@ const Positions = () => {
     useEffect(() => {
         document.title = "Paper Trading Application";
         if (!isLoadingPositions && !isLoadingProfile) {
-          console.log(positions)
           updatePrices();
         }
       }, [isLoadingPositions, isLoadingProfile]);
@@ -105,7 +104,7 @@ const Positions = () => {
           </thead>
           <tbody>
             {positions?.map((position: Position, i: number) => (
-              <tr key={i} onClick={() => navigate(`/stock/${position.symbol}`)}>
+              <tr key={i} onClick={() => navigate(`/stock/${position.symbol}`, { state: { id: position.id }})}>
                 <td>{position.symbol}</td>
                 <td>{position.quantity}</td>
                 <td>{changes[i]}%</td>

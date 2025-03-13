@@ -11,7 +11,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { setAuth } : any = useAuth();
+  const { auth, setAuth } : any = useAuth();
 
   const { mutateAsync: loginMutation } = useMutation({
     mutationFn: login,
@@ -36,7 +36,11 @@ const Login = () => {
 
   useEffect(() => {
     document.title = "Login";
-  }, [])
+
+    if (auth?.user) {
+      navigate('/');
+    }
+  }, [auth, navigate])
 
   return (
     <div className="login">

@@ -1,12 +1,15 @@
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
+from decimal import *
+import finnhub
+import os
 
 from app.models.stock import Stock, Position
 from app.models.user import User, Transaction
 from app.extensions import db
 
 bp = Blueprint('transactions', __name__, url_prefix='/transactions')
-
+finnhub_client = finnhub.Client(api_key=os.getenv("FINNHUB_API_KEY"))
 
 @bp.route("/<int:stock_id>", methods=["POST"])
 @login_required
@@ -17,8 +20,7 @@ def buy(stock_id):
     if stock is None:
         return jsonify({"error": "Stock not found"})
 
-    #  TEMP PRICE
-    price = 100
+    price = Decimal(str(round(finnhub_client.quote(stock.ticker)["c"], 2)))
 
     if current_user.balance < (price * quantity):
         return jsonify({"Error": "Insufficient balance"})

@@ -44,21 +44,19 @@ const News = () => {
     }, [])
       
   return (
-    <table>
-        <tbody>
-            {news?.slice(0, 5).map((newsItem, index) => (
-            <tr key={index} onClick={() => window.location.replace(newsItem.url)}>
-                <img src={newsItem.image} className='newsImage' />
+    <div className='newsTable'>
+        {news?.slice(0, 5).map((newsItem, index) => (
+        <div key={index} onClick={() => window.location.replace(newsItem.url)} className='row'>
+            <img src={newsItem.image} className='newsImage' />
 
-                <td className='content'>
-                    <div><span className='source'>{newsItem.source}</span> {calculateTime(newsItem.datetime)}</div>
+            <div className='content'>
+                <div><span className='source'>{newsItem.source}</span> {calculateTime(newsItem.datetime)}</div>
 
-                    <div>{newsItem.headline}</div>
-                </td>
-            </tr>
-            ))}
-        </tbody>
-    </table>
+                <div>{newsItem.headline}</div>
+            </div>
+        </div>
+        ))}
+    </div>
   )
 }
 

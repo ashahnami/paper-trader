@@ -69,7 +69,7 @@ def login():
     if not user or not check_password_hash(user.password, password):
         return jsonify({"error": "Incorrect login details"}), 401
 
-    login_user(user)
+    login_user(user, remember=True)
 
     return jsonify({
         "id": user.id,

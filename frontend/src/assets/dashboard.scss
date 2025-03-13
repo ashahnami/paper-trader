@@ -1,3 +1,5 @@
+$hover-color: #f0f0f0;
+
 .home {
     display: flex;
     flex-direction: column;
@@ -34,7 +36,7 @@
 
 .home tbody tr:hover {
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: $hover-color;
 }
 
 .home td, .home th {
@@ -98,33 +100,35 @@
         }
     }
 
-    .news {
-        width: 100%;
+    .newsTable {
+        display: flex;
+        flex-direction: column;
 
-        tbody {
+        .row {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            justify-content: space-between;
             gap: 1rem;
+            padding: 1rem;
 
-            tr {
-                display: flex;
-                flex-direction: row;
-                gap: 1rem;
+            .newsImage {
+                height: 80px;
+                width: auto;
+            }
     
-                .newsImage {
-                    width: 100px;
+            .content {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            
+                .source {
+                    font-weight: 500;
                 }
-        
-                .content {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    gap: 1rem;
+            }
 
-                    .source {
-                        font-weight: 500;
-                    }
-                }
+            &:hover {
+                cursor: pointer;
+                background-color: $hover-color;
             }
         }
     }

@@ -10,5 +10,6 @@ class Config:
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI")
 
-    PERMANENT_SESSION_LIFETIME = timedelta(minutes=20)
+    REMEMBER_COOKIE_DURATION=timedelta(minutes=30)
+
     SECRET_KEY = os.getenv("SECRET_KEY")

@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }: any) => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const response = await httpClient.get('/auth/@me');
+                const response = await httpClient.get('/api/auth/@me');
                 setAuth({ user: response.data.username });
             } catch (error) {
                 console.log('Not logged in')
