@@ -7,9 +7,10 @@ import os
 from app.models.stock import Stock, Position
 from app.models.user import User, Transaction
 from app.extensions import db
+from config import read_secret
 
 bp = Blueprint('transactions', __name__, url_prefix='/transactions')
-finnhub_client = finnhub.Client(api_key=os.getenv("FINNHUB_API_KEY"))
+finnhub_client = finnhub.Client(api_key=read_secret(os.getenv("FINNHUB_API_KEY")))
 
 @bp.route("/<int:stock_id>", methods=["POST"])
 @login_required

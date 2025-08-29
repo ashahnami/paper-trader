@@ -1,15 +1,23 @@
 services:
   backend:
     container_name: backend
-    build: backend
+    build: ./backend
+    ports:
+      - "5000:5000"
     restart: on-failure
     environment:
-      - DATABASE_URI=postgresql://postgres:postgres@db:5432/paper-trader
+      DATABASE_URI: /run/secrets/db_uri
+      SECRET_KEY: /run/secrets/flask_secret_key
+      FINNHUB_API_KEY: /run/secrets/finnhub_api_key
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+    secrets:
+      - db_uri
+      - finnhub_api_key
+      - flask_secret_key
 
   redis:
     container_name: redis
@@ -17,22 +25,44 @@ services:
     restart: on-failure
     volumes:
       - cache:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
 
   db:
     container_name: db
-    image: postgres:17.2-alpine
+    image: postgres:17
     restart: on-failure
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=paper-trader
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: /run/secrets/db_password
     volumes:
       - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     healthcheck:
       test: echo 'pg_isready'
       interval: 3s
       retries: 5
+    secrets:
+      - db_password
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    restart: on-failure
 
 volumes:
   cache:
   db:
+
+secrets:
+  db_uri:
+    file: db_uri.txt
+  db_password:
+    file: db_password.txt
+  finnhub_api_key:
+    file: finnhub_api_key.txt
+  flask_secret_key:
+    file: flask_secret_key.txt
