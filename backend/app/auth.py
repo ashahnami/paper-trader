@@ -1,3 +1,5 @@
+"""Authentication routes."""
+
 from flask import Blueprint, jsonify, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
@@ -10,11 +12,13 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @login_manager.user_loader
 def load_user(user_id):
+    """Loads a User object."""
     return User.query.get(user_id)
 
 
 @bp.route('/checklogin', methods=['GET'])
 def is_logged_in():
+    """Checks whether a user is logged in."""
     if not current_user.id:
         return jsonify({"logged_in": False}), 200
     return jsonify({"logged_in": True}), 200
@@ -23,6 +27,7 @@ def is_logged_in():
 @bp.route("/@me")
 @login_required
 def get_user():
+    """Returns a user's username, email and balance."""
     return jsonify({
         "username": current_user.username,
         "email": current_user.email,
@@ -32,6 +37,7 @@ def get_user():
 
 @bp.route("/register", methods=["POST"])
 def register():
+    """Registers a user."""
     username = request.json["username"]
     email = request.json["email"]
     password = request.json["password"]
@@ -61,6 +67,7 @@ def register():
 
 @bp.route("/login", methods=["POST"])
 def login():
+    """Logs a user in."""
     username = request.json["username"]
     password = request.json["password"]
 
@@ -80,6 +87,7 @@ def login():
 @bp.route("/logout", methods=["POST"])
 @login_required
 def logout():
+    """Logs a user out."""
     logout_user()
     return jsonify({'message': 'Successfully logged out'}), 200
 
@@ -87,6 +95,7 @@ def logout():
 @bp.route("/change-password", methods=["PATCH"])
 @login_required
 def change_password():
+    """Changes a user's password."""
     old_password = request.json['oldPassword']
     new_password = request.json['newPassword']
 
@@ -104,6 +113,7 @@ def change_password():
 @bp.route("/change-username", methods=["PATCH"])
 @login_required
 def change_username():
+    """Changes a user's username."""
     new_username = request.json['newUsername']
 
     user = User.query.filter_by(username=new_username).first()
