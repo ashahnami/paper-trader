@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import axios from 'axios';
 
 import StockChart from './chart';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addToWatchlist, checkInWatchlist, fetchProfile, removeFromWatchlist } from '../../api/userApi';
 import { buyStock } from '../../api/stockApi';
 import '../../assets/stock.css';
@@ -42,6 +44,7 @@ interface Info {
 const Stock = () => {
   let { state } = useLocation();
   const [quantity, setQuantity] = useState<number>(1);
+  const queryClient = useQueryClient();
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -188,6 +191,7 @@ const Stock = () => {
                       onChange={(e) => setQuantity(Number(e.target.value))}
                       required
                   />
+
                 </div>
 
                 <div className="price">
@@ -197,7 +201,7 @@ const Stock = () => {
 
                 <div className="cost">
                   <div>Estimated cost</div>
-                  {order && <div>${(price * order.quantity).toFixed(2)}</div>}
+                  <div>~${(price * quantity).toFixed(2)}</div>
                 </div>
 
                 <input type="submit" value={orderType} />
@@ -211,15 +215,13 @@ const Stock = () => {
               <div onClick={() => {
                 removeFromWatchlistMutation(state.id);
               }}>
-                In watchlist
+                <BookmarkIcon className='watchlist-icon' />
               </div>
-              // <FontAwesomeIcon icon={icon({name: 'bookmark', family: 'classic', style: 'solid'})} onClick={removeFromWatchlist} className='watchlistIcon' />
             ) : (
-              // <FontAwesomeIcon icon={icon({name: 'bookmark', family: 'classic', style: 'regular'})} onClick={addToWatchlist} className='watchlistIcon' />
               <div onClick={() => {
                 addToWatchlistMutation(state.id);
               }}>
-                Not in watchlist
+                <BookmarkBorderIcon className='watchlist-icon' />
               </div>
             )}
           </div>

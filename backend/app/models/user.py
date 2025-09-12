@@ -1,9 +1,11 @@
-from datetime import datetime, timezone
+"""Database models for user, transaction, position, and watchlist."""
 
+from datetime import datetime, timezone
 from app.extensions import db
 
 
 class User(db.Model):
+    """User model."""
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -17,19 +19,24 @@ class User(db.Model):
     watchlist = db.relationship("WatchlistItem", backref="user", lazy=True)
 
     def is_authenticated(self):
+        """Return True if user is authenticated."""
         return True
 
     def is_active(self):
+        """Return True if user is active."""
         return self.active
 
     def is_anonymous(self):
+        """Return False as user is not anonymous."""
         return False
 
     def get_id(self):
+        """Return user id."""
         return self.id
 
 
 class Transaction(db.Model):
+    """Transaction model."""
     __tablename__ = "transaction"
     id = db.Column(db.Integer, primary_key=True)
     stock_id = db.Column(db.Integer, db.ForeignKey("stock.id"))
@@ -40,6 +47,7 @@ class Transaction(db.Model):
 
 
 class Position(db.Model):
+    """Position model."""
     __tablename__ = "position"
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
@@ -49,6 +57,7 @@ class Position(db.Model):
 
 
 class WatchlistItem(db.Model):
+    """Watchlist item model."""
     __tablename__ = "watchlist"
     id = db.Column(db.Integer, primary_key=True)
     stockId = db.Column(db.Integer, nullable=False)

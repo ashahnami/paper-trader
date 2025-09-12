@@ -47,7 +47,7 @@ const Watchlist = () => {
     }
 
     return (
-      <div>
+      <div className='watchlist'>
         {isLoading ? "Fetching watchlist.py" : (
           <table>
             <thead>

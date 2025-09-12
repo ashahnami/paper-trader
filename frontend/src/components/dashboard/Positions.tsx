@@ -37,8 +37,8 @@ const Positions = () => {
     const navigate = useNavigate();
   
     const styles = {
-      negative: { color: 'red' },
-      positive: { color: 'green'},
+      negative: { color: '#d31a24' },
+      positive: { color: '#3f8f29'},
     }
   
     const { mutateAsync: closePositionMutation } = useMutation({
@@ -107,7 +107,9 @@ const Positions = () => {
               <tr key={i} onClick={() => navigate(`/stock/${position.symbol}`, { state: { id: position.id }})}>
                 <td>{position.symbol}</td>
                 <td>{position.quantity}</td>
-                <td>{changes[i]}%</td>
+                <td style={
+                  changes[i] >= 0 ? styles.positive : styles.negative
+                }>{changes[i]}%</td>
                 <td>{position.averagePrice}</td>
                 <td>{currValues[i]}</td>
                 <td style={

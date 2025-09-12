@@ -1,12 +1,13 @@
+"""Flask application factory for the application backend."""
+
 from flask import Flask
-from flask_cors import CORS
 from config import Config
 from app.extensions import db, migrate, login_manager
 
 
 def create_app(config_class=Config):
+    """Create and configure the Flask application."""
     app = Flask(__name__)
-    cors = CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
     app.config.from_object(config_class)
 
     db.init_app(app)
@@ -34,9 +35,7 @@ def create_app(config_class=Config):
 
     @app.route('/')
     def test():
+        """Test route."""
         return 'test'
-    
-    with app.app_context():
-        db.create_all()
 
     return app
