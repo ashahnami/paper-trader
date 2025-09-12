@@ -8,4 +8,4 @@ disable=too-few-public-methods
 
 [TYPECHECK]
 
-ignored-classes=flask_login.utils.LocalProxy
+generated-members=current_user
