@@ -1,13 +1,13 @@
 """Transaction-related routes."""
 
-from decimal import *
+from decimal import Decimal
 import os
 import finnhub
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 
-from app.models.stock import Stock, Position
-from app.models.user import Transaction
+from app.models.stock import Stock
+from app.models.user import Position, Transaction
 from app.extensions import db
 from config import read_secret
 

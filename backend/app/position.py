@@ -1,9 +1,11 @@
-from flask import Blueprint, jsonify, session, request
+"""Position-related routes"""
+
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 import yfinance as yf
 
-from app.models.stock import Stock, Position
-from app.models.user import Transaction
+from app.models.stock import Stock
+from app.models.user import Position, Transaction
 from app.extensions import db
 
 bp = Blueprint('positions', __name__, url_prefix='/positions')

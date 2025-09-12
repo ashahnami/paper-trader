@@ -1,6 +1,6 @@
 """Watchlist-related routes."""
 
-from flask import Blueprint, jsonify, session, request
+from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
 
 from app.models.stock import Stock
@@ -15,8 +15,8 @@ bp = Blueprint('watchlist', __name__, url_prefix='/watchlist')
 def get_watchlist():
     """Gets a user's watchlist."""
     watchlist = []
-    for watchlistItem in current_user.watchlist:
-        symbol = Stock.query.filter_by(id=watchlistItem.stockId).first()
+    for watchlist_item in current_user.watchlist:
+        symbol = Stock.query.filter_by(id=watchlist_item.stockId).first()
         watchlist.append({'symbol': symbol.ticker})
     return jsonify({'watchlist': watchlist}), 200
 
@@ -25,7 +25,8 @@ def get_watchlist():
 @login_required
 def check_in_watchlist(stock_id):
     """Checks whether a stock is in the user's watchlist."""
-    watchlist_item = WatchlistItem.query.filter_by(stockId=stock_id, user_id=current_user.id).first()
+    watchlist_item = WatchlistItem.query.filter_by(stockId=stock_id,
+                                                   user_id=current_user.id).first()
     if watchlist_item:
         return jsonify({"inWatchlist": True}), 200
     return jsonify({"inWatchlist": False}), 200
@@ -39,7 +40,8 @@ def add_to_watchlist(stock_id):
     if stock is None:
         return jsonify({"error": "Stock not found"}), 404
 
-    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id, user_id=current_user.id).first()
+    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id,
+                                                   user_id=current_user.id).first()
     if watchlist_item:
         return jsonify({"error": "Stock already exists in watchlist"})
 
@@ -58,7 +60,8 @@ def remove_from_watchlist(stock_id):
     if stock is None:
         return jsonify({"error": "Stock not found"}), 404
 
-    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id, user_id=current_user.id).first()
+    watchlist_item = WatchlistItem.query.filter_by(stockId=stock.id,
+                                                   user_id=current_user.id).first()
     if watchlist_item is None:
         return jsonify({"error": "Stock not found in watchlist"}), 404
 

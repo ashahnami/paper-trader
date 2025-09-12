@@ -1,19 +1,25 @@
+"""Configuration settings for the Flask application."""
+
 import os
-from dotenv import load_dotenv
 from datetime import timedelta
+from dotenv import load_dotenv
 
 load_dotenv()
 
 def read_secret(path):
+    """Reads a secret from a file."""
+
     if path and path.startswith("/"):
-        try: 
-            with open(path) as f:
+        try:
+            with open(path, encoding="utf-8") as f:
                 return f.read().strip()
-        except Exception:
+        except FileNotFoundError:
             return ""
     return path
 
 class Config:
+    """Config class for the application."""
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_DATABASE_URI = read_secret(os.getenv("DATABASE_URI"))

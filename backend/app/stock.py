@@ -11,7 +11,8 @@ bp = Blueprint('stocks', __name__, url_prefix='/stocks')
 def get_all_stocks():
     """Gets id, symbol and description of all stocks."""
     return jsonify({
-        "stocks": [{"id": stock.id, "symbol": stock.ticker, "description": stock.description} for stock in Stock.query.all()]
+        "stocks": [{"id": stock.id, "symbol": stock.ticker, "description": stock.description} 
+                   for stock in Stock.query.all()]
     }), 200
 
 

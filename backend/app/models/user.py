@@ -5,7 +5,8 @@ from app.extensions import db
 
 
 class User(db.Model):
-    """User model."""
+    """Class representing a user entity in the database"""
+
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -36,7 +37,8 @@ class User(db.Model):
 
 
 class Transaction(db.Model):
-    """Transaction model."""
+    """Class representing a transaction entity in the database"""
+
     __tablename__ = "transaction"
     id = db.Column(db.Integer, primary_key=True)
     stock_id = db.Column(db.Integer, db.ForeignKey("stock.id"))
@@ -47,7 +49,8 @@ class Transaction(db.Model):
 
 
 class Position(db.Model):
-    """Position model."""
+    """Class representing a position entity in the database"""
+
     __tablename__ = "position"
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
@@ -57,7 +60,8 @@ class Position(db.Model):
 
 
 class WatchlistItem(db.Model):
-    """Watchlist item model."""
+    """Class representing a watchlist item entity in the database"""
+
     __tablename__ = "watchlist"
     id = db.Column(db.Integer, primary_key=True)
     stockId = db.Column(db.Integer, nullable=False)

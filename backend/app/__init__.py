@@ -3,7 +3,7 @@
 from flask import Flask
 from config import Config
 from app.extensions import db, migrate, login_manager
-
+from app import auth, user, stock, position, watchlist, transaction
 
 def create_app(config_class=Config):
     """Create and configure the Flask application."""
@@ -15,22 +15,11 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
     login_manager.login_message_category = "warning"
 
-    from app import auth
     app.register_blueprint(auth.bp)
-
-    from app import user
     app.register_blueprint(user.bp)
-
-    from app import stock
     app.register_blueprint(stock.bp)
-
-    from app import position
     app.register_blueprint(position.bp)
-
-    from app import watchlist
     app.register_blueprint(watchlist.bp)
-
-    from app import transaction
     app.register_blueprint(transaction.bp)
 
     @app.route('/')
