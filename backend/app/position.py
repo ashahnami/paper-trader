@@ -15,12 +15,12 @@ def get_positions():
     """Get all positions for the current user."""
     positions = []
     for position in current_user.positions:
-        symbol = Stock.query.filter_by(id=position.stock_id).first()
+        symbol = Stock.query.filter_by(id=position.stockId).first()
         positions.append({
             'id': position.id,
             'symbol': symbol.ticker,
             'quantity': position.quantity,
-            'average_price': position.average_price,
+            'averagePrice': position.averagePrice,
         })
     return jsonify({'positions': positions}), 200
 

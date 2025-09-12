@@ -15,8 +15,8 @@ const Header = () => {
 
   return (
     <div className="portfolioHeaderContainer">
-        <h3>Welcome {profile?.username}!</h3>
-        <h4>Balance: {profile?.balance.toFixed(2)}</h4>
+        <div className='welcome-message'>Welcome {profile?.username}!</div>
+        <div className='balance-message'>Your balance is: ${profile?.balance.toFixed(2)}</div>
     </div>
   )
 }

@@ -211,10 +211,6 @@
     align-self: center;
 }
 
-.stock-buy form .cost {
-    font-weight: 800;
-}
-
 @media only screen and (max-width: 768px) {
     .stock-container {
         flex-direction: column;
@@ -239,12 +235,9 @@
     width: 100%;
 }
 
-.stock .col2 .watchlist .watchlistIcon {
+.stock .col2 .watchlist .watchlist-icon {
     cursor: pointer;
-    font-size: 1.6rem;
+    font-size: 2rem;
+    width: 100%;
     color: #4056a1;
 }
-
-/* .stock .col2 .watchlist.py .watchlistIcon:hover {
-    cursor: pointer;
-} */

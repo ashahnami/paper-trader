@@ -10,18 +10,18 @@ const Dashboard = () => {
       <div className="home-container">
         <Header />
 
-        <div className='positions'>
+        <div className='positions card'>
           <h5 className='positions'>Positions</h5>
           <Positions />
         </div>
 
         <div className="bottom">
-          <div className="watchlist">
+          <div className="watchlist card">
             <h5 className="header">Watchlist</h5>
             <Watchlist />
           </div>
 
-          <div className="news">
+          <div className="news card">
             <h5>Recent News</h5>
             <News />
           </div>
