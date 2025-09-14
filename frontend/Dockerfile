@@ -1,13 +1,17 @@
-FROM node:20
+FROM node:20 as build-step
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
+COPY package.json yarn.lock ./
 
 COPY . .
 
-EXPOSE 3000
+RUN yarn install
 
-CMD ["npm", "start"]
+RUN yarn build 
+
+FROM nginx:stable-alpine
+
+COPY --from=build-step /app/build /usr/share/nginx/html
+
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
