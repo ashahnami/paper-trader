@@ -3,7 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlmodel import SQLModel, create_engine
 
-from .routers import users, positions, stocks, transactions
+from .routers import users, positions, stocks, transactions, login
+from .dependencies import TokenDep
 
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
@@ -25,8 +26,13 @@ app.include_router(users.router)
 app.include_router(positions.router)
 app.include_router(stocks.router)
 app.include_router(transactions.router)
+app.include_router(login.router)
 
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.get("/test")
+async def test(token: TokenDep):
+    return {"token": token}

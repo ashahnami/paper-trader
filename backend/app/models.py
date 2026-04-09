@@ -28,6 +28,7 @@ class User(SQLModel, table=True):
     email: str = Field(index=True)
     password: str = Field()
     balance: int = Field(default=0)
+    disabled: bool = Field(default=False)
 
     transactions: list["Transaction"] = Relationship(back_populates="user")
     positions: list["Position"] = Relationship(back_populates="user")
@@ -63,3 +64,10 @@ class Position(SQLModel, table=True):
 
     user_id: int = Field(default=None, foreign_key="user.id")
     user: User | None = Relationship(back_populates="positions")
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    username: str | None = None
