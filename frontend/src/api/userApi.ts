@@ -38,7 +38,7 @@ export const fetchTransactions = async (ticker: string): Promise<Transaction[]> 
 }
 
 export const login = async ({ username, password }: { username: string, password: string }): Promise<LoginDetails> => {
-    return (await httpClient.post<LoginDetails>('/api/auth/login', {username, password})).data;
+    return (await httpClient.postForm<LoginDetails>('/api/login/token', {username: username, password: password})).data;
 }
 
 export const register = async ({ username, email, password }: { username: string, email: string, password: string }): Promise<RegisterDetails> => {
