@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
@@ -11,8 +11,8 @@ from app.core.security import get_password_hash
 router = APIRouter(prefix="/users", tags=["users"])
 
 
-@router.get("/")
-async def get_users(session: SessionDep) -> list[User]:
+@router.get("/", response_model=list[User])
+async def get_users(session: SessionDep) -> Any:
     users = session.exec(select(User)).all()
     return users
 
@@ -31,8 +31,8 @@ async def read_users_me(current_user: Annotated[User, Depends(get_current_active
     return current_user
 
 
-@router.get("/{id}")
-async def get_user(id: int, session: SessionDep) -> User:
+@router.get("/{id}", response_model=User)
+async def get_user(id: int, session: SessionDep) -> Any:
     user = session.get(User, id)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -71,7 +71,7 @@ async def create_user_transaction(id: int, order: Order, session: SessionDep) ->
                               stock_id=order.stock_id, user_id=id)
     session.add(transaction)
 
-    statement = select(Position).where(Position.stock_id == order.stock_id & Position.type == order.order_type)
+    statement = select(Position).where(Position.stock_id == order.stock_id and Position.type == order.order_type)
     position = session.exec(statement).first()
     if not position:
         position = Position(quantity=order.quantity,

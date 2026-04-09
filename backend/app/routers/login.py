@@ -13,6 +13,7 @@ from app.core.config import settings
 
 router = APIRouter(prefix="/login", tags=["login"])
 
+
 @router.post("/token")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], session: SessionDep):
     user = crud.authenticate_user(session, form_data.username, form_data.password)
