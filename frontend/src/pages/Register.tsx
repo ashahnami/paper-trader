@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 
-import httpClient from "../../api/httpClient";
-import '../../assets/login.scss';
-import { register } from '../../api/userApi';
+import httpClient from "../api/httpClient";
+import '../assets/login.scss';
+import { register } from '../api/userApi';
 
 const Register = () => {
     const navigate = useNavigate();

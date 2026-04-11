@@ -1,4 +1,5 @@
 import { LoginDetails } from '../entities/LoginDetails';
+import { LoginResponse } from '../entities/LoginResponse';
 import { RegisterDetails } from '../entities/RegisterDetails';
 import { ChangePasswordDetails } from '../entities/ChangePasswordDetails';
 import { ChangeUsername } from '../entities/ChangeUsername';
@@ -10,7 +11,7 @@ import { WatchlistItem } from '../entities/Watchlist';
 import httpClient from './httpClient';
 
 export const fetchProfile = async (): Promise<Profile> => {
-    return (await httpClient.get<Profile>('/api/auth/@me')).data;
+    return (await httpClient.get<Profile>('/api/users/me')).data;
 }
 
 export const fetchPositions = async (): Promise<Position[]> => {
@@ -18,27 +19,27 @@ export const fetchPositions = async (): Promise<Position[]> => {
 }
 
 export const fetchWatchlist = async (): Promise<WatchlistItem[]> => {
-    return (await httpClient.get<{ watchlist: WatchlistItem[] }>('/api/watchlist/')).data.watchlist;
+    return (await httpClient.get<{ watchlist: WatchlistItem[] }>('/api/watchlists/')).data.watchlist;
 }
 
 export const checkInWatchlist = async (id: number) => {
-    return (await httpClient.get(`/api/watchlist/${id}`)).data.inWatchlist;
+    return (await httpClient.get(`/api/watchlists/${id}`)).data.inWatchlist;
 }
 
 export const addToWatchlist = async (id: number) => {
-    return (await httpClient.post(`/api/watchlist/${id}`)).data;
+    return (await httpClient.post(`/api/watchlists/${id}`)).data;
 }
 
 export const removeFromWatchlist = async (id: number) => {
-    return (await httpClient.delete(`/api/watchlist/${id}`)).data;
+    return (await httpClient.delete(`/api/watchlists/${id}`)).data;
 }
 
 export const fetchTransactions = async (ticker: string): Promise<Transaction[]> => {
     return (await httpClient.get<Transaction[]>(`/api/${ticker}/transactions/`)).data;
 }
 
-export const login = async ({ username, password }: { username: string, password: string }): Promise<LoginDetails> => {
-    return (await httpClient.postForm<LoginDetails>('/api/login/token', {username: username, password: password})).data;
+export const login = async ({ username, password }: { username: string, password: string }): Promise<LoginResponse> => {
+    return (await httpClient.postForm<LoginResponse>('/api/login/token', {username: username, password: password})).data;
 }
 
 export const register = async ({ username, email, password }: { username: string, email: string, password: string }): Promise<RegisterDetails> => {

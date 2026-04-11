@@ -1,8 +1,8 @@
-import "../../assets/dashboard.scss";
-import Watchlist from "../../components/dashboard/Watchlist";
-import News from '../../components/dashboard/News';
-import Positions from '../../components/dashboard/Positions';
-import Header from "../../components/dashboard/Header";
+import "../assets/dashboard.scss";
+import Watchlist from "../components/dashboard/Watchlist";
+import News from '../components/dashboard/News';
+import Positions from '../components/dashboard/Positions';
+import Header from "../components/dashboard/Header";
 
 const Dashboard = () => {
   return (

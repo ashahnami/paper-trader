@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import '../../assets/login.scss';
+import '../assets/login.scss';
 import { useMutation } from '@tanstack/react-query';
-import { login } from '../../api/userApi';
-import useAuth from '../../hooks/useAuth'; 
+import { login } from '../api/userApi';
+import { useAuth } from '../context/AuthProvider';
 
 const Login = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const { auth, setAuth } : any = useAuth();
+  const { setToken } : any = useAuth();
 
   const { mutateAsync: loginMutation } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      setAuth({ user: data.username })
+      localStorage.setItem("access_token", data.access_token)
+      setToken(data.access_token);
       navigate('/');
     },
     onError: () => {
@@ -36,11 +37,7 @@ const Login = () => {
 
   useEffect(() => {
     document.title = "Login";
-
-    if (auth?.user) {
-      navigate('/');
-    }
-  }, [auth, navigate])
+  }, [])
 
   return (
     <div className="login">
