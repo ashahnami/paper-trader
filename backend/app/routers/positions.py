@@ -1,18 +1,17 @@
-from typing import Any
+from typing import Any, Annotated
 
 from fastapi import APIRouter, HTTPException
-from sqlmodel import select
+from fastapi.params import Depends
 
-from app.dependencies import SessionDep
-from app.models import Position
+from app.dependencies import SessionDep, get_current_active_user
+from app.models import Position, User
 
 router = APIRouter(prefix="/positions", tags=["positions"])
 
 
 @router.get("/",  response_model=list[Position])
-async def get_positions(session: SessionDep) -> Any:
-    positions = session.exec(select(Position)).all()
-    return positions
+async def get_positions(current_user: Annotated[User, Depends(get_current_active_user)]) -> Any:
+    return current_user.positions
 
 
 @router.post("/")

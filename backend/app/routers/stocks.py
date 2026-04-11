@@ -15,6 +15,14 @@ async def get_stocks(session: SessionDep) -> Any:
     return stocks
 
 
+@router.post("/")
+async def create_stock(stock: Stock, session: SessionDep) -> Stock:
+    session.add(stock)
+    session.commit()
+    session.refresh(stock)
+    return stock
+
+
 @router.get("/{id}", response_model=Stock)
 async def get_stock(id: int, session: SessionDep) -> Any:
     stock = session.get(Stock, id)

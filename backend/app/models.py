@@ -80,3 +80,7 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str | None = None
+
+
+class AddToWatchlistRequest(BaseModel):
+    stock_id: int
