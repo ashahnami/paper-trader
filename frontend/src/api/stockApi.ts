@@ -1,6 +1,5 @@
 
-import { BuyOrder } from '../entities/BuyOrder';
-import { Stock } from '../entities/Stock';
+import { Stock, BuyOrder } from '../entities/stock.types';
 import httpClient from './httpClient';
 
 export const fetchStock = async (ticker: string): Promise<Stock> => {

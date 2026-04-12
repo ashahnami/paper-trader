@@ -1,7 +1,6 @@
-import Navbar from '../../components/navbar';
-import { ChangePassword } from './ChangePassword';
-import { ChangeUsername } from './ChangeUsername';
-import '../../assets/settings.css';
+import { ChangePassword } from '../components/settings/ChangePassword';
+import { ChangeUsername } from '../components/settings/ChangeUsername';
+import '../assets/settings.css';
 
 const Settings = () => {
   return (

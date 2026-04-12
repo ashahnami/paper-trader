@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { fetchPositions, fetchProfile } from '../../api/userApi'
 import { useEffect, useState } from 'react';
 import { closePosition } from '../../api/stockApi';
-import { Position } from '../../entities/Position';
+import { Position } from "../../entities/user.types";
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

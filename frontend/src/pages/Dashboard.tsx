@@ -2,13 +2,26 @@ import "../assets/dashboard.scss";
 import Watchlist from "../components/dashboard/Watchlist";
 import News from '../components/dashboard/News';
 import Positions from '../components/dashboard/Positions';
-import Header from "../components/dashboard/Header";
+import {useQuery} from "@tanstack/react-query";
+import {fetchProfile} from "../api/userApi";
 
 const Dashboard = () => {
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => fetchProfile(),
+  })
+
+  if (isLoading) {
+    return <span>Loading...</span>
+  }
+
   return (
     <div className="home">
       <div className="home-container">
-        <Header />
+        <div className="portfolioHeaderContainer">
+          <div className='welcome-message'>Welcome {profile?.username}!</div>
+          <div className='balance-message'>Your balance is: ${profile?.balance.toFixed(2)}</div>
+        </div>
 
         <div className='positions card'>
           <h5 className='positions'>Positions</h5>
