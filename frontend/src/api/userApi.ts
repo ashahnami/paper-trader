@@ -1,14 +1,6 @@
-import { LoginDetails } from '../entities/LoginDetails';
-import { LoginResponse } from '../entities/LoginResponse';
-import { RegisterDetails } from '../entities/RegisterDetails';
-import { ChangePasswordDetails } from '../entities/ChangePasswordDetails';
-import { ChangeUsername } from '../entities/ChangeUsername';
-import { LoginStatus } from '../entities/LoginStatus';
-import { Position } from '../entities/Position';
-import { Profile } from '../entities/Profile';
-import { Transaction } from '../entities/Transaction';
-import { WatchlistItem } from '../entities/Watchlist';
+import '../entities/user.types'
 import httpClient from './httpClient';
+import { Profile, Position, ChangeUsername, ChangePasswordDetails, RegisterDetails, LoginResponse, LoginStatus, WatchlistItem, Transaction, LoginDetails } from "../entities/user.types";
 
 export const fetchProfile = async (): Promise<Profile> => {
     return (await httpClient.get<Profile>('/api/users/me')).data;

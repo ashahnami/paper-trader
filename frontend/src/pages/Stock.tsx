@@ -4,11 +4,11 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import axios from 'axios';
 
-import StockChart from './chart';
-import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addToWatchlist, checkInWatchlist, fetchProfile, removeFromWatchlist } from '../../api/userApi';
-import { buyStock } from '../../api/stockApi';
-import '../../assets/stock.css';
+import StockChart from '../components/stock/chart';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { addToWatchlist, checkInWatchlist, fetchProfile, removeFromWatchlist } from '../api/userApi';
+import { buyStock } from '../api/stockApi';
+import '../assets/stock.css';
 
 interface Order {
   price: number;
@@ -44,7 +44,6 @@ interface Info {
 const Stock = () => {
   let { state } = useLocation();
   const [quantity, setQuantity] = useState<number>(1);
-  const queryClient = useQueryClient();
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -114,7 +113,7 @@ const Stock = () => {
 
     const latestPrice = quote.c
 
-    buyStockMutation({id: state.id, quantity: quantity})
+    await buyStockMutation({id: state.id, quantity: quantity})
   }
 
   return (

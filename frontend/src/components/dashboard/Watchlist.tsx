@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchWatchlist } from '../../api/userApi'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { WatchlistItem } from '../../entities/Watchlist';
+import { WatchlistItem } from "../../entities/user.types";
 import axios from 'axios';
 
 interface Quote {
