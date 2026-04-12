@@ -8,7 +8,7 @@ import SearchBar from '../search';
 import '../../assets/navbar.scss';
 import { fetchProfile } from '../../api/userApi'
 import { useQuery } from '@tanstack/react-query';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/AuthProvider';
 
 const Navbar = () => {
   const { data: user, isLoading } = useQuery({

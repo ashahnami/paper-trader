@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './navbar'
 import { Outlet, Navigate } from 'react-router-dom'
-import useAuth from '../hooks/useAuth'
+import { useAuth } from '../context/AuthProvider'
 import '../assets/layout.css'
 
 const Layout = () => {
@@ -15,9 +15,9 @@ const Layout = () => {
 }
 
 const RequireAuth = () => {
-    const { auth } : any = useAuth();
+    const { token } : any = useAuth();
 
-    if (!auth) return <Navigate to='/login' />
+    if (!token) return <Navigate to='/login' />
     else {
         return (
         <div className='layout'>
