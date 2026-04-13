@@ -2,10 +2,11 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { fetchPositions, fetchProfile } from '../../api/userApi'
 import { useEffect, useState } from 'react';
 import { closePosition } from '../../api/stockApi';
-import { Position } from "../../entities/user.types";
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import {PositionPublic, StockPublic, WatchedStockPublic} from "../../entities/types";
+import httpClient from "../../api/httpClient";
 
 interface Quote {
     "c": number;
@@ -50,9 +51,15 @@ const Positions = () => {
   
     const updatePrices = async () => {
       try {
-        const requests: any = positions?.map((position: Position) =>
-          axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${position.symbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-        );
+        const requests: any = positions?.map(async (position: PositionPublic) => {
+            try {
+                const stock = (await httpClient.get<StockPublic>(`/api/stocks/${position.stock_id}`)).data;
+                return axios.get<Quote>(`https://finnhub.io/api/v1/quote?symbol=${stock.ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+            } catch (error) {
+                console.log("error fetching stock")
+            }
+            return 0;
+        });
   
         const responses = await Promise.all(requests);
   
@@ -60,7 +67,7 @@ const Positions = () => {
   
         const updatedChanges = responses?.map((response: any, index: number) => {
           const { c: latestPrice } = response.data;
-          const change: number = positions ? parseFloat(((latestPrice - positions[index].averagePrice) / latestPrice * 100).toFixed(2)) : 0;
+          const change: number = positions ? parseFloat(((latestPrice - positions[index].average_price) / latestPrice * 100).toFixed(2)) : 0;
           return change;
         });
   
@@ -103,19 +110,20 @@ const Positions = () => {
             </tr>
           </thead>
           <tbody>
-            {positions?.map((position: Position, i: number) => (
-              <tr key={i} onClick={() => navigate(`/stock/${position.symbol}`, { state: { id: position.id }})}>
-                <td>{position.symbol}</td>
+            {positions?.map((position: PositionPublic, i: number) => (
+              <tr key={i} onClick={() => navigate(`/stock/${position.stock_id}`, { state: { id: position.id }})}>
+                {/*<td>{position.stock_id}</td>*/}
+                  <td>temp stock ticker</td>
                 <td>{position.quantity}</td>
                 <td style={
                   changes[i] >= 0 ? styles.positive : styles.negative
                 }>{changes[i]}%</td>
-                <td>{position.averagePrice}</td>
+                <td>{position.average_price}</td>
                 <td>{currValues[i]}</td>
                 <td style={
-                  position.averagePrice * position.quantity - currValues[i] >= 0 ? styles.positive : styles.negative
+                  position.average_price * position.quantity - currValues[i] >= 0 ? styles.positive : styles.negative
                 }>
-                  {(position.averagePrice * position.quantity - currValues[i]).toFixed(2)}
+                  {(position.average_price * position.quantity - currValues[i]).toFixed(2)}
                 </td>
                 {/* <td className="crossIcon" onClick={() => closePosition(position.stockSymbol)}><CloseIcon /></td> */}
                 <td className="crossIcon" onClick={() => {setOpenModal(true); setSelId(position.id)}}><CloseIcon /></td>

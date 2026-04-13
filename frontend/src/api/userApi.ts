@@ -1,29 +1,30 @@
 import '../entities/user.types'
 import httpClient from './httpClient';
-import { Profile, Position, ChangeUsername, ChangePasswordDetails, RegisterDetails, LoginResponse, LoginStatus, WatchlistItem, Transaction, LoginDetails } from "../entities/user.types";
+import { Profile, ChangeUsername, ChangePasswordDetails, RegisterDetails, LoginResponse, LoginStatus, Transaction } from "../entities/user.types";
+import { PositionPublic, WatchedStockPublic, UserPublic } from "../entities/types";
 
-export const fetchProfile = async (): Promise<Profile> => {
+export const fetchProfile = async (): Promise<UserPublic> => {
     return (await httpClient.get<Profile>('/api/users/me')).data;
 }
 
-export const fetchPositions = async (): Promise<Position[]> => {
-    return (await httpClient.get<{ positions: Position[] }>('/api/positions/')).data.positions;
+export const fetchPositions = async (): Promise<PositionPublic[]> => {
+    return (await httpClient.get('/api/positions/')).data;
 }
 
-export const fetchWatchlist = async (): Promise<WatchlistItem[]> => {
-    return (await httpClient.get<{ watchlist: WatchlistItem[] }>('/api/watchlists/')).data.watchlist;
+export const fetchWatchlist = async (): Promise<WatchedStockPublic[]> => {
+    return (await httpClient.get('/api/watchlists/')).data;
 }
 
-export const checkInWatchlist = async (id: number) => {
-    return (await httpClient.get(`/api/watchlists/${id}`)).data.inWatchlist;
+export const checkInWatchlist = async (stock_id: number) => {
+    return (await httpClient.get(`/api/users/me/watching/${stock_id}`)).data.inWatchlist;
 }
 
-export const addToWatchlist = async (id: number) => {
-    return (await httpClient.post(`/api/watchlists/${id}`)).data;
+export const addToWatchlist = async (stock_id: number) => {
+    return (await httpClient.post('/api/watchlists/', { stock_id: stock_id })).data;
 }
 
-export const removeFromWatchlist = async (id: number) => {
-    return (await httpClient.delete(`/api/watchlists/${id}`)).data;
+export const removeFromWatchlist = async (stock_id: number) => {
+    return (await httpClient.delete(`/api/watchlists/${stock_id}`)).data;
 }
 
 export const fetchTransactions = async (ticker: string): Promise<Transaction[]> => {

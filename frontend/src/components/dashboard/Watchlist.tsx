@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchWatchlist } from '../../api/userApi'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { WatchlistItem } from "../../entities/user.types";
 import axios from 'axios';
+import { WatchedStockPublic } from "../../entities/types";
 
 interface Quote {
   "c": number;
@@ -25,11 +25,11 @@ const Watchlist = () => {
     const [quotes, setQuotes] = useState<Quote[]>();
 
     const fetchWatchlistPrices = async () => {
-      const requests: any = watchlist?.map((item: WatchlistItem) => 
-        axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.symbol}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-        .then(function(response) {
-          return response.data;
-        })
+      const requests: any = watchlist?.map((item: WatchedStockPublic) =>
+          axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
+          .then(function(response) {
+            return response.data;
+          })
       );
 
       const responses: any = await Promise.all(requests);
@@ -59,13 +59,13 @@ const Watchlist = () => {
             </thead>
 
             <tbody>
-              {quotes && watchlist?.map((watchlistItem: WatchlistItem, index: number) => (
-                <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.symbol}`)} className='watchlist-row'>
-                  <td>{watchlistItem.symbol}</td>
-                  <td>{quotes[index]?.c?.toFixed(2)}</td>
-                  <td style={{ 
-                    color: quotes[index]?.dp < 0 ? 'red' : 'green'
-                  }}>{quotes[index]?.dp?.toFixed(2)}</td>
+              {quotes && watchlist?.map((watchlistItem: WatchedStockPublic, index: number) => (
+                <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.id}`)} className='watchlist-row'>
+                   <td>{watchlistItem.ticker}</td>
+                   <td>{quotes[index]?.c?.toFixed(2)}</td>
+                   <td style={{
+                     color: quotes[index]?.dp < 0 ? 'red' : 'green'
+                   }}>{quotes[index]?.dp?.toFixed(2)}</td>
                 </tr>
               ))}
 

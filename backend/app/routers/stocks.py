@@ -4,12 +4,12 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import select
 
 from app.dependencies import SessionDep
-from app.models import Stock
+from app.models import Stock, StockPublic
 
 router = APIRouter(prefix="/stocks", tags=["stocks"])
 
 
-@router.get("/", response_model=list[Stock])
+@router.get("/", response_model=list[StockPublic])
 async def get_stocks(session: SessionDep) -> Any:
     stocks = session.exec(select(Stock)).all()
     return stocks

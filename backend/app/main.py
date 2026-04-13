@@ -36,8 +36,3 @@ app.include_router(watchlists.router)
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
-
-@app.get("/test")
-async def test(token: TokenDep):
-    return {"token": token}

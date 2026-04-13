@@ -26,17 +26,24 @@ class UserStockLink(SQLModel, table=True):
     stock_id: int = Field(default=None, foreign_key="stock.id", primary_key=True)
 
 
-class User(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+class UserBase(SQLModel):
     username: str = Field(index=True)
     email: str = Field(index=True)
-    password: str = Field()
     balance: float = Field(default=0)
-    disabled: bool = Field(default=False)
+
+
+class User(UserBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    password: str = Field()
+    is_active: bool = Field(default=True)
 
     transactions: list["Transaction"] = Relationship(back_populates="user")
     positions: list["Position"] = Relationship(back_populates="user")
     watched_stocks: list["Stock"] = Relationship(back_populates="users", link_model=UserStockLink)
+
+
+class UserPublic(UserBase):
+    pass
 
 
 class Stock(SQLModel, table=True):
@@ -46,6 +53,18 @@ class Stock(SQLModel, table=True):
     exchange: str = Field(index=True)
 
     users: list["User"] = Relationship(back_populates="watched_stocks", link_model=UserStockLink)
+
+
+class StockPublic(SQLModel):
+    id: int
+    ticker: str
+    description: str
+    exchange: str
+
+
+class WatchedStockPublic(SQLModel):
+    id: int
+    ticker: str
 
 
 class Transaction(SQLModel, table=True):
@@ -71,6 +90,19 @@ class Position(SQLModel, table=True):
 
     user_id: int = Field(default=None, foreign_key="user.id")
     user: User | None = Relationship(back_populates="positions")
+
+
+class PositionPublic(SQLModel):
+    id: int
+    quantity: int
+    average_price: float
+    type: OrderType
+    stock_id: int
+
+
+class PositionsPublic(SQLModel):
+    data: list[Position]
+    count: int
 
 
 class Token(BaseModel):

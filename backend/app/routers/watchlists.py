@@ -1,15 +1,15 @@
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException
 
 from app.dependencies import SessionDep, get_current_active_user
-from app.models import User, Stock, AddToWatchlistRequest
+from app.models import User, Stock, AddToWatchlistRequest, WatchedStockPublic
 
 router = APIRouter(prefix="/watchlists", tags=["watchlists"])
 
 
-@router.get("/")
-async def get_watchlist(current_user: Annotated[User, Depends(get_current_active_user)]) -> list[Stock]:
+@router.get("/", response_model=list[WatchedStockPublic])
+async def get_watchlist(current_user: Annotated[User, Depends(get_current_active_user)]) -> Any:
     return current_user.watched_stocks
 
 
@@ -19,6 +19,8 @@ async def add_to_watchlist(request: AddToWatchlistRequest, session: SessionDep,
     stock = session.get(Stock, request.stock_id)
     if not stock:
         raise HTTPException(status_code=404, detail="Stock not found")
+    if stock in current_user.watched_stocks:
+        raise HTTPException(status_code=400, detail="Stock already in watchlist")
     current_user.watched_stocks.append(stock)
     session.add(current_user)
     session.commit()

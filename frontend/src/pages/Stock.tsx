@@ -44,6 +44,7 @@ interface Info {
 const Stock = () => {
   let { state } = useLocation();
   const [quantity, setQuantity] = useState<number>(1);
+  const client = useQueryClient();
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -61,10 +62,22 @@ const Stock = () => {
 
   const { mutateAsync: addToWatchlistMutation } = useMutation({
     mutationFn: addToWatchlist,
+    onSuccess: () => {
+      return client.invalidateQueries({ queryKey: ['in_watchlist'] });
+    },
+    onError: (error) => {
+      console.log(error);
+    }
   });
 
   const { mutateAsync: removeFromWatchlistMutation } = useMutation({
     mutationFn: removeFromWatchlist,
+    onSuccess: () => {
+      return client.invalidateQueries({ queryKey: ['in_watchlist'] });
+    },
+    onError: (error) => {
+      console.log(error);
+    }
   });
 
   const { ticker } = useParams();
