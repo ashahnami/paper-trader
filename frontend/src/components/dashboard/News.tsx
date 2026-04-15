@@ -1,25 +1,14 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useEffect } from 'react'
+import { useQuery } from "@tanstack/react-query";
+import { getNews } from "@/api/stockApi";
+import { NewsItem } from "@/entities/types";
 
-interface News {
-    "category": string;
-    "datetime": number;
-    "headline": string;
-    "id": number;
-    "image": string;
-    "related": string;
-    "source": string;
-    "summary": string;
-    "url": string;
-}
 
 const News = () => {
-    const [news, setNews] = useState<News[]>();
-
-    const fetchNews = async () => {
-        const { data: news } = await axios.get(`https://finnhub.io/api/v1/news?category=general&token=${process.env.REACT_APP_FINNHUB_API_KEY}`);
-        setNews(news);
-    }
+    const { data: news } = useQuery({
+        queryKey: ['news'],
+        queryFn: () => getNews(),
+    })
 
     function calculateTime(timestamp : number) {
         const now = Math.floor(Date.now() / 1000);
@@ -39,13 +28,12 @@ const News = () => {
     }
     
     useEffect(() => {
-    document.title = "Home";
-    fetchNews();
+        document.title = "Home";
     }, [])
       
   return (
     <div className='newsTable'>
-        {news?.slice(0, 5).map((newsItem, index) => (
+        {news?.slice(0, 5).map((newsItem: NewsItem, index: number) => (
         <div key={index} onClick={() => window.location.replace(newsItem.url)} className='row'>
             <img src={newsItem.image} className='newsImage' />
 

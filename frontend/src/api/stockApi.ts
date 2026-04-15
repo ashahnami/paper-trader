@@ -1,20 +1,54 @@
+import qs from 'qs';
 
-import { Stock, BuyOrder } from '../entities/stock.types';
-import httpClient from './httpClient';
-import {StockPublic} from "../entities/types";
+import { Stock, BuyOrder } from '@/entities/stock.types';
+import httpClient from '@/api/httpClient';
+import {CompanyProfile, NewsItem, Quote, StockPublic} from "@/entities/types";
 
 export const fetchStock = async (ticker: string): Promise<StockPublic> => {
-    return (await httpClient.get<StockPublic>(`/api/stock/${ticker}`)).data;
+    const { data } = await httpClient.get<StockPublic>(`/api/stock/${ticker}`);
+    return data;
 }
 
-export const buyStock = async ({ id, quantity }: { id: number, quantity: number}): Promise<any> => {
-    return (await httpClient.post<BuyOrder>(`/api/transactions/${id}`, {quantity})).data;
+export const getCompanyProfile = async (stock_id: number): Promise<CompanyProfile> => {
+    const { data } = await httpClient.get<CompanyProfile>(`/api/stocks/${stock_id}/profile`)
+    return data;
+}
+
+export const getStockQuote = async (stock_id: number): Promise<Quote> => {
+    const { data } = await httpClient.get<Quote>(`/api/stocks/${stock_id}/quote`)
+    return data;
+}
+
+export const getStocksQuotes = async (stock_id_array: number[]): Promise<Quote[]> => {
+    const { data } = await httpClient.get<Quote[]>('api/stocks/quote/', {
+        params: {
+            id: stock_id_array
+        },
+        paramsSerializer: params => {
+            return qs.stringify(params, { indices: false })
+        }
+    })
+    return data;
+}
+
+export const getNews = async (): Promise<NewsItem[]> => {
+    const { data } = await httpClient.get<NewsItem[]>('/api/news')
+    return data;
+}
+
+export const buyStock = async (id: number, quantity: number): Promise<any> => {
+    const { data } = await httpClient.post(`/api/transactions/${id}`, {
+        quantity
+    });
+    return data;
 }
 
 export const closePosition = async (id: number): Promise<any> => {
-    return (await httpClient.delete(`/api/positions/${id}/close`)).data;
+    const { data } = await httpClient.delete(`/api/positions/${id}/close`);
+    return data;
 }
 
 export const fetchAllStocks = async (): Promise<StockPublic[]> => {
-    return (await httpClient.get('/api/stocks/')).data;
+    const { data } = await httpClient.get('/api/stocks/');
+    return data;
 }

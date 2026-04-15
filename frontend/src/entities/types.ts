@@ -23,6 +23,39 @@ export type StockPublic = {
     exchange: string;
 }
 
+export type CompanyProfile = {
+    exchange: string;
+    finnhubIndustry: string;
+    logo: string;
+    name: string;
+    ticker: string;
+}
+
+export type Quote = {
+  c: number;
+  d: number;
+  dp: number;
+  h: number;
+  l: number;
+  o: number;
+  pc: number;
+  t: number;
+}
+
+
+export type NewsItem = {
+    category: string;
+    datetime: number;
+    headline: string;
+    id: number;
+    image: string;
+    related: string;
+    source: string;
+    summary: string;
+    url: string;
+}
+
+
 export type UserPublic = {
     username: string;
     email: string;

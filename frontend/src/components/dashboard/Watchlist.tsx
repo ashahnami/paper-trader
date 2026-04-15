@@ -1,54 +1,38 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchWatchlist } from '../../api/userApi'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axios from 'axios';
+import { useEffect } from 'react'
 import { WatchedStockPublic } from "../../entities/types";
-
-interface Quote {
-  "c": number;
-  "dp": number;
-  "h": number;
-  "l": number;
-  "o": number;
-  "pc": number;
-  "t": number;
-}
+import { getStocksQuotes} from "@/api/stockApi";
 
 const Watchlist = () => {
-    const { data: watchlist, isLoading } = useQuery({
-      queryKey: ['watchlist.py'],
+    const { data: watchlist, isFetched: watchlistFetched } = useQuery({
+      queryKey: ['watchlist'],
       queryFn: () => fetchWatchlist(),
+      initialData: []
+    })
+
+    const { data: quotes, isFetched: quotesFetched, refetch } = useQuery({
+        queryKey: ['watchlist_quotes'],
+        queryFn: () => getStocksQuotes(watchlist.map((item: WatchedStockPublic)=> item.id)),
+        enabled: false,
     })
 
     const navigate = useNavigate();
-    const [quotes, setQuotes] = useState<Quote[]>();
-
-    const fetchWatchlistPrices = async () => {
-      const requests: any = watchlist?.map((item: WatchedStockPublic) =>
-          axios.get(`https://finnhub.io/api/v1/quote?symbol=${item.ticker}&token=${process.env.REACT_APP_FINNHUB_API_KEY}`)
-          .then(function(response) {
-            return response.data;
-          })
-      );
-
-      const responses: any = await Promise.all(requests);
-      setQuotes(responses);
-    }
 
     useEffect(() => {
-      if (!isLoading) {
-        fetchWatchlistPrices();
+      if (watchlistFetched) {
+          refetch().then(r => console.log("REFETCHED QUOTES"))
       }
-    }, [isLoading])
+    }, [watchlistFetched])
 
-    if (isLoading) {
+    if (!watchlistFetched) {
       return <span>Loading...</span>
     }
 
     return (
       <div className='watchlist'>
-        {isLoading ? "Fetching watchlist.py" : (
+        {!watchlistFetched ? "Fetching watchlist.py" : (
           <table>
             <thead>
               <tr>
@@ -59,7 +43,7 @@ const Watchlist = () => {
             </thead>
 
             <tbody>
-              {quotes && watchlist?.map((watchlistItem: WatchedStockPublic, index: number) => (
+              {quotes && watchlist.map((watchlistItem: WatchedStockPublic, index: number) => (
                 <tr key={index} onClick={() => navigate(`/stock/${watchlistItem.id}`)} className='watchlist-row'>
                    <td>{watchlistItem.ticker}</td>
                    <td>{quotes[index]?.c?.toFixed(2)}</td>
