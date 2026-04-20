@@ -3,32 +3,35 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 
-import httpClient from '../../api/httpClient'
 import SearchBar from '../search';
 import '../../assets/navbar.scss';
-import { fetchProfile } from '../../api/userApi'
-import { useQuery } from '@tanstack/react-query';
+import { fetchProfile, logout } from '../../api/userApi'
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthProvider';
 
 const Navbar = () => {
+  const { setToken } : any = useAuth();
+
   const { data: user, isLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: () => fetchProfile(),
   })
 
+  const { mutateAsync: logoutMutation } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      setToken(null);
+      navigate("/login");
+    },
+    onError: () => {
+      console.log("unable to log out");
+    }
+  })
+
   const navigate = useNavigate()
   const [dropdown, setDropdown] = useState<boolean>(false)
-  const { setAuth } : any = useAuth();
 
   let accountMenuRef = useRef<HTMLInputElement>(null);
-
-  const logout = () => {
-    httpClient.post("/api/auth/logout")
-    .then(function(response){
-      setAuth({});
-    })
-    navigate("/login");
-  }
 
   useEffect(() => {
     let handler = (event: any) => {
@@ -71,7 +74,7 @@ const Navbar = () => {
 
               <hr className='divider' />
 
-              <div onClick={logout}>Log Out</div>
+              <div onClick={() => logoutMutation()}>Log Out</div>
             </div>
           </div> 
         : null}

@@ -1,12 +1,15 @@
 export enum OrderType {
-    "BUY",
-    "SELL"
+    "BUY" = "BUY",
+    "SELL" = "SELL"
 }
 
 export type PositionPublic = {
     id: number;
+    symbol: string;
     quantity: number;
     average_price: number;
+    current_value: number;
+    pc: number;
     type: OrderType;
     stock_id: number;
 }
@@ -60,4 +63,10 @@ export type UserPublic = {
     username: string;
     email: string;
     balance: number;
+}
+
+export interface MakeTransactionVariables {
+    stock_id: number;
+    quantity: number;
+    order_type: OrderType;
 }

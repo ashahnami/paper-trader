@@ -6,17 +6,14 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import StockChart from '@/components/stock/Chart';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addToWatchlist, checkInWatchlist, fetchProfile, removeFromWatchlist } from '@/api/userApi';
-import {buyStock, getCompanyProfile, getStockQuote} from '@/api/stockApi';
+import { getCompanyProfile, getStockQuote, makeTransaction } from '@/api/stockApi';
 import '../assets/stock.css';
-
-interface Order {
-  price: number;
-  quantity: number;
-}
+import { MakeTransactionVariables, OrderType } from '@/entities/types';
 
 const Stock = () => {
   let { state } = useLocation();
   const [quantity, setQuantity] = useState<number>(1);
+  const [orderType, setOrderType] = useState<OrderType>(OrderType.BUY);
   const client = useQueryClient();
 
   const { data: profile } = useQuery({
@@ -40,8 +37,8 @@ const Stock = () => {
     refetchInterval: 5000,
   }))
 
-  const { mutateAsync: buyStockMutation } = useMutation({
-    mutationFn: (stock_id: number, quantity: number) => buyStock(stock_id, quantity),
+  const { mutateAsync: makeTransactionMutation } = useMutation({
+    mutationFn: ({stock_id, quantity, order_type}: MakeTransactionVariables) => makeTransaction({stock_id, quantity, order_type}),
   });
 
   const { mutateAsync: addToWatchlistMutation } = useMutation({
@@ -64,15 +61,11 @@ const Stock = () => {
     }
   });
 
-  const { ticker } = useParams();
-  const [price, setPrice] = useState<number>(0);
-  const [orderType, setOrderType] = useState<string>("Buy");
-  const [positiveChange, setPositiveChange] = useState<boolean>(true);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await buyStockMutation(state.id, quantity)
+    await makeTransactionMutation({ stock_id: state.id, quantity: quantity, order_type: orderType })
+    
   }
 
   return (
@@ -85,15 +78,17 @@ const Stock = () => {
         </div>
 
         <div className="price">${quote?.c}</div>
+        {/*
         <div className="change" style={{ color: positiveChange ? 'green' : 'red' }}>
           {(positiveChange ? "+" : "") + quote?.d.toFixed(2)} ({(positiveChange ? "+" : "") + quote?.dp.toFixed(2)}%) <span style={{ color: 'black' }}>Today</span>
         </div>
+        */}
       </div>
 
       <div className="stock-container">
         <div className="col1">
 
-          <div className="grid-item stock-chart"><StockChart ticker={ticker} /></div>
+          <div className="grid-item stock-chart"><StockChart ticker={companyProfile?.ticker} /></div>
 
           <div className="stock-details">
             <div className="stock-details-col">
@@ -137,7 +132,7 @@ const Stock = () => {
       <div className="col2">
           <div className="stock-buy">
             <form onSubmit={handleSubmit}>
-                <h3>Buy {ticker}</h3>
+                <h3>Buy {companyProfile?.ticker}</h3>
 
                 <div className="quantity">
                   <div>Shares</div>
@@ -159,10 +154,17 @@ const Stock = () => {
 
                 <div className="cost">
                   <div>Estimated cost</div>
-                  <div>~${(price * quantity).toFixed(2)}</div>
+                {quote && 
+                  <div>~${(quote?.c * quantity).toFixed(2)}</div>
+                }
                 </div>
 
-                <input type="submit" value={orderType} />
+                <select onChange={(e) => setOrderType(e.target.value)} value={orderType}>
+                  <option value={OrderType.BUY}>BUY</option>
+                  <option value={OrderType.SELL}>SELL</option>
+                </select>
+
+                <input type="submit" value="Buy" />
 
                 <div className="balance">${profile?.balance.toFixed(2)} available</div>
             </form>

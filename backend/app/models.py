@@ -94,8 +94,10 @@ class Position(SQLModel, table=True):
 
 class PositionPublic(SQLModel):
     id: int
+    symbol: str
     quantity: int
     average_price: float
+    current_value: float;
     type: OrderType
     stock_id: int
 

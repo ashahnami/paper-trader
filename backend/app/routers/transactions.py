@@ -4,7 +4,8 @@ from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
 from sqlmodel import select
 
-from app.dependencies import SessionDep, get_current_active_user
+from app.core.config import settings
+from app.dependencies import RequestClientDep, SessionDep, get_current_active_user
 from app.models import Transaction, User, Order, Stock, Position
 
 router = APIRouter(prefix="/transactions", tags=["transactions"])
@@ -18,29 +19,34 @@ async def get_transactions(current_user: Annotated[User, Depends(get_current_act
 @router.post("/")
 async def create_transaction(order: Order,
                              session: SessionDep,
-                             current_user: Annotated[User, Depends(get_current_active_user)]) -> Transaction:
+                             current_user: Annotated[User, Depends(get_current_active_user)],
+                             request_client: RequestClientDep) -> Transaction:
     stock = session.get(Stock, order.stock_id)
     if not stock:
         raise HTTPException(status_code=404, detail="Stock not found")
-    total_price = order.price * order.quantity
-    if total_price < current_user.balance:
+
+    response = await request_client.get(f"https://finnhub.io/api/v1/quote?symbol={stock.ticker}&token={settings.FINNHUB_API_KEY}")
+    current_price = response.json()["c"]
+    total_price = current_price * order.quantity
+
+    if current_user.balance < total_price:
         raise HTTPException(status_code=400, detail="Insufficient funds")
 
-    transaction = Transaction(price=order.price, quantity=order.quantity, order_type=order.order_type,
-                              stock_id=order.stock_id, user_id=id)
+    transaction = Transaction(price=total_price, quantity=order.quantity, order_type=order.order_type,
+                              stock_id=order.stock_id, user_id=current_user.id)
     session.add(transaction)
 
     statement = select(Position).where(Position.stock_id == order.stock_id and Position.type == order.order_type)
     position = session.exec(statement).first()
     if not position:
         position = Position(quantity=order.quantity,
-                            average_price=order.price,
-                            order_type=order.order_type,
-                            stock_id=order.stock_id)
+                            average_price=current_price,
+                            type=order.order_type,
+                            stock_id=order.stock_id,
+                            user_id=current_user.id)
     else:
         position.quantity += order.quantity
-        position.average_price = ((position.average_price * position.quantity) + (order.price * order.quantity) / (
-                position.quantity + order.quantity))
+        position.average_price = (position.average_price * position.quantity + total_price) / (position.quantity + order.quantity)
 
     session.add(position)
     session.commit()

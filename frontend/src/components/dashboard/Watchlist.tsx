@@ -22,7 +22,7 @@ const Watchlist = () => {
 
     useEffect(() => {
       if (watchlistFetched) {
-          refetch().then(r => console.log("REFETCHED QUOTES"))
+          refetch()
       }
     }, [watchlistFetched])
 

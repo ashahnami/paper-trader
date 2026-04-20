@@ -2,7 +2,7 @@ import qs from 'qs';
 
 import { Stock, BuyOrder } from '@/entities/stock.types';
 import httpClient from '@/api/httpClient';
-import {CompanyProfile, NewsItem, Quote, StockPublic} from "@/entities/types";
+import {CompanyProfile, MakeTransactionVariables, NewsItem, OrderType, Quote, StockPublic} from "@/entities/types";
 
 export const fetchStock = async (ticker: string): Promise<StockPublic> => {
     const { data } = await httpClient.get<StockPublic>(`/api/stock/${ticker}`);
@@ -36,15 +36,17 @@ export const getNews = async (): Promise<NewsItem[]> => {
     return data;
 }
 
-export const buyStock = async (id: number, quantity: number): Promise<any> => {
-    const { data } = await httpClient.post(`/api/transactions/${id}`, {
-        quantity
-    });
+export const makeTransaction = async ({ stock_id, quantity, order_type }: MakeTransactionVariables): Promise<any> => {
+    const { data } = await httpClient.post('/api/transactions/', {
+        stock_id,
+        quantity,
+        order_type 
+    })
     return data;
 }
 
 export const closePosition = async (id: number): Promise<any> => {
-    const { data } = await httpClient.delete(`/api/positions/${id}/close`);
+    const { data } = await httpClient.delete(`/api/positions/${id}`);
     return data;
 }
 

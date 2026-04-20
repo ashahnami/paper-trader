@@ -35,6 +35,13 @@ export const login = async ({ username, password }: { username: string, password
     return (await httpClient.postForm<LoginResponse>('/api/login/token', {username: username, password: password})).data;
 }
 
+export const logout = async () => {
+    /*
+    const { data } = await httpClient.post("/api/auth/logout")
+    return data;
+    */
+}
+
 export const register = async ({ username, email, password }: { username: string, email: string, password: string }): Promise<RegisterDetails> => {
     return (await httpClient.post<RegisterDetails>('/api/auth/register', {username, email, password})).data;
 } 
