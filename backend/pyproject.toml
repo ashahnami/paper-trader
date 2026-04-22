@@ -1,0 +1,7 @@
+[tool.ruff]
+target-version = "py311"
+include = ["*.py"]
+
+[tool.ruff.lint]
+ignore = ["E741"]
+fixable = ["ALL"]
